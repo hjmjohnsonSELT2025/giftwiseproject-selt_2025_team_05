@@ -20,6 +20,10 @@ test:
   <<: *default
   database: storage/test.sqlite3
 
+#source for production database configuration: https://admullan.medium.com/converting-a-rails-database-from-sqlite-to-postgresql-64de352c78a6
+#needed to do this to be able to host on heroku
 production:
-  <<: *default
-  database: storage/production.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
