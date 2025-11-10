@@ -67,6 +67,7 @@ group :test do
   gem "selenium-webdriver"
   gem 'rails-controller-testing'
   gem 'rspec-rails'
+  gem 'cucumber'
 end
 
 #from textbook section 4.8
