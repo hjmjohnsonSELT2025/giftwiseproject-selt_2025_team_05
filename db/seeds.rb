@@ -9,8 +9,7 @@
 #   end
 
 more_users = [
-  {:username => 'bbrown1', :password => '1234'} ,
-  {:username => 'aadams1', :password => 'abcd'}
+  {:username => 'bbrown1', :password => '1234', first_name: 'B', last_name: 'Brown', email: 'bbrown@email.com', gender: "F", birthdate: '1980-01-01'}
 ]
 
 more_users.each do |user|
