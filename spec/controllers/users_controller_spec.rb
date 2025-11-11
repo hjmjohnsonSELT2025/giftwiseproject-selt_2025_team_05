@@ -6,6 +6,8 @@ describe UsersController do
     it 'should render the new_user_path view' do
 
     end
+    it 'should redirect to the login page after creating a new user' do
 
+    end
   end
 end
