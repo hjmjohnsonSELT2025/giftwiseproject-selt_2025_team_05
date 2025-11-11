@@ -3,12 +3,12 @@
 %h2 Log in or Sign up
 - flash.each do |key, value|
   .alert{:class => "alert-#{key}"}
-= form_tag '/login', :method => :get do
+= form_tag '/login', :method => :post do
   = label_tag :email, "Email: "
   = text_field_tag :email
   = label_tag :password, "Password: "
   = text_field_tag :password
   = submit_tag 'Log in'
 
-= form_tag '/login', :method => :post do
+= form_tag '/signup', :method => :get do
   = submit_tag 'Sign up'

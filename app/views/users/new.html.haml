@@ -1,0 +1,18 @@
+%h1 Sign Up:
+= form_tag new_user_path, :method => :post do
+  = label_tag :email, "Email:"
+  = text_field_tag :email
+  %br
+  = label_tag :first_name, "First Name:"
+  = text_field_tag :first_name
+  %br
+  = label_tag :last_name, "Last Name:"
+  = text_field_tag :last_name
+  %br
+  = label_tag :gender, "Gender:"
+  = text_field_tag :gender
+  %br
+  = label_tag :birthdate, "Birthdate:"
+  = text_field_tag :birthdate
+  %br
+  = submit_tag 'Create account'
