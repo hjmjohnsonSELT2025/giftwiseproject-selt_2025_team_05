@@ -1,0 +1,15 @@
+<div class="wishlist-page">
+  <h1>My Wish List</h1>
+
+  <%= link_to "Add New Item", new_preference_path, class: "btn" %>
+
+  <div class="wishlist-items">
+    <% @wishlist_items.each do |item| %>
+      <div class="wishlist-item">
+        <h3><%= item.item_name %></h3>
+        <p class="cost">$<%= item.cost %></p>
+        <p class="notes"><%= item.notes %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

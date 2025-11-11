@@ -2,9 +2,24 @@
 
 <%= render @user %>
 
+<div class="wishlist-page">
+  <h1>Wish List</h1>
+
+  <div class="wishlist-items">
+    <% @wishlist_items.each do |item| %>
+      <div class="wishlist-item">
+        <h3><%= item.item_name %></h3>
+        <p class="cost">$<%= item.cost %></p>
+        <p class="notes"><%= item.notes %></p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
 <div>
   <%= link_to "Edit this user", edit_user_path(@user) %> |
-  <%= link_to "Back to users", users_path %>
+  <%= link_to "Back to users", users_path %> |
+  <%= link_to "Add Item to Wish List", new_preference_path(user_id: @user.id), class: "btn btn-primary" %>
 
   <%= button_to "Destroy this user", @user, method: :delete %>
 </div>
