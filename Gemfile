@@ -2,12 +2,14 @@ source "https://rubygems.org"
 
 ruby "3.3.8"
 
+gem 'haml-rails'
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.6"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
-
+gem 'bcrypt'
 
 
 # Use the Puma web server [https://github.com/puma/puma]
