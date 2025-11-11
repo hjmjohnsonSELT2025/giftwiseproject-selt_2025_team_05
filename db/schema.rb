@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_11_020731) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_11_021210) do
+  create_table "events", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "event_name"
+    t.string "event_date"
+    t.boolean "deleted_from_user_profile"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
   create_table "preferences", force: :cascade do |t|
     t.integer "user_id"
     t.string "item"
