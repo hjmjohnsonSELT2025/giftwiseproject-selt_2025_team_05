@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_11_033458) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_11_145445) do
   create_table "event_users", force: :cascade do |t|
     t.integer "event_id", null: false
     t.integer "user_id", null: false
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "budget", precision: 10, scale: 2, default: "0.0"
     t.index ["event_id", "user_id"], name: "index_event_users_on_event_id_and_user_id", unique: true
     t.index ["event_id"], name: "index_event_users_on_event_id"
     t.index ["user_id"], name: "index_event_users_on_user_id"
