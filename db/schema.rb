@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_11_022118) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_11_023510) do
   create_table "events", force: :cascade do |t|
     t.integer "user_id"
     t.string "event_name"
@@ -29,6 +29,21 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_11_022118) do
     t.datetime "updated_at", null: false
     t.index ["friend_id"], name: "index_friendships_on_friend_id"
     t.index ["user_id"], name: "index_friendships_on_user_id"
+  end
+
+  create_table "gifts", force: :cascade do |t|
+    t.integer "recipient_id", null: false
+    t.integer "giver_id"
+    t.string "item_name", null: false
+    t.decimal "item_price"
+    t.string "item_link"
+    t.boolean "on_recipient_wishlist"
+    t.boolean "purchased"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["giver_id"], name: "index_gifts_on_giver_id"
+    t.index ["recipient_id"], name: "index_gifts_on_recipient_id"
   end
 
   create_table "preferences", force: :cascade do |t|
@@ -74,4 +89,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_11_022118) do
   end
 
   add_foreign_key "friendships", "users", column: "friend_id"
+  add_foreign_key "gifts", "users", column: "giver_id"
+  add_foreign_key "gifts", "users", column: "recipient_id"
 end
