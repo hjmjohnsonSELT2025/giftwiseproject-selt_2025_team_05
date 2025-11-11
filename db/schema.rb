@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_11_015728) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_11_020731) do
+  create_table "preferences", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "item"
+    t.boolean "like_or_dislike"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_preferences_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "password"
@@ -21,6 +30,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_11_015728) do
     t.string "last_name"
     t.string "gender"
     t.string "birthdate"
+  end
+
+  create_table "wishes", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "item_name"
+    t.decimal "price"
+    t.string "link"
+    t.string "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_wishes_on_user_id"
   end
 
 end
