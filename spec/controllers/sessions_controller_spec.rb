@@ -8,7 +8,7 @@ describe SessionsController do
     end
   end
   describe 'login an existing user' do
-    it should 'call Sessions#new when logging in an existing user' do
+    it should 'call @user.authenticate' do
 
     end
   end
