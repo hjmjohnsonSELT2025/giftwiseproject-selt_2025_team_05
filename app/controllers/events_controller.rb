@@ -1,5 +1,7 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_event, only: [:show, :edit, :update]
+  before_action :authorize_event_owner!, only: [:edit, :update]
 
   def new
     @event = current_user.events.build
@@ -16,10 +18,31 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = Event.find(params[:id])
+  end
+
+  def edit
+  end
+
+
+  def update
+    if @event.update(event_params)
+      redirect_to @event, notice: "Event updated successfully!"
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   private
+
+  def set_event
+    @event = Event.find(params[:id])
+  end
+
+  def authorize_event_owner!
+    unless @event.user == current_user
+      redirect_to events_path, alert: "You are not authorized to edit this event."
+    end
+  end
 
   def event_params
     params.require(:event).permit(:name, :date, :address, :description)
