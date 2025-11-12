@@ -7,3 +7,32 @@
   <%= button_to "Sign in", new_user_session_path %>
 <% end %>
 <h1>Welcome to GiftWise!</h1>
+<h2>Upcoming Events</h2>
+<% if @upcoming_events.any? %>
+  <table>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Date</th>
+      <th>Address</th>
+      <th>Organizer</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @upcoming_events.each do |event| %>
+      <tr>
+        <td><%= event.name %></td>
+        <td><%= event.date&.strftime("%B %d, %Y") %></td>
+        <td><%= event.address %></td>
+        <td><%= event.user.email %></td>
+        <td><%= link_to "View", event_path(event) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No upcoming events found.</p>
+<% end %>
+
+<%= link_to "Create New Event", new_event_path, class: "btn btn-primary" %>
