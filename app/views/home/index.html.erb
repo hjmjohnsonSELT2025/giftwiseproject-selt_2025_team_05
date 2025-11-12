@@ -23,7 +23,7 @@
     <tbody>
     <% @upcoming_events.each do |event_user| %>
       <% event = event_user.event %>
-      <td>
+      <tr>
         <td><%= event.name %></td>
         <td><%= event.date&.strftime("%B %d, %Y") %></td>
         <td><%= event.address %></td>
