@@ -38,4 +38,32 @@ RSpec.describe EventsController, type: :controller do
       expect(response).to redirect_to(event)
     end
   end
+
+  describe "DELETE #destroy" do
+    it "marks the event as deleted" do
+      delete :destroy, params: { id: event.id }
+      event.reload
+      expect(event.deleted).to be true
+    end
+
+    it "updates all event_users statuses to left" do
+      delete :destroy, params: { id: event.id }
+      expect(EventUser.where(event: event).pluck(:status)).to all(eq("left"))
+    end
+
+    it "redirects to root with a notice" do
+      delete :destroy, params: { id: event.id }
+      expect(response).to redirect_to(root_path)
+      expect(flash[:notice]).to eq("Event deleted successfully.")
+    end
+
+    it "prevents non-owners from deleting the event" do
+      other_user = User.create!(email: "other@example.com", password: "password")
+      sign_in other_user
+      delete :destroy, params: { id: event.id }
+      expect(response).to redirect_to(events_path)
+      expect(flash[:alert]).to eq("You are not authorized to edit this event.")
+    end
+  end
+
 end
