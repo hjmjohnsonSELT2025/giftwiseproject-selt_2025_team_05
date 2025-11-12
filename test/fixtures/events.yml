@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  user: one
+  date: 2025-11-10 21:19:35
+  address: MyString
+  description: MyText
+  deleted: false
+
+two:
+  name: MyString
+  user: two
+  date: 2025-11-10 21:19:35
+  address: MyString
+  description: MyText
+  deleted: false
