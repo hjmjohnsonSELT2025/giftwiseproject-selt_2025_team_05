@@ -12,6 +12,8 @@ gem "devise"
 
 gem 'solid_queue'
 
+gem 'solid_cache'
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
