@@ -1,0 +1,9 @@
+<!-- source for index.html.erb layout: -->
+<!-- https://www.digitalocean.com/community/tutorials/how-to-set-up-user-authentication-with-devise-in-a-rails-7-application -->
+<% if user_signed_in? %>
+  <div> Welcome <%= current_user.email %> </div>
+  <%= button_to "Sign out", destroy_user_session_path, method: :delete %>
+<% else %>
+  <%= button_to "Sign in", new_user_session_path %>
+<% end %>
+<h1>Welcome to GiftWise!</h1>

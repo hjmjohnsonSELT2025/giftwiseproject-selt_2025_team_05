@@ -8,7 +8,7 @@ gem "rails", "~> 7.1.6"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
-
+gem "devise"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
@@ -61,13 +61,19 @@ group :development do
   # gem "spring"
 end
 
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'simplecov', require: false
+end
+
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
   gem 'rails-controller-testing'
-  gem 'rspec-rails'
   gem 'cucumber'
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner-active_record'
 end
 
 #from textbook section 4.8
