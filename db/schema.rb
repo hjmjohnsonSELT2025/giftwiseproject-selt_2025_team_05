@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_12_204419) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_13_202946) do
   create_table "event_users", force: :cascade do |t|
     t.integer "event_id", null: false
     t.integer "user_id", null: false
@@ -34,6 +34,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_12_204419) do
     t.datetime "updated_at", null: false
     t.index ["user_id", "name"], name: "index_events_on_user_id_and_name", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "friendships", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "friend_id", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friend_id"], name: "index_friendships_on_friend_id"
+    t.index ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true
+    t.index ["user_id"], name: "index_friendships_on_user_id"
   end
 
   create_table "preferences", force: :cascade do |t|
@@ -64,5 +75,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_12_204419) do
   add_foreign_key "event_users", "events"
   add_foreign_key "event_users", "users"
   add_foreign_key "events", "users"
+  add_foreign_key "friendships", "users"
+  add_foreign_key "friendships", "users", column: "friend_id"
   add_foreign_key "preferences", "users"
 end

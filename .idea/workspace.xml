@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ec60f1cc-a509-4ce4-b4ff-e4fc350d091c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/giftwiseproject-selt_2025_team_05.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/giftwiseproject-selt_2025_team_05.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/user.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/schema.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,12 +31,12 @@
     &quot;assignee&quot;: &quot;AJadenHuang&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;git@github.com:hjmjohnsonSELT2025/giftwiseproject-selt_2025_team_05.git&quot;,
-    &quot;accountId&quot;: &quot;00795449-332a-47e0-a71f-dfe013f11764&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/hjmjohnsonSELT2025/giftwiseproject-selt_2025_team_05.git",
+    "accountId": "549d1f34-6309-4966-82c7-45cc9d78c72b"
   }
-}</component>
+}]]></component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
     <option name="FILTER_WARNINGS" value="false" />
@@ -54,10 +59,11 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1763047978878",
-    "git-widget-placeholder": "#83 on wish-list-feature",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1763065722974",
+    "git-widget-placeholder": "add-friends",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "//wsl.localhost/Ubuntu-Kuan/home/kuan/giftwiseproject-selt_2025_team_05/app/views/preferences",
+    "last_opened_file_path": "//wsl.localhost/Ubuntu/home/jake_bleeden/projects/giftwiseproject-selt_2025_team_05",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -151,7 +157,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-RM-252.23892.415" />
+        <option value="bundled-js-predefined-d6986cc7102b-b598e85cdad2-JavaScript-RM-252.25557.135" />
       </set>
     </attachedChunks>
   </component>
@@ -174,6 +180,7 @@
       <workItem from="1763005664864" duration="498000" />
       <workItem from="1763006191170" duration="8148000" />
       <workItem from="1763047919776" duration="3420000" />
+      <workItem from="1763065663982" duration="2533000" />
     </task>
     <servers />
   </component>
