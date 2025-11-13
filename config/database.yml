@@ -6,7 +6,7 @@
 #
 default: &default
   adapter: sqlite3
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
 development:
@@ -20,10 +20,22 @@ test:
   <<: *default
   database: storage/test.sqlite3
 
-#source for production database configuration: https://admullan.medium.com/converting-a-rails-database-from-sqlite-to-postgresql-64de352c78a6
-#needed to do this to be able to host on heroku
+
+# Store production database in the storage/ directory, which by default
+# is mounted as a persistent Docker volume in config/deploy.yml.
 production:
-  adapter: postgresql
-  encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
+  primary:
+    <<: *default
+    database: storage/production.sqlite3
+  cache:
+    <<: *default
+    database: storage/production_cache.sqlite3
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    database: storage/production_queue.sqlite3
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *default
+    database: storage/production_cable.sqlite3
+    migrations_paths: db/cable_migrate
