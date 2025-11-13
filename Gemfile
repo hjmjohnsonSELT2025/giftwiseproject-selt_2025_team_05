@@ -10,6 +10,8 @@ gem "sprockets-rails"
 
 gem "devise"
 
+gem 'solid_queue'
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
