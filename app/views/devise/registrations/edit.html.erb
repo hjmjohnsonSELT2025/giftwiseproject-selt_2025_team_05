@@ -23,6 +23,11 @@
     <%= f.date_field :birthdate, autofocus: true, autocomplete: "date" %>
   </div>
 
+  <div class="field">
+    <%= f.label :bio %><br />
+    <%= f.text_field :bio, autofocus: true, autocomplete: "biography" %>
+  </div>
+
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>

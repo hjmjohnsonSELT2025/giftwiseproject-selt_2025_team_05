@@ -9,7 +9,8 @@ Feature: Add likes
   Scenario: Adding my interests to my bio
     When I click "View Profile"
     And I click "Edit Profile"
-    And I fill in "Edit Bio" with "UIowa Engineering 2026"
+    And I fill in "Bio" with "UIowa Engineering 2026"
+    And I fill in "Current password" with "password"
     And I click "Update"
     Then I should see "Your account has been updated successfully."
     And I click "View Profile"
