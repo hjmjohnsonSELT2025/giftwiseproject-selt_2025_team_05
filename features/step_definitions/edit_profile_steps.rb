@@ -3,7 +3,7 @@ Given("I am a logged in user") do
   visit new_user_session_path
   fill_in "Email", with: "j@email.com"
   fill_in "Password", with: "password"
-  click_button "Log in"
+  click_button "Sign in"
 end
 
 When("I click Edit Profile") do |button|
