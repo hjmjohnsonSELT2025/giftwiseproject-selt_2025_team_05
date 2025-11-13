@@ -22,8 +22,6 @@ class FriendshipsController < ApplicationController
     redirect_to root_path
   end
 
-
-
   def destroy
     @friendship = Friendship.find(params[:id])
 
