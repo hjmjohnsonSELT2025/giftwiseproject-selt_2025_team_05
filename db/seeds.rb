@@ -8,9 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-more_users = [
-
-]
+more_users = []
 
 more_users.each do |user|
   User.create!(user)
