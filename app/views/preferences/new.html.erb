@@ -1,21 +1,33 @@
-<%# app/views/preferences/new.html.erb %>
-<%= form_with model: @preference, url: preferences_path(user_id: params[:user_id]) do |form| %>
-  <div class="field">
-    <%= form.label :item_name %>
-    <%= form.text_field :item_name, required: true %>
-  </div>
+<div>
+  <div>
+    <div>
+      <h1>Add New Wishlist Item</h1>
+      <%= link_to "Back to Wishlist", preferences_path, class: "btn btn-secondary" %>
+    </div>
 
-  <div class="field">
-    <%= form.label :cost %>
-    <%= form.number_field :cost, step: 0.01 %>
-  </div>
+    <%= form_with model: @preference, url: preferences_path do |form| %>
+      <div>
+        <%= form.label :item_name, "Item Name *" %>
+        <%= form.text_field :item_name, required: true, placeholder: "Enter item name" %>
+      </div>
 
-  <div class="field">
-    <%= form.label :notes %>
-    <%= form.text_area :notes %>
-  </div>
+      <div>
+        <%= form.label :cost, "Cost" %>
+        <div class="cost-input-container">
+          <span class="currency-symbol">$</span>
+          <%= form.number_field :cost, step: 0.01, placeholder: "0.00" %>
+        </div>
+      </div>
 
-  <div class="actions">
-    <%= form.submit "Add to Wish List" %>
+      <div>
+        <%= form.label :notes, "Notes" %>
+        <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences..." %>
+      </div>
+
+      <div>
+        <%= form.submit "Add to Wishlist", class: "btn btn-primary" %>
+        <%= link_to "Cancel", preferences_path, class: "btn btn-secondary" %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>

@@ -1,15 +1,43 @@
-<div class="wishlist-page">
-  <h1>My Wish List</h1>
-
-  <%= link_to "Add New Item", new_preference_path, class: "btn" %>
-
-  <div class="wishlist-items">
-    <% @wishlist_items.each do |item| %>
-      <div class="wishlist-item">
-        <h3><%= item.item_name %></h3>
-        <p class="cost">$<%= item.cost %></p>
-        <p class="notes"><%= item.notes %></p>
-      </div>
-    <% end %>
+<div>
+  <div>
+    <h1>My Wish List</h1>
+    <%= link_to "Add New Item", new_preference_path, class: "btn btn-primary" %>
+    <%= link_to "Back to Home", root_path, class: "btn btn-secondary" %>
   </div>
+
+  <% if @preferences.any? %>
+    <div class="wishlist-stats">
+      <p>Total items: <%= @preferences.count %></p>
+      <p>Total value: $<%= number_with_precision(@preferences.sum(:cost), precision: 2) %></p>
+    </div>
+
+    <div class="wishlist-items">
+      <% @preferences.each do |preference| %>
+        <div class="wishlist-item">
+          <div class="item-header">
+            <h3><%= preference.item_name %></h3>
+            <span class="cost">$<%= number_with_precision(preference.cost, precision: 2) %></span>
+          </div>
+
+          <% if preference.notes.present? %>
+            <p class="notes"><%= preference.notes %></p>
+          <% end %>
+
+          <div class="item-actions">
+            <%= link_to "Edit", edit_preference_path(preference), class: "btn btn-secondary" %>
+            <%= button_to "Delete", preference_path(preference),
+                          method: :delete,
+                          data: { confirm: 'Remove this item from your wishlist?' },
+                          class: "btn btn-danger",
+                          form: { class: "inline-form" } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-wishlist">
+      <h3>No items in your wishlist yet</h3>
+      <p><%= link_to "Add your first item!", new_preference_path, class: "btn btn-primary" %></p>
+    </div>
+  <% end %>
 </div>

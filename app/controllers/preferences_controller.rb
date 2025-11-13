@@ -1,5 +1,10 @@
 class PreferencesController < ApplicationController
-  before_action :set_user, only: [:new, :create]
+  before_action :authenticate_user!
+  before_action :set_preference, only: [:edit, :update, :destroy]
+
+  def index
+    @preferences = current_user.preferences.order(created_at: :desc)
+  end
 
   def new
     @preference = Preference.new
@@ -7,19 +12,36 @@ class PreferencesController < ApplicationController
 
   def create
     @preference = Preference.new(preference_params)
-    @preference.user_id = @user.id
+    @preference.user = current_user
 
     if @preference.save
-      redirect_to user_path(@user), notice: 'Item added to wish list!'
+      redirect_to preferences_path, notice: 'Item added to wish list!'
     else
       render :new
     end
   end
 
+  def edit
+    # @preference is set by set_preference before_action
+  end
+
+  def update
+    if @preference.update(preference_params)
+      redirect_to preferences_path, notice: 'Item updated successfully!'
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @preference.destroy
+    redirect_to preferences_path, notice: 'Item removed from wish list'
+  end
+
   private
 
-  def set_user
-    @user = User.find(params[:user_id])
+  def set_preference
+    @preference = current_user.preferences.find(params[:id])
   end
 
   def preference_params

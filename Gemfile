@@ -80,3 +80,10 @@ end
 group :production do
   gem 'pg', '1.6.0.rc1' # for Heroku deployment
 end
+
+group :development, :test do
+  gem 'pry-rails'
+  gem 'pry-byebug'
+  gem 'pry-doc'
+  gem 'pry-stack_explorer'
+end

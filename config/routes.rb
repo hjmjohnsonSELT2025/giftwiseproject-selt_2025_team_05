@@ -6,5 +6,7 @@ Rails.application.routes.draw do
 
   resources :events
 
+  resources :preferences
+
   root to: "home#index"
 end
