@@ -13,9 +13,15 @@ class FriendshipsController < ApplicationController
 
   def update
     @friendship = Friendship.find(params[:id])
-    @friendship.update(status: params[:status])
+
+    # Only allow valid statuses
+    if Friendship.statuses.key?(params[:status])
+      @friendship.update(status: params[:status])
+    end
+
     redirect_to root_path
   end
+
 
 
   def destroy
