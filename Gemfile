@@ -78,7 +78,7 @@ end
 
 # from textbook section 4.8
 group :production do
-  gem "pg", "1.6.0.rc1" # for Heroku deployment
+  gem "pg", "1.6.2" # for Heroku deployment
 end
 
 group :development, :test do
