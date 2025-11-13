@@ -6,18 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ec60f1cc-a509-4ce4-b4ff-e4fc350d091c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/events_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/events_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/home_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/home_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/preferences_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/preferences_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/users/registrations_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/users/registrations_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/application.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/application.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/initializers/devise.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/initializers/devise.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/migrate/20251111033458_create_event_users.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/migrate/20251111033458_create_event_users.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/migrate/20251112204419_add_unique_index_to_events_on_name_and_user.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/migrate/20251112204419_add_unique_index_to_events_on_name_and_user.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/seeds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/seeds.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,11 +173,47 @@
       <workItem from="1762971778243" duration="1328000" />
       <workItem from="1763005664864" duration="498000" />
       <workItem from="1763006191170" duration="8148000" />
-      <workItem from="1763047919776" duration="2135000" />
+      <workItem from="1763047919776" duration="3420000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="6c3fba1e-6771-40f6-a09d-b9eb9ef71586" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="6c3fba1e-6771-40f6-a09d-b9eb9ef71586">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="structure">
+                    <value>
+                      <list>
+                        <option value="dir://wsl.localhost/Ubuntu-Kuan/home/kuan/giftwiseproject-selt_2025_team_05/.github" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
