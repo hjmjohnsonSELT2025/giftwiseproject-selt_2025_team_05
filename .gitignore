@@ -34,3 +34,8 @@
 /config/*.key
 
 Gemfile.lock
+
+.idea/
+
+coverage/
+
