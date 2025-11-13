@@ -12,18 +12,11 @@ class FriendshipsController < ApplicationController
   end
 
   def update
-    @friendship = current_user.received_friendships.find(params[:id])
-
-    if params[:status] == "accepted"
-      @friendship.accepted!
-      message = "Friend request accepted!"
-    else
-      @friendship.declined!
-      message = "Friend request declined."
-    end
-
-    redirect_back fallback_location: root_path, notice: message
+    @friendship = Friendship.find(params[:id])
+    @friendship.update(status: params[:status])
+    redirect_to root_path
   end
+
 
   def destroy
     @friendship = Friendship.find(params[:id])
