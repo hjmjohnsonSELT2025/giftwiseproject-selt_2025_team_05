@@ -374,6 +374,10 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.13.2)
     simplecov_json_formatter (0.1.4)
+    solid_cache (1.0.10)
+      activejob (>= 7.2)
+      activerecord (>= 7.2)
+      railties (>= 7.2)
     solid_queue (1.2.4)
       activejob (>= 7.1)
       activerecord (>= 7.1)
@@ -468,6 +472,7 @@ DEPENDENCIES
   rubocop-rails-omakase (~> 1.1)
   selenium-webdriver
   simplecov
+  solid_cache
   solid_queue
   sprockets-rails
   sqlite3 (>= 1.4)
