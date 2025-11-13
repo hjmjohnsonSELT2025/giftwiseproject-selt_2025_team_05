@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  #source for devise configuration: https://medium.com/@sakatia.lise/how-to-customize-user-authentication-with-devise-and-rails-beginner-friendly-tutorial-a6b14ca79fb3
+  # source for devise configuration: https://medium.com/@sakatia.lise/how-to-customize-user-authentication-with-devise-and-rails-beginner-friendly-tutorial-a6b14ca79fb3
   devise_for :users, controllers: {
-    registrations: "users/registrations",
+    registrations: "users/registrations"
   }
 
   resources :events
@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   devise_scope :user do
     get '/users/show' => 'users/registrations#show', as: 'user_show'
   end
+
+  resources :preferences
 
 
   root to: "home#index"
