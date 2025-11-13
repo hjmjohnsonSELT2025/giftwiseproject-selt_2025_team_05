@@ -6,7 +6,12 @@ Rails.application.routes.draw do
 
   resources :events
 
+  devise_scope :user do
+    get '/users/show' => 'users/registrations#show', as: 'user_show'
+  end
+
   resources :preferences
+
 
   root to: "home#index"
 end
