@@ -24,7 +24,8 @@ test:
 # Store production database in the storage/ directory, which by default
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
-  # Heroku automatically sets DATABASE_URL for the primary add-on
-  url: <%= ENV['DATABASE_URL'] %>
   # Ensure this uses the postgres adapter
   adapter: postgresql
+  # Heroku automatically sets DATABASE_URL for the primary add-on
+  url: <%= ENV['DATABASE_URL'] %>
+
