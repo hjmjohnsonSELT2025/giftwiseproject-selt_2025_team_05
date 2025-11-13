@@ -11,8 +11,11 @@
 /.env*
 !/.env*.erb
 
-#Ignore all .idea files
-/.idea
+# Ignore RubyMine project files
+.idea/
+*.iml
+*.ipr
+*.iws
 
 # Ignore all logfiles and tempfiles.
 /log/*
