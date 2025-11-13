@@ -6,9 +6,8 @@ class CreateEventUsers < ActiveRecord::Migration[7.1]
       t.integer :status, null: false, default: 0
 
       t.timestamps
-
     end
 
-    add_index :event_users, [:event_id, :user_id], unique: true
+    add_index :event_users, [ :event_id, :user_id ], unique: true
   end
 end
