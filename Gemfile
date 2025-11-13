@@ -87,3 +87,8 @@ group :development, :test do
   gem 'pry-doc'
   gem 'pry-stack_explorer'
 end
+
+group :development do
+  gem 'rubocop', require: false
+  gem 'brakeman', require: false
+end

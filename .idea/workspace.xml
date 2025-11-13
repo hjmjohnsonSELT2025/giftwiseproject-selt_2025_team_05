@@ -5,20 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ec60f1cc-a509-4ce4-b4ff-e4fc350d091c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/views/preferences/edit.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/giftwiseproject-selt_2025_team_05.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/giftwiseproject-selt_2025_team_05.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/assets/stylesheets/application.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/assets/stylesheets/application.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/preferences_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/preferences_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/home/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/home/index.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/preferences/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/preferences/index.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/preferences/new.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/preferences/new.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/preferences/show.html.erb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,8 +55,8 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1763006250462",
-    "git-widget-placeholder": "wish-list-feature",
+    "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1763047978878",
+    "git-widget-placeholder": "#83 on wish-list-feature",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "//wsl.localhost/Ubuntu-Kuan/home/kuan/giftwiseproject-selt_2025_team_05/app/views/preferences",
     "node.js.detected.package.eslint": "true",
@@ -185,7 +173,8 @@
       <workItem from="1762888523348" duration="14649000" />
       <workItem from="1762971778243" duration="1328000" />
       <workItem from="1763005664864" duration="498000" />
-      <workItem from="1763006191170" duration="7443000" />
+      <workItem from="1763006191170" duration="8148000" />
+      <workItem from="1763047919776" duration="589000" />
     </task>
     <servers />
   </component>

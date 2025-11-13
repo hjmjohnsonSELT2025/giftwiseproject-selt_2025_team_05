@@ -95,6 +95,11 @@
     <entry key="public/stylesheets">
       <value>file://$MODULE_DIR$/public/stylesheets</value>
     </entry>
+    <entry key="test/mailers/previews">
+      <value>file://$MODULE_DIR$/test/mailers/previews</value>
+      <value>file:///home/kuan/giftwiseproject-selt_2025_team_05/spec/mailers/previews</value>
+      <value>file:///home/kuan/giftwiseproject-selt_2025_team_05/test/mailers/previews</value>
+    </entry>
     <entry key="tmp">
       <value>file://$MODULE_DIR$/tmp</value>
     </entry>
