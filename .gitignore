@@ -18,7 +18,7 @@
 *.iws
 
 # Ignore code coverage files
-/coverage/
+coverage/
 
 # Ignore all logfiles and tempfiles.
 /log/*
