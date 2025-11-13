@@ -80,7 +80,7 @@
       <window_info id="Commit_Guest" show_stripe_button="false" />
       <window_info id="Pull Requests" />
       <window_info id="Learn" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.29785156" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3300866" />
       <window_info id="Commit" order="1" weight="0.25" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" />
@@ -90,7 +90,7 @@
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.31066176" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.32964888" />
       <window_info anchor="bottom" id="Services" order="4" />
       <window_info anchor="right" id="Coverage" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Notifications" order="0" weight="0.25" />
@@ -217,7 +217,7 @@
       <workItem from="1763005664864" duration="498000" />
       <workItem from="1763006191170" duration="8148000" />
       <workItem from="1763047919776" duration="3420000" />
-      <workItem from="1763071693922" duration="1678000" />
+      <workItem from="1763071693922" duration="2015000" />
     </task>
     <servers />
   </component>
