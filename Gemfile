@@ -62,33 +62,34 @@ group :development do
 end
 
 group :development, :test do
-  gem 'rspec-rails'
-  gem 'simplecov', require: false
+  gem "rspec-rails"
+  gem "simplecov", require: false
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
-  gem 'rails-controller-testing'
-  gem 'cucumber'
-  gem 'cucumber-rails', require: false
-  gem 'database_cleaner-active_record'
+  gem "rails-controller-testing"
+  gem "cucumber"
+  gem "cucumber-rails", require: false
+  gem "database_cleaner-active_record"
 end
 
-#from textbook section 4.8
+# from textbook section 4.8
 group :production do
-  gem 'pg', '1.6.0.rc1' # for Heroku deployment
+  gem "pg", "1.6.0.rc1" # for Heroku deployment
 end
 
 group :development, :test do
-  gem 'pry-rails'
-  gem 'pry-byebug'
-  gem 'pry-doc'
-  gem 'pry-stack_explorer'
+  gem "pry-rails"
+  gem "pry-byebug"
+  gem "pry-doc"
+  gem "pry-stack_explorer"
 end
 
 group :development do
-  gem 'rubocop', require: false
-  gem 'brakeman', require: false
+  gem "rubocop", require: false
+  gem "brakeman", require: false
 end
+gem "rubocop-rails-omakase", "~> 1.1", group: :development
