@@ -6,9 +6,14 @@ Rails.application.routes.draw do
 
   resources :events
 
+  devise_scope :user do
+    get '/users/show' => 'users/registrations#show', as: 'user_show'
+  end
+
   resources :preferences
 
   resources :friendships, only: [:create, :update, :destroy] #create->send friend request, update->accept/decline, destroy->delete
+
 
   root to: "home#index"
 end

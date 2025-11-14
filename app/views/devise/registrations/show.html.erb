@@ -1,0 +1,36 @@
+<h2>My Profile</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.object.email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.object.first_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :last_name %><br />
+    <%= f.object.last_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :birthdate %><br />
+    <%= f.object.birthdate %>
+  </div>
+
+  <div class="field">
+    <%= f.label :bio %><br />
+    <%= f.object.bio %>
+  </div>
+
+<% end %>
+
+<%= button_to "Edit Profile Info", edit_user_registration_path, method: :get %>
+
+
+<%= link_to "Back to home", root_path %>
