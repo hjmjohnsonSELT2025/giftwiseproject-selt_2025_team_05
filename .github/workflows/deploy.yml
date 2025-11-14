@@ -27,11 +27,16 @@ jobs:
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
 
-      - name: Deploy & migrate to Heroku
-        run: |
-          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/test-heroku-gift.git || true
-          git push heroku main --force
-          heroku run rails db:migrate -a test-heroku-gift
+      - name: Push to Heroku
+        uses: akhileshns/heroku-deploy@v3.14.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "test-heroku-gift"
+          heroku_email: "trung-nguyen@uiowa.edu"
+          usedocker: false
+
+      - name: Run Rails migrations on Heroku
+        run: heroku run rails db:migrate -a test-heroku-gift
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
