@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_event, only: [:show, :edit, :update]
-  before_action :authorize_event_owner!, only: [:edit, :update]
+  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_event_owner!, only: [:edit, :update, :destroy]
   def new
     @event = current_user.events.build
   end
@@ -22,6 +22,12 @@ class EventsController < ApplicationController
 
   def edit
 
+  end
+
+  def destroy
+    @event.event_users.update_all(status: :left)
+    @event.update(deleted: true)
+    redirect_to root_path, notice: "Event deleted successfully."
   end
 
   def update
