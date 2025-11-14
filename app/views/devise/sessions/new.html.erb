@@ -12,10 +12,7 @@
               <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "johndoe@example.com" %>
             </div>
             <div class="mb-3">
-              <div class="d-flex justify-content-between">
-                <%= f.label :password, class: "form-label" %>
-                <%= link_to "Forgot password?", new_password_path(resource_name), class: "small" %>
-              </div>
+
               <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "******" %>
             </div>
             <% if devise_mapping.rememberable? %>
