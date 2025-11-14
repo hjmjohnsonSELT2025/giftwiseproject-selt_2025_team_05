@@ -3,7 +3,7 @@ When("I fill in {string} with {string}") do |field, value|
 end
 
 When("I click {string}") do |button|
-  click_button button
+  click_on button
 end
 
 Then("I should see {string}") do |text|
