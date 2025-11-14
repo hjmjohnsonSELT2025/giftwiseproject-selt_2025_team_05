@@ -1,26 +1,43 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
+<%# The form design and code was very much inspired from samples in https://mdbootstrap.com/docs/standard/extended/login/ %>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <!-- Medium sized screens this takes half, on large, it takes one third -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h1 class = "h3 text-center mb-4">Sign in to GiftWise</h1>
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "needs-validation" }) do |f| %>
+            <div class="mb-3">
+              <%= f.label :email, class: "form-label" %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "johndoe@example.com" %>
+            </div>
+            <div class="mb-3">
+              <div class="d-flex justify-content-between">
+                <%= f.label :password, class: "form-label" %>
+                <%= link_to "Forgot password?", new_password_path(resource_name), class: "small" %>
+              </div>
+              <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "******" %>
+            </div>
+            <% if devise_mapping.rememberable? %>
+              <div class="form-check mb-3">
+                <%= f.check_box :remember_me, class: "form-check-input", id: "remember_me" %>
+                <%= f.label :remember_me, class: "form-check-label", for: "remember_me" %>
+              </div>
   <% end %>
+            <div class="d-grid mb-3">
+              <%= f.submit "Sign in", class: "btn btn-primary" %>
+            </div>
+          <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
+          <div class="text-center">
+            <p class="mb-0">
+              New?
+              <%=link_to "Create an account here!", new_registration_path(resource_name) %>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

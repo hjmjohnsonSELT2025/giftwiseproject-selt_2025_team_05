@@ -1,18 +1,37 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>GiftwiseprojectSelt2025Team05</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>GiftwiseprojectSelt2025Team05</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-  </head>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-  <body>
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
-  <%= yield %>
-  </body>
+  <%= javascript_importmap_tags %>
+</head>
+
+<body>
+<% flash.each do |type, message| %>
+  <% if message.present? %>
+    <% bootstrap_class =
+         case type.to_sym
+         when :notice then "alert-success"
+         when :alert  then "alert-warning"
+         else "alert-info"
+         end
+    %>
+    <div class="container mt-3">
+      <div class="alert <%= bootstrap_class %> alert-dismissible fade show text-center" role="alert">
+        <%= message %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<%= yield %>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
 </html>
