@@ -17,6 +17,7 @@
       <th>Name</th>
       <th>Date</th>
       <th>Address</th>
+      <th>Type</th>
       <th>Organizer</th>
       <th></th>
     </tr>
@@ -28,6 +29,7 @@
         <td><%= event.name %></td>
         <td><%= event.date&.strftime("%B %d, %Y") %></td>
         <td><%= event.address %></td>
+        <td><%= event.event_type.titleize %></td>
         <td><%= event.user.first_name + " " + event.user.last_name %></td>
         <td><%= link_to "View", event_path(event) %></td>
       </tr>

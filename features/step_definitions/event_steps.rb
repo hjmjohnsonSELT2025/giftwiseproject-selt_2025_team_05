@@ -18,4 +18,9 @@ When("I click {string}") do |button|
   click_button button
 end
 
+And('I select {string} with {string}') do |field, value|
+  select(value, from: field)
+end
+
+
 

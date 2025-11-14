@@ -28,6 +28,11 @@
   </div>
 
   <div class="mb-3">
+    <%= form.label :event_type %>
+    <%= form.select :event_type, Event.event_types.keys.map { |t| [t.humanize, t] }, {}, class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
     <%= form.label :description %>
     <%= form.text_area :description, class: "form-control" %>
   </div>
