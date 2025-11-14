@@ -24,37 +24,8 @@ test:
 # Store production database in the storage/ directory, which by default
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
-  primary:
-    <<: *default
-    adapter: postgresql
-    encoding: unicode
-    database: <%= ENV['DATABASE_NAME'] %>      # optional, Heroku sets this automatically
-    username: <%= ENV['DATABASE_USERNAME'] %>  # optional
-    password: <%= ENV['DATABASE_PASSWORD'] %>  # optional
-    host: <%= ENV['DATABASE_HOST'] %>          # optional
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-
-  cache:
-    <<: *default
-    adapter: postgresql
-    encoding: unicode
-    database: <%= ENV['DATABASE_NAME'] %>     # usually same as primary
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    migrations_paths: db/cache_migrate
-
-  queue:
-    <<: *default
-    adapter: postgresql
-    encoding: unicode
-    database: <%= ENV['DATABASE_NAME'] %>
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    migrations_paths: db/queue_migrate
-
-  cable:
-    <<: *default
-    adapter: postgresql
-    encoding: unicode
-    database: <%= ENV['DATABASE_NAME'] %>
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    migrations_paths: db/cable_migrate
-
+  <<: *default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  url: <%= ENV['DATABASE_URL'] %>
