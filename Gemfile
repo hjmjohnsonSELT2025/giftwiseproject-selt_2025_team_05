@@ -11,6 +11,9 @@ gem "rspec-rails"
 
 gem 'rails-controller-testing'
 
+gem 'cucumber-rails'
+gem 'database_cleaner'
+
 gem 'simplecov', require: false, group: :test
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
