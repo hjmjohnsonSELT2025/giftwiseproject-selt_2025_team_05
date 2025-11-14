@@ -3,33 +3,34 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.object.email %>
+
+  <div class="profile-row">
+    <span class="label"><%= f.label :email %> </span>
+    <span class="value"> <%= f.object.email %> </span>
   </div>
 
-  <div class="field">
-    <%= f.label :first_name %><br />
-    <%= f.object.first_name %>
+  <div class="profile-row">
+    <span class="label"><%= f.label :first_name %></span>
+    <span class="value"><%= f.object.first_name %></span>
   </div>
 
-  <div class="field">
-    <%= f.label :last_name %><br />
-    <%= f.object.last_name %>
+  <div class="profile-row">
+    <span class="label"><%= f.label :last_name %><br /></span>
+    <span class="value"><%= f.object.last_name %></span>
   </div>
 
-  <div class="field">
-    <%= f.label :birthdate %><br />
-    <%= f.object.birthdate %>
+  <div class="profile-row">
+    <span class="label"> <%= f.label :birthdate %></span>
+    <span class="value"> <%= f.object.birthdate %></span>
   </div>
 
-  <div class="field">
-    <%= f.label :bio %><br />
-    <%= f.object.bio %>
+  <div class="profile-row">
+    <span class="label"><%= f.label :bio %><br /></span>
+    <span class="value"><%= f.object.bio %></span>
   </div>
 
 <% end %>
 
-<%= button_to "Edit Profile Info", edit_user_registration_path, method: :get %>
+<%= button_to "Edit Profile Info", edit_user_registration_path, method: :get, class: "btn btn-primary" %>
 
 
