@@ -2,7 +2,7 @@
   <div>
     <div>
       <h1>Add New Wishlist Item</h1>
-      <%= link_to "Back to Wishlist", preferences_path, class: "btn btn-secondary" %>
+
     </div>
 
     <%= form_with model: @preference, url: preferences_path do |form| %>
@@ -27,7 +27,10 @@
       <div>
         <%= form.submit "Add to Wishlist", class: "btn btn-primary" %>
         <%= link_to "Cancel", preferences_path, class: "btn btn-secondary" %>
+
       </div>
+      <br>
+      <%= link_to "Back to Wishlist", preferences_path, class: "btn btn-secondary" %>
     <% end %>
   </div>
 </div>
