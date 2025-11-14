@@ -14,7 +14,9 @@
             </div>
 
             <div class="mb-3">
-
+              <div class="d-flex justify-content-between">
+                <%= f.label :password, class: "form-label" %>
+              </div>
               <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "******" %>
             </div>
 
