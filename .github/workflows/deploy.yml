@@ -24,7 +24,7 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       - name: Push to Heroku
-        uses: akhileshns/heroku-deploy@v3.14.12
+        uses: akhileshns/heroku-deploy@v3.14.15
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "test-heroku-gift"
