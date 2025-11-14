@@ -34,3 +34,20 @@ jobs:
           heroku_app_name: "test-heroku-gift"
           heroku_email: "trung-nguyen@uiowa.edu"
           usedocker: false
+
+      - name: Run Rails migrations on Heroku
+        run: heroku run rails db:migrate -a test-heroku-gift
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+      - name: Check Heroku app health
+        run: |
+          RESPONSE=$(curl --write-out "%{http_code}" --silent --output /dev/null https://test-heroku-gift-d2da158a293e.herokuapp.com/up)
+          if [ $RESPONSE -ne 200 ]; then
+            echo "Health check failed! HTTP status: $RESPONSE"
+            exit 1
+          else
+            echo "Health check passed! App is up."
+          fi
+
+

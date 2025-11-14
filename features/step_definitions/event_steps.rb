@@ -9,5 +9,3 @@ end
 When("I visit the new event page") do
   visit new_event_path
 end
-
-
