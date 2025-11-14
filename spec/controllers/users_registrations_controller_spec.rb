@@ -33,4 +33,63 @@ RSpec.describe Users::RegistrationsController, type: :controller do
       expect {post :create, params: {user: {first_name: "", last_name: "Last Name", birthdate: "2022-01-01", password: "password", email: "amy"}}}.not_to change(User, :count)
     end
   end
+
+  describe "#after_inactive_sign_up_path_for" do
+    before do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      sign_in user
+    end
+
+    it "executes the inactive sign up redirect method" do
+      path = controller.send(:after_inactive_sign_up_path_for, user)
+      expect(path).to eq(controller.send(:after_sign_up_path_for, user))
+    end
+  end
+
+  describe "GET #show" do
+    before do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      sign_in user
+    end
+
+    it "assigns the current user" do
+      get :show
+      expect(assigns(:user)).to eq(user)
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe "GET #new" do
+    before { @request.env["devise.mapping"] = Devise.mappings[:user] }
+
+    it "renders the new registration page" do
+      get :new
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe "GET #edit" do
+    before do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      sign_in user
+    end
+
+    it "renders the edit page" do
+      get :edit
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe "DELETE #destroy" do
+    before do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      sign_in user
+    end
+
+    it "deletes the user account" do
+      expect { delete :destroy }.to change(User, :count).by(-1)
+    end
+  end
+
+
 end
