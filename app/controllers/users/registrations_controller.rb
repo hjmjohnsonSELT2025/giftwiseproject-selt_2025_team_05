@@ -4,7 +4,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
 
-  # GET /resource/sign_up
+  def show
+    #ChatGPT gave the following lines to configure custom Devise routing
+    @user = current_user
+    self.resource = @user
+  end
+
+  #GET /resource/sign_up
   def new
     super
   end
@@ -47,7 +53,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:attribute, :first_name, :last_name, :birthdate])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:attribute, :first_name, :last_name, :birthdate, :bio])
   end
 
   # The path used after sign up.
