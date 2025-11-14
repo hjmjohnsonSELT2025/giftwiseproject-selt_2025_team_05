@@ -10,13 +10,4 @@ When("I visit the new event page") do
   visit new_event_path
 end
 
-When("I fill in {string} with {string}") do |field, value|
-  fill_in field, with: value
-end
-
-When("I click {string}") do |text|
-  click_on text
-end
-
-
 
