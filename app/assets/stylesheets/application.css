@@ -96,3 +96,20 @@
     display: flex;
     gap: 10px;
 }
+/*Table styles from ChatGPT*/
+table {
+    width: 100%;
+    border-spacing: 0 8px; /* space between rows */
+}
+
+th {
+    text-align: left;
+    padding-bottom: 8px;
+}
+
+td {
+    background: #f0f0f0;
+    padding: 12px;
+    border-radius: 4px;
+}
+
