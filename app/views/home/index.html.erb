@@ -8,8 +8,9 @@
 <% else %>
   <%= button_to "Sign in", new_user_session_path, class: "btn btn-primary" %>
 <% end %>
-
+<br/>
 <h1>Welcome to GiftWise!</h1>
+<br/>
 <h2>Upcoming Events</h2>
 
 <% if @upcoming_events.any? %>
@@ -44,6 +45,7 @@
 
 <% if user_signed_in? %>
   <div>
+    <br/>
     <h2>My Wish List</h2>
     <% if current_user.preferences.any? %>
       <div>
