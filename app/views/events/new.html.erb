@@ -34,3 +34,5 @@
 
   <%= form.submit "Create Event" %>
 <% end %>
+
+<%= link_to "Back", request.referer || root_path %>
