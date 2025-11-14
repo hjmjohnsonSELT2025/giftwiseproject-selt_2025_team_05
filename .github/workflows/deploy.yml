@@ -42,7 +42,7 @@ jobs:
 
       - name: Check Heroku app health
         run: |
-          RESPONSE=$(curl --write-out "%{http_code}" --silent --output /dev/null https://test-heroku-gift.herokuapp.com/up)
+          RESPONSE=$(curl --write-out "%{http_code}" --silent --output /dev/null https://test-heroku-gift-d2da158a293e.herokuapp.com/up)
           if [ $RESPONSE -ne 200 ]; then
             echo "Health check failed! HTTP status: $RESPONSE"
             exit 1
