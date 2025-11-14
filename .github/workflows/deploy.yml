@@ -29,7 +29,7 @@ jobs:
 
       - name: Deploy & migrate to Heroku
         run: |
-          git remote add heroku https://git.heroku.com/test-heroku-gift.git || true
+          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/test-heroku-gift.git || true
           git push heroku main --force
           heroku run rails db:migrate -a test-heroku-gift
         env:
