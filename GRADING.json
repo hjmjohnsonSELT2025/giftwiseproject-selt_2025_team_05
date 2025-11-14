@@ -1,0 +1,9 @@
+{
+  “GROUP“ : “GXXX“,
+  “ALL_SPRINTS“ : {
+    “SPRINT1_URL“ : http://herokudeployrails7-1442bb6eae51.herokuapp.com/
+    “SPRINT2_URL“ : http://blah.blee.boo/myapp,
+    “SPRINT3_URL“ : http://blah.blee.boo/myapp,
+    “FINAL_URL“ : http://blah.blee.boo/myapp
+  }
+}
