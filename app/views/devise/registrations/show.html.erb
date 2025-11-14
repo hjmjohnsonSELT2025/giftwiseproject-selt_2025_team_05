@@ -4,33 +4,41 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <%= f.label :email %><br />
+    <%= f.label :email %>
+    <div class="value">
     <%= f.object.email %>
+    </div>
   </div>
 
   <div class="field">
-    <%= f.label :first_name %><br />
+    <%= f.label :first_name %>
+    <div class="value">
     <%= f.object.first_name %>
+    </div>
   </div>
 
   <div class="field">
-    <%= f.label :last_name %><br />
+    <%= f.label :last_name %>
+    <div class="value">
     <%= f.object.last_name %>
+    </div>
   </div>
 
   <div class="field">
-    <%= f.label :birthdate %><br />
+    <%= f.label :birthdate %>
+    <div class="value">
     <%= f.object.birthdate %>
+    </div>
   </div>
 
   <div class="field">
-    <%= f.label :bio %><br />
+    <%= f.label :bio %>
     <%= f.object.bio %>
   </div>
 
 <% end %>
 
-<%= button_to "Edit Profile Info", edit_user_registration_path, method: :get %>
+<%= button_to "Edit Profile Info", edit_user_registration_path, method: :get, class: "btn btn-primary" %>
 
 
-<%= link_to "Back to home", root_path %>
+<%= link_to "Back to home", root_path, class: "btn btn-secondary" %>
