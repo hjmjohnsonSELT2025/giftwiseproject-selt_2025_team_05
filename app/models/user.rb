@@ -3,6 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
   has_many :events
   has_many :event_users
   has_many :joined_events, through: :event_users, source: :event
@@ -10,13 +11,27 @@ class User < ApplicationRecord
 
   # Friend requests the user has SENT
   has_many :sent_friendships, class_name: "Friendship", foreign_key: :user_id, dependent: :destroy
-
   # Friend requests the user has RECEIVED
   has_many :received_friendships, class_name: "Friendship", foreign_key: :friend_id, dependent: :destroy
-
   # Accepted friendships initiated by the user
   has_many :accepted_friendships, -> { where(status: "accepted") }, class_name: "Friendship", foreign_key: :user_id
-
   has_many :friends, through: :accepted_friendships, source: :friend
 
+  def friends_with?(other_user)
+    Friendship.where(status: "accepted").where(user: self, friend: other_user).or(Friendship.where(user: other_user, friend: self)).exists?
+  end
+
+  def pending_request_with?(other_user)
+    sent_friendships.where(status: "pending", friend_id: other_user).exists?
+  end
+
+  def receieved_request_from?(other_user)
+    received_friendships.where(status: "pending", user_id: other_user.id).exists?
+  end
+
+  def all_friends
+    #The Friendships table does not have duplicate friendships, meaning there is a "one way" relationship
+    # So a WHERE is needed, as a friend could have initiated the friendship
+    Friendship.where(status: "accepted").where(user_id:).where("user_id = ? OR friend_id = ?", id, id)
+  end
 end

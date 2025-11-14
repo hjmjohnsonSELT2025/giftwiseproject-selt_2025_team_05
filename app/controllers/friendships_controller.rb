@@ -33,4 +33,13 @@ class FriendshipsController < ApplicationController
       redirect_back fallback_location: root_path, alert: "Not authorized to remove this friendship."
     end
   end
+
+  def index
+    @users = User.where.not(id: current_user.id)
+
+    @sent_requests     = current_user.sent_friendships
+    @received_requests = current_user.received_friendships
+    @friends           = current_user.friends
+  end
+
 end
