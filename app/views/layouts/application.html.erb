@@ -13,6 +13,51 @@
   </head>
 
   <body>
+
+  <nav class="navbar navbar-light bg-light mb-3">
+    <div class="container d-flex justify-content-between align-items-center">
+
+      <!-- LEFT: GiftWise brand -->
+      <%= link_to "🎁 GiftWise", root_path,
+                  class: "navbar-brand fs-3 fw-bold text-primary text-decoration-none" %>
+
+      <!-- CENTER: Welcome message (only when logged in) -->
+      <% if user_signed_in? %>
+        <div class="position-absolute start-50 translate-middle-x">
+          <span class="fs-5 fw-semibold text-secondary">Welcome to GiftWise</span>
+        </div>
+      <% end %>
+
+      <!-- RIGHT: User menu -->
+      <div class="d-flex align-items-center gap-3">
+        <% if user_signed_in? %>
+
+          <span class="fw-semibold">Hi, <%= current_user.first_name %>!</span>
+
+          <%= link_to "View Profile",
+                      user_show_path,
+                      class: "btn btn-outline-primary btn-sm" %>
+
+          <%= button_to "Sign out",
+                        destroy_user_session_path,
+                        method: :delete,
+                        class: "btn btn-outline-danger btn-sm",
+                        form: { class: "d-inline" } %>
+
+        <% else %>
+
+          <%= link_to "Sign in",
+                      new_user_session_path,
+                      class: "btn btn-outline-primary btn-sm" %>
+
+        <% end %>
+      </div>
+
+    </div>
+  </nav>
+
+
+
   <% flash.each do |type, message| %>
     <% if message.present? %>
       <% bootstrap_class =
