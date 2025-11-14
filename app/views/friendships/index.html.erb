@@ -1,0 +1,32 @@
+<h1>Your Friends</h1>
+
+<table class="table table-striped table-bordered table-hover">
+  <thead class="thead-dark">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @friends.each do |friend| %>
+    <tr>
+      <td><%= friend.email.split("@").first.titleize %></td>
+      <td><%= friend.email %></td>
+
+      <td class="text-end">
+        <% friendship = current_user.accepted_friendships.find_by(friend_id: friend.id) %>
+
+        <%= button_to "Remove",
+                      friendship_path(friendship),
+                      method: :delete,
+                      data: { confirm: "Remove this friend?" },
+                      class: "btn btn-sm btn-danger" %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Find Friends", friendships_path, class: "btn btn-secondary" %>
