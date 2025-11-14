@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   resources :events
 
+  resources :preferences
+
   devise_scope :user do
     get '/users/show' => 'users/registrations#show', as: 'user_show'
   end

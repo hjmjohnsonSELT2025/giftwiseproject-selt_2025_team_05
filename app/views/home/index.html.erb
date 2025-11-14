@@ -38,3 +38,24 @@
   <p>You haven't joined any upcoming events yet.</p>
 <% end %>
 <%= link_to "Create Event", new_event_path, class: "btn btn-primary" %>
+
+
+<% if user_signed_in? %>
+  <div>
+    <h2>My Wish List</h2>
+    <% if current_user.preferences.any? %>
+      <div>
+        <% current_user.preferences.each do |item| %>
+          <div>
+            <strong><%= item.item_name %></strong>
+            <span class="cost">$<%= number_with_precision(item.cost, precision: 2) %></span>
+          </div>
+        <% end %>
+      </div>
+      <%= link_to "Manage My Wishlist", preferences_path, class: "btn btn-secondary" %>
+    <% else %>
+      <p>You haven't added any items to your wishlist yet.</p>
+      <%= link_to "Create Your Wishlist", new_preference_path, class: "btn btn-primary" %>
+    <% end %>
+  </div>
+<% end %>
