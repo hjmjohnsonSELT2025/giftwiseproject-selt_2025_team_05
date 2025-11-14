@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3.8"
+          bundler-cache: true
+
+      - name: Prepare SQLite test DB
+        env:
+          RAILS_ENV: test
+        run: bin/rails db:test:prepare
+
+      - name: Run RSpec
+        env:
+          RAILS_ENV: test
+        run: |
+          if [ -f bin/rspec ]; then
+            bin/rspec
+          else
+            bundle exec rspec
+          fi
+
+      - name: Run Cucumber
+        env:
+          RAILS_ENV: test
+        run: |
+          if [ -f bin/cucumber ]; then
+            bin/cucumber
+          else
+            bundle exec cucumber
+          fi
