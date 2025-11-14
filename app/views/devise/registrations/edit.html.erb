@@ -4,27 +4,27 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <%= f.label :email %><br />
+    <%= f.label :email %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>
 
   <div class="field">
-    <%= f.label :first_name %><br />
+    <%= f.label :first_name %>
     <%= f.text_field :first_name, autofocus: true, autocomplete: "name" %>
   </div>
 
   <div class="field">
-    <%= f.label :last_name %><br />
+    <%= f.label :last_name %>
     <%= f.text_field :last_name, autofocus: true, autocomplete: "name" %>
   </div>
 
   <div class="field">
-    <%= f.label :birthdate %><br />
+    <%= f.label :birthdate %>
     <%= f.date_field :birthdate, autofocus: true, autocomplete: "date" %>
   </div>
 
   <div class="field">
-    <%= f.label :bio %><br />
+    <%= f.label :bio %>
     <%= f.text_field :bio, autofocus: true, autocomplete: "biography" %>
   </div>
 
@@ -42,19 +42,19 @@
   </div>
 
   <div class="field">
-    <%= f.label :password_confirmation %><br />
+    <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
-
+<br />
   <div class="field">
     <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
     <%= f.password_field :current_password, autocomplete: "current-password" %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Update" %>
+    <%= f.submit "Update", class: "btn btn-primary" %>
   </div>
 <% end %>
 
 
-<%= link_to "Back to Profile", user_show_path %>
+<%= link_to "Back to Profile", user_show_path, class: "btn btn-secondary" %>

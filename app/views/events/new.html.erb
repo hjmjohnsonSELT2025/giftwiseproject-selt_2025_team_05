@@ -32,7 +32,7 @@
     <%= form.text_area :description %>
   </div>
 
-  <%= form.submit "Create Event" %>
+  <%= form.submit "Create Event", class: "btn btn-primary" %>
 <% end %>
 
-<%= link_to "Back", request.referer || root_path %>
+<%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>

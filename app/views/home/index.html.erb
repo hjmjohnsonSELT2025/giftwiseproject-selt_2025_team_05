@@ -1,13 +1,16 @@
 <!--header with sign out and sign in buttons from  https://www.digitalocean.com/community/tutorials/how-to-set-up-user-authentication-with-devise-in-a-rails-7-application-->
 <% if user_signed_in? %>
-  <div> Hi, <%= current_user.first_name %>!</div>
-  <%= button_to "Sign out", destroy_user_session_path, method: :delete %>
-  <%= button_to "View Profile", user_show_path , method: :get %>
+  <div class = "welcome-header-container">
+    <h3> Hi, <%= current_user.first_name %>!</h3>
+    <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "btn btn-secondary" %>
+    <%= button_to "View Profile", user_show_path , method: :get, class: "btn btn-secondary" %>
+  </div>
 <% else %>
-  <%= button_to "Sign in", new_user_session_path %>
+  <%= button_to "Sign in", new_user_session_path, class: "btn btn-primary" %>
 <% end %>
-
+<br/>
 <h1>Welcome to GiftWise!</h1>
+<br/>
 <h2>Upcoming Events</h2>
 
 <% if @upcoming_events.any? %>
@@ -42,6 +45,7 @@
 
 <% if user_signed_in? %>
   <div>
+    <br/>
     <h2>My Wish List</h2>
     <% if current_user.preferences.any? %>
       <div>
