@@ -26,16 +26,35 @@ test:
 production:
   primary:
     <<: *default
-    database: storage/production.sqlite3
+    adapter: postgresql
+    encoding: unicode
+    database: <%= ENV['DATABASE_NAME'] %>      # optional, Heroku sets this automatically
+    username: <%= ENV['DATABASE_USERNAME'] %>  # optional
+    password: <%= ENV['DATABASE_PASSWORD'] %>  # optional
+    host: <%= ENV['DATABASE_HOST'] %>          # optional
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
   cache:
     <<: *default
-    database: storage/production_cache.sqlite3
+    adapter: postgresql
+    encoding: unicode
+    database: <%= ENV['DATABASE_NAME'] %>     # usually same as primary
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
     migrations_paths: db/cache_migrate
+
   queue:
     <<: *default
-    database: storage/production_queue.sqlite3
+    adapter: postgresql
+    encoding: unicode
+    database: <%= ENV['DATABASE_NAME'] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
     migrations_paths: db/queue_migrate
+
   cable:
     <<: *default
-    database: storage/production_cable.sqlite3
+    adapter: postgresql
+    encoding: unicode
+    database: <%= ENV['DATABASE_NAME'] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
     migrations_paths: db/cable_migrate
+
