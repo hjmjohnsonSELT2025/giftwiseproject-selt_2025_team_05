@@ -21,6 +21,16 @@
 /coverage/
 
 
+!/env*.erb
+
+# Ignore RubyMine project files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Ignore code coverage files
+coverage/
 
 # Ignore all logfiles and tempfiles.
 /log/*
