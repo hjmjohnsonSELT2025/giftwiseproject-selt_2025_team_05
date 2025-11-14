@@ -20,19 +20,11 @@ Rails.application.configure do
   config.silence_healthcheck_path = "/up"
   config.active_support.report_deprecations = false
 
-  # ❌ Removed solid cache (caused Heroku errors)
   config.cache_store = :memory_store
-  # or Redis if you prefer:
-  # config.cache_store = :redis_cache_store, { url: ENV["REDIS_URL"] }
-
-  # Solid queue — leave disabled
-  # config.active_job.queue_adapter = :solid_queue
-  # config.solid_queue.connects_to = { database: { writing: :queue } }
 
   # Mailer
   config.action_mailer.default_url_options = { host: "example.com" }
 
   config.i18n.fallbacks = true
   config.active_record.dump_schema_after_migration = false
-  # config.active_record.attributes_for_inspect = [:id]
 end
