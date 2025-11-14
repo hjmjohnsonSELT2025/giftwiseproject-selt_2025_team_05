@@ -5,10 +5,10 @@ class Event < ApplicationRecord
   has_many :participants, through: :event_users, source: :user
 
   enum event_type: {
-    family: 0,
-    business: 1,
-    friend: 2,
-    other: 3
+    other: 0,
+    family: 1,
+    business: 2,
+    friend: 3
   }
 
   validates :name, presence: true,
