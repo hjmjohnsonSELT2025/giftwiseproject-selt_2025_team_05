@@ -1,14 +1,6 @@
 <!-- source for index.html.erb template: -->
 <!-- https://www.digitalocean.com/community/tutorials/how-to-set-up-user-authentication-with-devise-in-a-rails-7-application -->
-<% if user_signed_in? %>
-  <div> Hi, <%= current_user.first_name %>!</div>
-  <%= button_to "Sign out", destroy_user_session_path, method: :delete %>
-  <%= button_to "View Profile", user_show_path , method: :get %>
-<% else %>
-  <%= button_to "Sign in", new_user_session_path %>
-<% end %>
-<h1>Welcome to GiftWise!</h1>
-<h2>Upcoming Events</h2>
+<h1>Upcoming Events</h1>
 
 <% if @upcoming_events.any? %>
   <table>
@@ -17,6 +9,7 @@
       <th>Name</th>
       <th>Date</th>
       <th>Address</th>
+      <th>Type</th>
       <th>Organizer</th>
       <th></th>
     </tr>
@@ -28,6 +21,7 @@
         <td><%= event.name %></td>
         <td><%= event.date&.strftime("%B %d, %Y") %></td>
         <td><%= event.address %></td>
+        <td><%= event.event_type.titleize %></td>
         <td><%= event.user.first_name + " " + event.user.last_name %></td>
         <td><%= link_to "View", event_path(event) %></td>
       </tr>
@@ -41,6 +35,7 @@
 
 <% if user_signed_in? %>
   <div>
+    <br >
     <h2>My Wish List</h2>
     <% if current_user.preferences.any? %>
       <div>

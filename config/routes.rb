@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     get '/users/show' => 'users/registrations#show', as: 'user_show'
   end
 
+  #check app health
+  get "/up", to: proc { [200, {}, ["OK"]] }
+
   resources :preferences
 
   resources :friendships, only: [:index, :create, :update, :destroy] #create->send friend request, update->accept/decline, destroy->delete

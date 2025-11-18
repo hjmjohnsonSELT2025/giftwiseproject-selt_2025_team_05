@@ -4,6 +4,14 @@ Given("a registered user exists") do
   end
 end
 
+Given("a user is signed in") do
+  @user = User.create!(email: "logouttester@example.com", password: "password")
+  visit new_user_session_path
+  fill_in "Email", with: @user.email
+  fill_in "Password", with: "password"
+  click_button "Sign in"
+end
+
 When("I visit the home page") do
   visit root_path
 end
