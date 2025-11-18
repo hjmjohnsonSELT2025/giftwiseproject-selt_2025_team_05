@@ -17,18 +17,6 @@ class User < ApplicationRecord
   has_many :accepted_friendships, -> { where(status: "accepted") }, class_name: "Friendship", foreign_key: :user_id
   has_many :friends, through: :accepted_friendships, source: :friend
 
-  def friends_with?(other_user)
-    Friendship.where(status: "accepted").where(user: self, friend: other_user).or(Friendship.where(user: other_user, friend: self)).exists?
-  end
-
-  def pending_request_with?(other_user)
-    sent_friendships.where(status: "pending", friend_id: other_user).exists?
-  end
-
-  def received_request_from?(other_user)
-    received_friendships.where(status: "pending", user_id: other_user.id).exists?
-  end
-
   def all_friends
     Friendship.accepted_for(self).map do |friend|
       friend.user_id == id ? friend.friend : friend.user
