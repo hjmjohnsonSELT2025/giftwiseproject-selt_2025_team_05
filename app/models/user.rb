@@ -25,7 +25,7 @@ class User < ApplicationRecord
     sent_friendships.where(status: "pending", friend_id: other_user).exists?
   end
 
-  def receieved_request_from?(other_user)
+  def received_request_from?(other_user)
     received_friendships.where(status: "pending", user_id: other_user.id).exists?
   end
 
