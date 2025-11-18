@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   resources :preferences
 
-  resources :friendships, only: [:index, :create, :update, :destroy] #create->send friend request, update->accept/decline, destroy->delete
+  resources :friendships, only: [:index, :new, :create, :update, :destroy]
 
 
   root to: "home#index"
