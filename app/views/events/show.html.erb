@@ -13,5 +13,19 @@
                 class: "btn btn-danger" %>
 
 <% end %>
+
+<h2>Participants</h2>
+
+<% if @event.event_users.any? %>
+  <ul>
+    <% @event.event_users.each do |event_user| %>
+      <li><%= "#{event_user.user.first_name} #{event_user.user.last_name}" %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No participants yet.</p>
+<% end %>
+
+
 <br>
 <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
