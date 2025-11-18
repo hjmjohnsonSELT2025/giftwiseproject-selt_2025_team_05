@@ -19,8 +19,8 @@ https://github.com/eltonlazzarin/friends-list-rails
   <tbody>
 
   <!-- Incoming Friend Requests -->
-  <% @incoming.each do |fs| %>
-    <% user = fs.user %>
+  <% @incoming.each do |incoming_friend| %>
+    <% user = incoming_friend.user %>
     <tr class="table-warning">
       <td><%= "#{user.first_name} #{user.last_name}" %></td>
       <td><%= user.email %></td>
@@ -31,13 +31,13 @@ https://github.com/eltonlazzarin/friends-list-rails
 
         <!-- Accept -->
         <%= button_to "Accept",
-                      friendship_path(fs, status: "accepted"),
+                      friendship_path(incoming_friend, status: "accepted"),
                       method: :patch,
                       class: "btn btn-sm btn-success" %>
 
         <!-- Decline -->
         <%= button_to "Decline",
-                      friendship_path(fs),
+                      friendship_path(incoming_friend),
                       method: :delete,
                       data: { confirm: "Decline this friend request?" },
                       class: "btn btn-sm btn-danger" %>
@@ -47,8 +47,8 @@ https://github.com/eltonlazzarin/friends-list-rails
   <% end %>
 
   <!-- Outgoing Friend Requests -->
-  <% @outgoing.each do |fs| %>
-    <% user = fs.friend %>
+  <% @outgoing.each do |outgoing_friend| %>
+    <% user = outgoing_friend.friend %>
     <tr class="table-info">
       <td><%= "#{user.first_name} #{user.last_name}" %></td>
       <td><%= user.email %></td>
@@ -59,7 +59,7 @@ https://github.com/eltonlazzarin/friends-list-rails
 
         <!-- Cancel request -->
         <%= button_to "Cancel",
-                      friendship_path(fs),
+                      friendship_path(outgoing_friend),
                       method: :delete,
                       data: { confirm: "Cancel this pending request?" },
                       class: "btn btn-sm btn-danger" %>
@@ -70,7 +70,7 @@ https://github.com/eltonlazzarin/friends-list-rails
 
   <!-- Accepted Friends -->
   <% @friends.each do |user| %>
-    <% fs = Friendship.where(status: "accepted")
+    <% friends = Friendship.where(status: "accepted")
                       .where("(user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)",
                              current_user.id, user.id, user.id, current_user.id)
                       .first %>
@@ -85,7 +85,7 @@ https://github.com/eltonlazzarin/friends-list-rails
 
         <!-- Remove friend -->
         <%= button_to "Remove",
-                      friendship_path(fs),
+                      friendship_path(friends),
                       method: :delete,
                       data: { confirm: "Remove this friend?" },
                       class: "btn btn-sm btn-danger" %>
