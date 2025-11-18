@@ -9,6 +9,8 @@ https://github.com/eltonlazzarin/friends-list-rails
   <tr>
     <th>Name</th>
     <th>Email</th>
+    <th>Birthday</th>
+    <th>Bio</th>
     <th></th>
   </tr>
   </thead>
@@ -16,9 +18,34 @@ https://github.com/eltonlazzarin/friends-list-rails
   <tbody>
   <% @friends.each do |friend| %>
     <tr>
-      <td><%= friend.email.split("@").first.titleize %></td>
+      <!-- Name section -->
+      <td>
+        <% full_name = [friend.first_name, friend.last_name].compact.join(" ") %>
+        <%= full_name.present? ? full_name : friend.email.split("@").first.titleize %> <!-- Fallback to use email name as name -->
+      </td>
+
+      <!-- Email section -->
       <td><%= friend.email %></td>
 
+      <!-- Birthday section -->
+      <td>
+        <% if friend.birthdate.present? %>
+          <%= friend.birthdate.strftime("%b %d, %Y") %>
+        <% else %>
+          <em>--</em>
+        <% end %>
+      </td>
+
+      <!-- Bio section -->
+      <td>
+        <% if friend.bio.present? %>
+          <%= truncate(friend.bio, length: 40) %>
+        <% else %>
+          <em>No Bio</em>
+        <% end %>
+      </td>
+
+      <!-- Remove button -->
       <td class="text-end">
         <% friendship = current_user.accepted_friendships.find_by(friend_id: friend.id) %>
 
@@ -33,4 +60,4 @@ https://github.com/eltonlazzarin/friends-list-rails
   </tbody>
 </table>
 
-<%= link_to "Find Friends", friendships_path, class: "btn btn-secondary" %>
+<%= link_to "Find Friends", new_friendships_path, class: "btn btn-secondary" %>
