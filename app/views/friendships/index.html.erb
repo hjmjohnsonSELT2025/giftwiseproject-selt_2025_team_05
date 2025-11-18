@@ -11,53 +11,91 @@ https://github.com/eltonlazzarin/friends-list-rails
     <th>Email</th>
     <th>Birthday</th>
     <th>Bio</th>
+    <th>Status</th>
     <th></th>
   </tr>
   </thead>
 
   <tbody>
-  <% @friends.each do |friend| %>
-    <tr>
-      <!-- Name section -->
-      <td>
-        <% full_name = [friend.first_name, friend.last_name].compact.join(" ") %>
-        <%= full_name.present? ? full_name : friend.email.split("@").first.titleize %> <!-- Fallback to use email name as name -->
-      </td>
 
-      <!-- Email section -->
-      <td><%= friend.email %></td>
-
-      <!-- Birthday section -->
-      <td>
-        <% if friend.birthdate.present? %>
-          <%= friend.birthdate.strftime("%b %d, %Y") %>
-        <% else %>
-          <em>--</em>
-        <% end %>
-      </td>
-
-      <!-- Bio section -->
-      <td>
-        <% if friend.bio.present? %>
-          <%= truncate(friend.bio, length: 40) %>
-        <% else %>
-          <em>No Bio</em>
-        <% end %>
-      </td>
-
-      <!-- Remove button -->
+  <!-- Incoming Friend Requests -->
+  <% @incoming.each do |fs| %>
+    <% user = fs.user %>
+    <tr class="table-warning">
+      <td><%= "#{user.first_name} #{user.last_name}" %></td>
+      <td><%= user.email %></td>
+      <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
+      <td><%= truncate(user.bio.to_s, length: 40) %></td>
+      <td>Incoming Request</td>
       <td class="text-end">
-        <% friendship = current_user.accepted_friendships.find_by(friend_id: friend.id) %>
 
-        <%= button_to "Remove",
-                      friendship_path(friendship),
+        <!-- Accept -->
+        <%= button_to "Accept",
+                      friendship_path(fs, status: "accepted"),
+                      method: :patch,
+                      class: "btn btn-sm btn-success" %>
+
+        <!-- Decline -->
+        <%= button_to "Decline",
+                      friendship_path(fs),
                       method: :delete,
-                      data: { confirm: "Remove this friend?" },
+                      data: { confirm: "Decline this friend request?" },
                       class: "btn btn-sm btn-danger" %>
+
       </td>
     </tr>
   <% end %>
+
+  <!-- Outgoing Friend Requests -->
+  <% @outgoing.each do |fs| %>
+    <% user = fs.friend %>
+    <tr class="table-info">
+      <td><%= "#{user.first_name} #{user.last_name}" %></td>
+      <td><%= user.email %></td>
+      <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
+      <td><%= truncate(user.bio.to_s, length: 40) %></td>
+      <td>Pending (Sent)</td>
+      <td class="text-end">
+
+        <!-- Cancel request -->
+        <%= button_to "Cancel",
+                      friendship_path(fs),
+                      method: :delete,
+                      data: { confirm: "Cancel this pending request?" },
+                      class: "btn btn-sm btn-danger" %>
+
+      </td>
+    </tr>
+  <% end %>
+
+  <!-- Accepted Friends -->
+  <% @friends.each do |user| %>
+    <% fs = Friendship.where(status: "accepted")
+                      .where("(user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)",
+                             current_user.id, user.id, user.id, current_user.id)
+                      .first %>
+
+    <tr>
+      <td><%= "#{user.first_name} #{user.last_name}" %></td>
+      <td><%= user.email %></td>
+      <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
+      <td><%= truncate(user.bio.to_s, length: 40) %></td>
+      <td>Friend</td>
+      <td class="text-end">
+
+        <!-- Remove friend -->
+        <%= button_to "Remove",
+                      friendship_path(fs),
+                      method: :delete,
+                      data: { confirm: "Remove this friend?" },
+                      class: "btn btn-sm btn-danger" %>
+
+      </td>
+    </tr>
+  <% end %>
+
   </tbody>
 </table>
 
-<%= link_to "Find Friends", new_friendships_path, class: "btn btn-secondary" %>
+<%= link_to "Find Friends", new_friendship_path, class: "btn btn-secondary" %>
+
