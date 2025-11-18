@@ -35,12 +35,11 @@ class FriendshipsController < ApplicationController
   end
 
   def index
-    @users = User.where.not(id: current_user.id)
-
-    @sent_requests     = current_user.sent_friendships
-    @received_requests = current_user.received_friendships
-    @friends           = current_user.friends
+    @incoming = Friendship.pending_incoming(current_user)
+    @outgoing = Friendship.pending_outgoing(current_user)
+    @friends  = current_user.all_friends
   end
+
 
   def new
     if params[:q].present?
