@@ -26,6 +26,50 @@
   <p>No participants yet.</p>
 <% end %>
 
+<hr>
+
+<!-- Search Section -->
+<h3>Find Users to Invite</h3>
+<%= form_with(url: event_path(@event), method: :get, local: true, class: "search-form") do |form| %>
+  <div class="input-group mb-3" style="max-width: 500px;">
+    <%= form.text_field :query,
+                        value: params[:query],
+                        placeholder: "Search email or name...",
+                        class: "form-control" %>
+    <%= form.submit "Search", class: "btn btn-primary" %>
+    <% if params[:query].present? %>
+      <%= link_to "Clear", event_path(@event), class: "btn btn-secondary" %>
+    <% end %>
+  </div>
+<% end %>
+
+<!-- Search Results -->
+<% if @found_users.present? %>
+  <h4>Search Results</h4>
+  <table class="table table-bordered" style="max-width: 600px;">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @found_users.each do |user| %>
+      <tr>
+        <td><%= "#{user.first_name} #{user.last_name}" %></td>
+        <td><%= user.email %></td>
+        <td>
+          <!-- Placeholder for a future 'Invite' feature -->
+          <button class="btn btn-sm btn-success">Add to Event</button>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% elsif params[:query].present? %>
+  <p class="text-muted">No users found matching "<%= params[:query] %>"</p>
+<% end %>
 
 <br>
 <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
