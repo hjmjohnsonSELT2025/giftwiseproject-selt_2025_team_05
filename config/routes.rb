@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   }
 
   resources :events do
-    resources :event_users, only: [:create]
+    resources :event_users, only: [:create, :update]
   end
 
   devise_scope :user do
