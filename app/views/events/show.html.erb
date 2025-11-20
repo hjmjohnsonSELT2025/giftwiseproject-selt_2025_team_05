@@ -16,15 +16,35 @@
 
 <h2>Participants</h2>
 
-<% if @event.event_users.any? %>
-  <ul>
-    <% @event.event_users.each do |event_user| %>
-      <li><%= "#{event_user.user.first_name} #{event_user.user.last_name}" %></li>
+<% participants = @event.event_users.where(status: [:joined, :invited]) %>
+
+<% if participants.any? %>
+  <table class="table table-striped" style="max-width: 600px;">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% participants.each do |event_user| %>
+      <tr>
+        <td><%= "#{event_user.user.first_name} #{event_user.user.last_name}" %></td>
+        <td>
+          <%# Visual styling for status: Green for joined, Yellow for pending %>
+          <% status_class = event_user.status == 'joined' ? 'bg-success' : 'bg-warning text-dark' %>
+          <span class="badge <%= status_class %>">
+            <%= event_user.status.capitalize %>
+          </span>
+        </td>
+      </tr>
     <% end %>
-  </ul>
+    </tbody>
+  </table>
 <% else %>
   <p>No participants yet.</p>
 <% end %>
+
 
 
 <br>
