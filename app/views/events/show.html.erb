@@ -79,8 +79,10 @@
         <td><%= "#{user.first_name} #{user.last_name}" %></td>
         <td><%= user.email %></td>
         <td>
-          <!-- Placeholder for a future 'Invite' feature -->
-          <button class="btn btn-sm btn-success">Add to Event</button>
+          <%= button_to "Add to Event",
+                        event_event_users_path(@event, user_id: user.id),
+                        method: :post,
+                        class: "btn btn-sm btn-success" %>
         </td>
       </tr>
     <% end %>
