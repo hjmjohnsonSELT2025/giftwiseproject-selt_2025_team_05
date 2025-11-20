@@ -48,6 +48,7 @@
 <hr>
 
 <!-- Search Section -->
+<% if @event.user == current_user %>
 <h3>Find Users to Invite</h3>
 <%= form_with(url: event_path(@event), method: :get, local: true, class: "search-form") do |form| %>
   <div class="input-group mb-3" style="max-width: 500px;">
@@ -91,6 +92,7 @@
 <% elsif params[:query].present? %>
   <p class="text-muted">No users found matching "<%= params[:query] %>"</p>
 <% end %>
+<%end %>
 
 
 <br>
