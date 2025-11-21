@@ -1,0 +1,101 @@
+<!--
+Source for friends page template:
+https://github.com/eltonlazzarin/friends-list-rails
+-->
+<h1>Your Friends</h1>
+
+<table class="table table-striped table-bordered table-hover">
+  <thead class="thead-dark">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Birthday</th>
+    <th>Bio</th>
+    <th>Status</th>
+    <th></th>
+  </tr>
+  </thead>
+
+  <tbody>
+
+  <!-- Incoming Friend Requests -->
+  <% @incoming.each do |incoming_friend| %>
+    <% user = incoming_friend.user %>
+    <tr class="table-warning">
+      <td><%= "#{user.first_name} #{user.last_name}" %></td>
+      <td><%= user.email %></td>
+      <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
+      <td><%= truncate(user.bio.to_s, length: 40) %></td>
+      <td>Incoming Request</td>
+      <td class="text-end">
+
+        <!-- Accept -->
+        <%= button_to "Accept",
+                      friendship_path(incoming_friend, status: "accepted"),
+                      method: :patch,
+                      class: "btn btn-sm btn-success" %>
+
+        <!-- Decline -->
+        <%= button_to "Decline",
+                      friendship_path(incoming_friend),
+                      method: :delete,
+                      data: { confirm: "Decline this friend request?" },
+                      class: "btn btn-sm btn-danger" %>
+
+      </td>
+    </tr>
+  <% end %>
+
+  <!-- Outgoing Friend Requests -->
+  <% @outgoing.each do |outgoing_friend| %>
+    <% user = outgoing_friend.friend %>
+    <tr class="table-info">
+      <td><%= "#{user.first_name} #{user.last_name}" %></td>
+      <td><%= user.email %></td>
+      <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
+      <td><%= truncate(user.bio.to_s, length: 40) %></td>
+      <td>Pending (Sent)</td>
+      <td class="text-end">
+
+        <!-- Cancel request -->
+        <%= button_to "Cancel",
+                      friendship_path(outgoing_friend),
+                      method: :delete,
+                      data: { confirm: "Cancel this pending request?" },
+                      class: "btn btn-sm btn-danger" %>
+
+      </td>
+    </tr>
+  <% end %>
+
+  <!-- Accepted Friends -->
+  <% @friends.each do |user| %>
+    <% friends = Friendship.where(status: "accepted")
+                      .where("(user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)",
+                             current_user.id, user.id, user.id, current_user.id)
+                      .first %>
+
+    <tr>
+      <td><%= "#{user.first_name} #{user.last_name}" %></td>
+      <td><%= user.email %></td>
+      <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
+      <td><%= truncate(user.bio.to_s, length: 40) %></td>
+      <td>Friend</td>
+      <td class="text-end">
+
+        <!-- Remove friend -->
+        <%= button_to "Remove",
+                      friendship_path(friends),
+                      method: :delete,
+                      data: { turbo_confirm: "Remove this friend?" },
+                      class: "btn btn-sm btn-danger" %>
+
+      </td>
+    </tr>
+  <% end %>
+
+  </tbody>
+</table>
+
+<%= link_to "Find Friends", new_friendship_path, class: "btn btn-secondary" %>
+

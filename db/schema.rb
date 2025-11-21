@@ -37,6 +37,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_14_173721) do
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
+  create_table "friendships", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "friend_id", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friend_id"], name: "index_friendships_on_friend_id"
+    t.index ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true
+    t.index ["user_id"], name: "index_friendships_on_user_id"
+  end
+
   create_table "preferences", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "item_name"
@@ -66,5 +77,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_14_173721) do
   add_foreign_key "event_users", "events"
   add_foreign_key "event_users", "users"
   add_foreign_key "events", "users"
+  add_foreign_key "friendships", "users"
+  add_foreign_key "friendships", "users", column: "friend_id"
   add_foreign_key "preferences", "users"
 end
