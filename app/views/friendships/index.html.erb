@@ -87,7 +87,7 @@ https://github.com/eltonlazzarin/friends-list-rails
         <%= button_to "Remove",
                       friendship_path(friends),
                       method: :delete,
-                      data: { confirm: "Remove this friend?" },
+                      data: { turbo_confirm: "Remove this friend?" },
                       class: "btn btn-sm btn-danger" %>
 
       </td>
