@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     registrations: "users/registrations"
   }
 
-  resources :events
+  resources :events do
+    resources :event_users, only: [:create, :update]
+  end
 
   devise_scope :user do
     get '/users/show' => 'users/registrations#show', as: 'user_show'
