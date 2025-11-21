@@ -22,7 +22,7 @@ RSpec.describe "Friendships", type: :request do
       expect(f.status).to eq("pending")
       expect(f.status_pending?).to be(true)
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(friendships_path)
     end
 
     it "shows an alert when the friend request cannot be created" do
@@ -43,7 +43,7 @@ RSpec.describe "Friendships", type: :request do
       expect(request_from_friend.reload.status).to eq("accepted")
       expect(request_from_friend.reload.status_accepted?).to be(true)
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(friendships_path)
     end
 
     it "declines a friend request" do
@@ -52,7 +52,7 @@ RSpec.describe "Friendships", type: :request do
       expect(request_from_friend.reload.status).to eq("declined")
       expect(request_from_friend.reload.status_declined?).to be(true)
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(friendships_path)
     end
   end
 
@@ -64,7 +64,7 @@ RSpec.describe "Friendships", type: :request do
         delete friendship_path(friendship)
       }.to change(Friendship, :count).by(-1)
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(friendships_path)
     end
 
     it "shows an alert when the user is not authorized to delete the friendship" do
