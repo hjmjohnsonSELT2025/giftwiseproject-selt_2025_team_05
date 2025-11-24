@@ -2,6 +2,7 @@ class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :authorize_event_owner!, only: [:edit, :update, :destroy]
+
   def new
     @event = current_user.events.build
   end
@@ -33,7 +34,6 @@ class EventsController < ApplicationController
   def edit
   end
 
-
   def update
     if @event.update(event_params)
       redirect_to @event, notice: "Event updated successfully!"
@@ -45,7 +45,10 @@ class EventsController < ApplicationController
   private
 
   def set_event
-    @event = Event.find(params[:id])
+    @event = Event.find_by(id: params[:id])
+    if @event.nil? || @event.deleted
+      redirect_to root_path, alert: "Event not found or has been deleted."
+    end
   end
 
   def authorize_event_owner!
