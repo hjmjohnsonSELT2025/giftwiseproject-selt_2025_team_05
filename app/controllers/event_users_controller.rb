@@ -21,8 +21,16 @@ class EventUsersController < ApplicationController
     @event_user = @event.event_users.find(params[:id])
 
     if @event_user.user == current_user
-      @event_user.update(status: :joined)
-      redirect_to root_path, notice: "You have successfully joined the event!"
+      new_status = params[:status].presence || 'joined'
+
+      if ['joined', 'declined'].include?(new_status.to_s)
+        @event_user.update(status: new_status)
+
+        message = new_status.to_s == 'joined' ? "You have successfully joined the event!" : "You have declined the invitation."
+        redirect_to root_path, notice: message
+      else
+        redirect_to root_path, alert: "Invalid status update."
+      end
     else
       redirect_to root_path, alert: "You are not authorized to perform this action."
     end
