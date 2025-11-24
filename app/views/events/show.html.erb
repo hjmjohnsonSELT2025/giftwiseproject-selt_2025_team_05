@@ -5,18 +5,35 @@
 <p><strong>Host:</strong> <%= "#{@event.user&.first_name} #{@event.user&.last_name}" %></p>
 <p><strong>Description:</strong> <%= @event.description %></p>
 
-<% if @event.user == current_user %>
-  <%= link_to "Edit", edit_event_path(@event), class: "btn btn-warning" %>
-  <%= button_to "Delete", event_path(@event),
-                method: :delete,
-                data: { turbo_confirm: "Are you sure you want to delete this event?" },
-                class: "btn btn-danger" %>
+<div class="mb-4">
+  <!-- FIXED: Use user_id for stricter comparison to ensure owner actions appear correctly -->
+  <% if @event.user_id == current_user.id %>
+    <!-- Host Actions -->
+    <div class="d-flex gap-2">
+      <%= link_to "Edit", edit_event_path(@event), class: "btn btn-warning" %>
+      <%= button_to "Delete", event_path(@event),
+                    method: :delete,
+                    data: { turbo_confirm: "Are you sure you want to delete this event?" },
+                    class: "btn btn-danger" %>
+    </div>
+  <% else %>
+    <!-- Guest Actions -->
+    <% current_event_user = @event.event_users.find_by(user: current_user) %>
 
-<% end %>
+    <% if current_event_user&.status == 'joined' %>
+      <%= button_to "Leave Event",
+                    event_event_user_path(@event, current_event_user, status: 'left'),
+                    method: :patch,
+                    data: { turbo_confirm: "Are you sure you want to leave this event?" },
+                    class: "btn btn-danger" %>
+    <% end %>
+  <% end %>
+</div>
 
 <h2>Participants</h2>
 
-<% participants = @event.event_users.where(status: [:joined, :invited]) %>
+<%# Filter to show only joined or pending users %>
+<% participants = @event.event_users.where(status: [:joined, :pending]) %>
 
 <% if participants.any? %>
   <table class="table table-striped" style="max-width: 600px;">
@@ -31,7 +48,6 @@
       <tr>
         <td><%= "#{event_user.user.first_name} #{event_user.user.last_name}" %></td>
         <td>
-          <%# Visual styling for status: Green for joined, Yellow for pending %>
           <% status_class = event_user.status == 'joined' ? 'bg-success' : 'bg-warning text-dark' %>
           <span class="badge <%= status_class %>">
             <%= event_user.status.capitalize %>
@@ -48,7 +64,6 @@
 <hr>
 
 <!-- Search Section -->
-<% if @event.user == current_user %>
 <h3>Find Users to Invite</h3>
 <%= form_with(url: event_path(@event), method: :get, local: true, class: "search-form") do |form| %>
   <div class="input-group mb-3" style="max-width: 500px;">
@@ -92,8 +107,6 @@
 <% elsif params[:query].present? %>
   <p class="text-muted">No users found matching "<%= params[:query] %>"</p>
 <% end %>
-<%end %>
-
 
 <br>
 <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
