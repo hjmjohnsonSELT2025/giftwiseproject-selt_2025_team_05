@@ -23,8 +23,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    if params[:query].present?
-      # We exclude users who are already participants to avoid duplicates
+    if params[:query].present? && @event.user_id == current_user.id
       participant_ids = @event.event_users.where(status: [:joined, :invited]).pluck(:user_id)
       @found_users = User.search_by_name_or_email(params[:query])
                          .where.not(id: participant_ids)

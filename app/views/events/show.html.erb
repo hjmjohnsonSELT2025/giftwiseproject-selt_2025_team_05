@@ -6,9 +6,7 @@
 <p><strong>Description:</strong> <%= @event.description %></p>
 
 <div class="mb-4">
-  <!-- FIXED: Use user_id for stricter comparison to ensure owner actions appear correctly -->
   <% if @event.user_id == current_user.id %>
-    <!-- Host Actions -->
     <div class="d-flex gap-2">
       <%= link_to "Edit", edit_event_path(@event), class: "btn btn-warning" %>
       <%= button_to "Delete", event_path(@event),
@@ -17,7 +15,6 @@
                     class: "btn btn-danger" %>
     </div>
   <% else %>
-    <!-- Guest Actions -->
     <% current_event_user = @event.event_users.find_by(user: current_user) %>
 
     <% if current_event_user&.status == 'joined' %>
@@ -32,7 +29,6 @@
 
 <h2>Participants</h2>
 
-<%# Filter to show only joined or pending users %>
 <% participants = @event.event_users.where(status: [:joined, :pending]) %>
 
 <% if participants.any? %>
@@ -61,9 +57,9 @@
   <p>No participants yet.</p>
 <% end %>
 
-<hr>
+<% if @event.user_id == current_user.id %>
+  <hr>
 
-<!-- Search Section -->
 <h3>Find Users to Invite</h3>
 <%= form_with(url: event_path(@event), method: :get, local: true, class: "search-form") do |form| %>
   <div class="input-group mb-3" style="max-width: 500px;">
@@ -78,7 +74,6 @@
   </div>
 <% end %>
 
-<!-- Search Results -->
 <% if @found_users.present? %>
   <h4>Search Results</h4>
   <table class="table table-bordered" style="max-width: 600px;">
@@ -106,6 +101,7 @@
   </table>
 <% elsif params[:query].present? %>
   <p class="text-muted">No users found matching "<%= params[:query] %>"</p>
+<% end %>
 <% end %>
 
 <br>
