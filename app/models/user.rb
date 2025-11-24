@@ -23,4 +23,15 @@ class User < ApplicationRecord
     end
   end
 
+
+  scope :search_by_name_or_email, ->(query) {
+    return all if query.blank?
+
+    term = "%#{query.downcase}%"
+
+    where(
+      "lower(email) LIKE ? OR lower(first_name) LIKE ? OR lower(last_name) LIKE ?",
+      term, term, term
+    )
+  }
 end
