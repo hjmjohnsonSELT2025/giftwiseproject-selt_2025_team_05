@@ -24,6 +24,7 @@
     <tr>
       <th>Name</th>
       <th>Status</th>
+      <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -36,6 +37,11 @@
           <span class="badge <%= status_class %>">
             <%= event_user.status.capitalize %>
           </span>
+        </td>
+        <td>
+          <% if event_user.user != current_user %>
+            <%= link_to "Get gift ideas", event_event_user_gift_suggestions_path(@event, event_user), class: "btn btn-sm btn-outline-primary" %>
+          <% end %>
         </td>
       </tr>
     <% end %>

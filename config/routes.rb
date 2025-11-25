@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   }
 
   resources :events do
-    resources :event_users, only: [:create, :update]
+    resources :event_users, only: [:create, :update, :show] do
+      get :gift_suggestions, to: "gift_suggestions#show"
+    end
   end
 
   devise_scope :user do
