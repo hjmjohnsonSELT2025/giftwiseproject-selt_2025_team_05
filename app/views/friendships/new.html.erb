@@ -39,4 +39,8 @@
     <% end %>
     </tbody>
   </table>
+<% elsif params[:q].present? %>
+  <div class=" alert alert-warning mt-3">
+    No users found.
+  </div>
 <% end %>
