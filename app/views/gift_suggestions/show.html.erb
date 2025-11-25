@@ -1,23 +1,90 @@
-<h1>Gift ideas for <%= @recipient.first_name %> <%= @recipient.last_name %></h1>
+<div class="container my-4">
+  <h1 class="mb-5 text-center">Gift ideas for <%= @recipient.first_name %> <%= @recipient.last_name %></h1>
 
-<section class="mb-4">
-  <h3>Profile Snapshot</h3>
-  <p><strong>Bio:</strong> <%= @bio.presence || "No bio provided yet" %></p>
-  <p><strong>Wishlist items:</strong> <%= @wishlist.count %></p>
-  <ul>
-    <% @wishlist.each do |item| %>
-      <li><strong><%= item.item_name %></strong> – $<%= number_with_precision(item.cost, precision: 2) %><br><em><%= item.notes %></em></li>
-    <% end %>
-  </ul>
-</section>
+  <div class="row g-4 align-items-start">
+    <%# Chatgpt helped come up with sizing- particularly for when screen sizes change. Uses bootstrap5 display classes %>
+    <div class="col-lg-3">
+      <section class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Profile Snapshot</h5>
+          <dl class="row mb-3 small">
+            <dt class="col-4">Bio:</dt>
+            <dd class="col-8"><%= @bio.presence || "No bio yet" %></dd>
+            <dt class="col-4">Wishlist:</dt>
+            <dd class="col-8"><%= @wishlist.count %> items</dd>
+          </dl>
 
-<section class="border p-3 rounded">
-  <h3>Gift Suggestion Assistant</h3>
-  <p class="text-muted">PLACEHOLDER- will change this UI</p>
-  <textarea class="form-control" rows="6" placeholder="Ask the assistant for ideas…"></textarea>
-  <div class="mt-2 text-end">
-    <button class="btn btn-secondary" disabled>Save suggestion</button>
+          <% if @wishlist.any? %>
+            <ul class="list-group small">
+              <% @wishlist.each do |item| %>
+                <li class="list-group-item px-2 py-2">
+                  <strong><%= item.item_name %></strong>
+                  <div class="text-muted">$<%= number_with_precision(item.cost, precision: 2) %></div>
+                  <% if item.notes.present? %>
+                    <div><em><%= item.notes %></em></div>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted mb-0 small">No wishlist items yet.</p>
+          <% end %>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-lg-9">
+      <section class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Gift Suggestion Assistant</h5>
+
+          <% if @conversation.any? %>
+            <div class="chat-thread mb-3">
+              <% @conversation.each do |message| %>
+                <% from_user = message[:role] == "user" %>
+                <div class="chat-bubble <%= from_user ? 'chat-bubble-user' : 'chat-bubble-assistant' %>">
+                  <small class="text-muted d-block mb-1"><%= from_user ? "You" : "Assistant" %></small>
+                  <p class="mb-0"><%= simple_format(message[:content]) %></p>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted">Chat with Gift Wise's personal gift suggesting assistant! Begin by either furthur describing the person, specifiying a gift theme, or request to refine gift ideas</p>
+          <% end %>
+
+          <%= form_with url: event_event_user_gift_suggestions_path(@event, @event_user), method: :post, local: true, data: { turbo: false }, id: "gift-chat-form" do |form| %>
+            <%= hidden_field_tag :conversation, @serialized_conversation %>
+
+            <div class="mb-3">
+              <%= form.label :prompt, "Ask for ideas", class: "form-label fw-semibold" %>
+              <%= form.text_area :prompt, rows: 3, class: "form-control", placeholder: "Generate 3 gift ideas based on #{@recipient.first_name}'s interests"%>
+            </div>
+
+            <div class="text-end">
+              <%= form.submit "Ask the assistant", class: "btn btn-outline-primary" %>
+            </div>
+          <% end %>
+        </div>
+      </section>
+    </div>
   </div>
-</section>
 
-<%= link_to "Back to event", event_path(@event), class: "btn btn-outline-primary mt-3" %>
+
+  <%= link_to "Back", event_path(@event), class: "btn btn-secondary mt-4" %>
+</div>
+
+<%# Chatgpt came up with this logic of adding "Thinking" text to the button after a chat is submitted %>>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("gift-chat-form");
+        if (!form) return;
+
+        form.addEventListener("submit", () => {
+            const button = form.querySelector("input[type='submit']");
+            if (!button) return;
+            button.disabled = true;
+            button.value = "Thinking…";
+            button.classList.add("disabled");
+        });
+    });
+</script>

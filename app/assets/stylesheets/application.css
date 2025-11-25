@@ -137,3 +137,24 @@ th {
     font-weight: bold;
 
 }
+
+.chat-thread {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+.chat-bubble {
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+.chat-bubble-user {
+    background: #e8f4ff;
+    border-color: #b6daff;
+}
+.chat-bubble-assistant {
+    background: #fffbea;          /* soft yellow background */
+    border-color: #ffe08a;        /* matching border */
+}
