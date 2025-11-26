@@ -40,17 +40,17 @@ RSpec.describe GiftAssistant::ChatService do
           messages: expected_messages
         }
       ).and_return(
-        { "choices" => [ { "message" => { "content" => "Try a co-op board game night." } } ] }
+        { "choices" => [ { "message" => { "content" => "How about a premium wireless microphone kit from The Audio Company? (super duper good brand)" } } ] }
       )
 
       reply = service.respond(
         recipient: recipient,
         event: event,
         conversation: conversation,
-        prompt: "Need something cozy"
+        prompt: "Need a gift for stage performance"
       )
 
-      expect(reply).to eq("Try a co-op board game night.")
+      expect(reply).to eq("How about a premium wireless microphone kit from The Audio Company? (super duper good brand)")
     end
 
     it "falls back to an apology when the API call fails" do
