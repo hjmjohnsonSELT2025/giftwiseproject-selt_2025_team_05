@@ -12,6 +12,17 @@ class PreferencesController < ApplicationController
     end
   end
 
+  def unclaim_preference
+    @item = Preference.find(params[:item_id])
+    @item.giver = nil
+    @item.purchased = nil
+    if @item.save
+      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id), notice: "Gift unclaimed successfully!"
+    else
+      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id), alert: "Could not unclaim gift."
+    end
+  end
+
   def view_user_wishlist
     @user = User.find(params[:user_id])
     @preferences = @user.preferences

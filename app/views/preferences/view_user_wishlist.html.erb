@@ -18,8 +18,15 @@
           <td><%= "#{item.item_name}" %></td>
           <td> <%= "#{number_to_currency(item.cost)}" %></td>
           <td> <%= "#{item.notes}" %></td>
-          <% if !item.giver_id.nil? %>
-            <td> <%= "#{item.giver.first_name}" %></td>
+          <% if !item.giver.nil? %>
+            <td> <%= "#{item.giver.first_name}" %>
+            <% if item.giver == current_user %>
+                <%= button_to "Unclaim",
+                              unclaim_preference_preferences_path(item_id: item.id, user_id: current_user.id),
+                              method: :post,
+                              class: "btn btn-sm btn-danger" %></td>
+            <% end %>
+            </td>
           <% else %>
             <td><%= button_to "Claim this gift",
                               claim_preference_preferences_path(item_id: item.id, user_id: current_user.id),
