@@ -100,6 +100,33 @@ class PreferencesController < ApplicationController
     end
   end
 
+  def new_for_someone_else
+    @preference = Preference.new
+    @recipient = User.find(params[:recipient_id])
+    @event = Event.find(params[:event_id])
+  end
+
+  def create_for_someone_else
+    @preference = Preference.new
+    @preference.item_name = params[:preference][:item_name]
+    @preference.cost = params[:preference][:cost]
+    @preference.notes = params[:preference][:notes]
+
+    @recipient = User.find(params[:recipient_id])
+    @event = Event.find(params[:event_id])
+
+    @preference.user = @recipient
+    @preference.giver = current_user
+    @preference.event = @event
+    @preference.on_user_wishlist = false
+
+    if @preference.save
+      redirect_to @event, notice: "Item added!"
+    else
+      redirect_to @event, alert: "Could not add item."
+    end
+  end
+
   def create
     @preference = Preference.new(preference_params)
     @preference.user = current_user

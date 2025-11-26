@@ -1,0 +1,39 @@
+<div>
+  <div>
+    <div>
+      <h1>Add New Gift For <%=@recipient.first_name %> For Event: <%=@event.id%> </h1>
+
+    </div>
+
+    <%= form_with model: @preference, url: create_for_someone_else_preferences_path do |form| %>
+      <div>
+        <%= form.label :item_name, "Item Name *" %>
+        <%= form.text_field :item_name, required: true, placeholder: "Enter item name" %>
+      </div>
+
+      <div>
+        <%= form.label :cost, "Cost" %>
+        <div class="cost-input-container">
+          <span class="currency-symbol">$</span>
+          <%= form.number_field :cost, step: 0.01, placeholder: "0.00" %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.label :notes, "Notes" %>
+        <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences..." %>
+      </div>
+
+      <div>
+
+        <%=hidden_field_tag :recipient_id, @recipient.id%>
+        <%=hidden_field_tag :event_id, @event.id%>
+
+        <%= form.submit "Add Gift", class: "btn btn-primary" %>
+
+      </div>
+      <br>
+      <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
+    <% end %>
+  </div>
+</div>
