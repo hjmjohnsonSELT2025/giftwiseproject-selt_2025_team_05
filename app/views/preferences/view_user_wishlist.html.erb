@@ -37,10 +37,10 @@
           <% end %>
           </td>
           <td>
-          <!-- Checkbox from ChatGPT -->
+          <!-- Checkbox based off of ChatGPT response -->
           <%= form_with model: item, url: toggle_purchase_preference_path(item), method: :post, local: true do |f| %>
 
-              <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();' %>
+              <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();', disabled: (item.giver != current_user) %>
 
           <% end %>
         </td>
@@ -53,4 +53,5 @@
   <% else %>
     <p>No items on wish list yet.</p>
   <% end %>
+  <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
 </div>
