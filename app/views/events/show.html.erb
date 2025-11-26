@@ -29,7 +29,7 @@
 
 <h2>Participants</h2>
 
-<% participants = @event.event_users.where(status: [:joined, :pending]) %>
+<% participants = @event.event_users.where(status: [:joined, :pending, :invited]) %>
 
 <% if participants.any? %>
   <table class="table table-striped" style="max-width: 600px;">
@@ -37,6 +37,9 @@
     <tr>
       <th>Name</th>
       <th>Status</th>
+      <% if @event.user_id == current_user.id %>
+        <th>Action</th>
+      <% end %>
     </tr>
     </thead>
     <tbody>
@@ -49,6 +52,18 @@
             <%= event_user.status.capitalize %>
           </span>
         </td>
+        <% if @event.user_id == current_user.id %>
+          <td>
+            <%# Don't show remove button for the owner themselves %>
+            <% if event_user.user_id != current_user.id %>
+              <%= button_to "Remove",
+                            event_event_user_path(@event, event_user, status: 'left'),
+                            method: :patch,
+                            data: { turbo_confirm: "Are you sure you want to remove this person from the event?" },
+                            class: "btn btn-sm btn-danger" %>
+            <% end %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
     </tbody>
@@ -60,48 +75,48 @@
 <% if @event.user_id == current_user.id %>
   <hr>
 
-<h3>Find Users to Invite</h3>
-<%= form_with(url: event_path(@event), method: :get, local: true, class: "search-form") do |form| %>
-  <div class="input-group mb-3" style="max-width: 500px;">
-    <%= form.text_field :query,
-                        value: params[:query],
-                        placeholder: "Search email or name...",
-                        class: "form-control" %>
-    <%= form.submit "Search", class: "btn btn-primary" %>
-    <% if params[:query].present? %>
-      <%= link_to "Clear", event_path(@event), class: "btn btn-secondary" %>
-    <% end %>
-  </div>
-<% end %>
+  <h3>Find Users to Invite</h3>
+  <%= form_with(url: event_path(@event), method: :get, local: true, class: "search-form") do |form| %>
+    <div class="input-group mb-3" style="max-width: 500px;">
+      <%= form.text_field :query,
+                          value: params[:query],
+                          placeholder: "Search email or name...",
+                          class: "form-control" %>
+      <%= form.submit "Search", class: "btn btn-primary" %>
+      <% if params[:query].present? %>
+        <%= link_to "Clear", event_path(@event), class: "btn btn-secondary" %>
+      <% end %>
+    </div>
+  <% end %>
 
-<% if @found_users.present? %>
-  <h4>Search Results</h4>
-  <table class="table table-bordered" style="max-width: 600px;">
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @found_users.each do |user| %>
+  <% if @found_users.present? %>
+    <h4>Search Results</h4>
+    <table class="table table-bordered" style="max-width: 600px;">
+      <thead>
       <tr>
-        <td><%= "#{user.first_name} #{user.last_name}" %></td>
-        <td><%= user.email %></td>
-        <td>
-          <%= button_to "Add to Event",
-                        event_event_users_path(@event, user_id: user.id),
-                        method: :post,
-                        class: "btn btn-sm btn-success" %>
-        </td>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Action</th>
       </tr>
-    <% end %>
-    </tbody>
-  </table>
-<% elsif params[:query].present? %>
-  <p class="text-muted">No users found matching "<%= params[:query] %>"</p>
-<% end %>
+      </thead>
+      <tbody>
+      <% @found_users.each do |user| %>
+        <tr>
+          <td><%= "#{user.first_name} #{user.last_name}" %></td>
+          <td><%= user.email %></td>
+          <td>
+            <%= button_to "Add to Event",
+                          event_event_users_path(@event, user_id: user.id),
+                          method: :post,
+                          class: "btn btn-sm btn-success" %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% elsif params[:query].present? %>
+    <p class="text-muted">No users found matching "<%= params[:query] %>"</p>
+  <% end %>
 <% end %>
 
 <br>
