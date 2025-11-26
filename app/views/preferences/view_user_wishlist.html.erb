@@ -1,0 +1,37 @@
+<div>
+  <h1><%= @user.first_name %>'s Wishlist</h1>
+
+  <% if @preferences.any? %>
+    <table class="table table-striped" style="max-width: 600px;">
+      <thead>
+      <tr>
+        <th>Item Name</th>
+        <th>Cost</th>
+        <th>Details</th>
+        <th>Claimed By</th>
+        <th>Purchased?</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @preferences.each do |item| %>
+        <tr>
+          <td><%= "#{item.item_name}" %></td>
+          <td> <%= "#{number_to_currency(item.cost)}" %></td>
+          <td> <%= "#{item.notes}" %></td>
+          <% if !item.giver_id.nil? %>
+            <td> <%= "#{item.giver_id}" %></td>
+          <% else %>
+            <td><%= button_to "Claim this gift",
+                          view_user_wishlist_preferences_path(user_id: 1),
+                          method: :get,
+                          class: "btn btn-sm btn-success" %></td>
+          <% end %>
+          <td> <%= check_box_tag "preference_ids[]", item.id, disabled: (item.giver_id != current_user.id) %> </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No items on wish list yet.</p>
+  <% end %>
+</div>

@@ -37,6 +37,14 @@
             <%= event_user.status.capitalize %>
           </span>
         </td>
+        <td>
+          <% if event_user.joined? && event_user.user_id != current_user.id %>
+          <%= button_to "View Wish List",
+                        view_user_wishlist_preferences_path(user_id: event_user.user.id),
+                        method: :get,
+                        class: "btn btn-sm btn-success" %>
+          <%end %>
+        </td>
       </tr>
     <% end %>
     </tbody>

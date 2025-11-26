@@ -2,6 +2,11 @@ class PreferencesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_preference, only: [ :edit, :update, :destroy ]
 
+  def view_user_wishlist
+    @user = User.find(params[:user_id])
+    @preferences = @user.preferences
+  end
+
   def index
     #@preferences = current_user.preferences.order(created_at: :desc)
     @preferences = current_user.preferences.where(on_user_wishlist: true).order(created_at: :desc)
