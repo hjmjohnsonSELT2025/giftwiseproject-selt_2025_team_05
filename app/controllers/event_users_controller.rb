@@ -23,10 +23,20 @@ class EventUsersController < ApplicationController
     if @event_user.user == current_user
       new_status = params[:status].presence || 'joined'
 
-      if ['joined', 'declined'].include?(new_status.to_s)
+      if new_status.to_s == 'left' && @event.user == current_user
+        redirect_to root_path, alert: "You cannot leave your own event. You must delete it instead."
+        return
+      end
+
+      if ['joined', 'declined', 'left'].include?(new_status.to_s)
         @event_user.update(status: new_status)
 
-        message = new_status.to_s == 'joined' ? "You have successfully joined the event!" : "You have declined the invitation."
+        message = case new_status.to_s
+                  when 'joined' then "You have successfully joined the event!"
+                  when 'declined' then "You have declined the invitation."
+                  when 'left' then "You have left the event."
+                  end
+
         redirect_to root_path, notice: message
       else
         redirect_to root_path, alert: "Invalid status update."
