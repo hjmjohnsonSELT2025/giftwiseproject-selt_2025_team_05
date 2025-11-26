@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_14_173721) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_26_014142) do
   create_table "event_users", force: :cascade do |t|
     t.integer "event_id", null: false
     t.integer "user_id", null: false
@@ -55,7 +55,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_14_173721) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "users_id"
+    t.boolean "purchased?"
+    t.boolean "on_user_wishlist?"
     t.index ["user_id"], name: "index_preferences_on_user_id"
+    t.index ["users_id"], name: "index_preferences_on_users_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -80,4 +84,5 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_14_173721) do
   add_foreign_key "friendships", "users"
   add_foreign_key "friendships", "users", column: "friend_id"
   add_foreign_key "preferences", "users"
+  add_foreign_key "preferences", "users", column: "users_id"
 end
