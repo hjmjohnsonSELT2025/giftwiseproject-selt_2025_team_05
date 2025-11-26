@@ -13,29 +13,41 @@
       </tr>
       </thead>
       <tbody>
+
       <% @preferences.each do |item| %>
-        <tr>
+      <tr>
+
           <td><%= "#{item.item_name}" %></td>
           <td> <%= "#{number_to_currency(item.cost)}" %></td>
           <td> <%= "#{item.notes}" %></td>
+        <td>
           <% if !item.giver.nil? %>
-            <td> <%= "#{item.giver.first_name}" %>
+            <%= "#{item.giver.first_name}" %>
             <% if item.giver == current_user %>
                 <%= button_to "Unclaim",
                               unclaim_preference_preferences_path(item_id: item.id, user_id: current_user.id),
                               method: :post,
                               class: "btn btn-sm btn-danger" %></td>
             <% end %>
-            </td>
           <% else %>
-            <td><%= button_to "Claim this gift",
+            <%= button_to "Claim this gift",
                               claim_preference_preferences_path(item_id: item.id, user_id: current_user.id),
                               method: :post,
-                          class: "btn btn-sm btn-success" %></td>
+                          class: "btn btn-sm btn-success" %>
           <% end %>
-          <td> <%= check_box_tag "preference_ids[]", item.id, disabled: (item.giver_id != current_user.id) %> </td>
-        </tr>
+          </td>
+          <td>
+          <!-- Checkbox from ChatGPT -->
+          <%= form_with model: item, url: toggle_purchase_preference_path(item), method: :post, local: true do |f| %>
+
+              <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();' %>
+
+          <% end %>
+        </td>
+          </tr>
+
       <% end %>
+
       </tbody>
     </table>
   <% else %>

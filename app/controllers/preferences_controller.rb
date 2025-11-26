@@ -23,6 +23,22 @@ class PreferencesController < ApplicationController
     end
   end
 
+
+  def toggle_purchase
+    @preference = Preference.find(params[:id])
+    if params[:preference][:purchased] == "1"
+      @preference.purchased = true
+    else
+      @preference.purchased = false
+    end
+    if @preference.save
+      redirect_to view_user_wishlist_preferences_path(user_id: @preference.user_id), notice: "Purchased status changed successfully!"
+    else
+      redirect_to view_user_wishlist_preferences_path(user_id: @preference.user_id), alert: "Could not change purchase status."
+    end
+
+  end
+
   def view_user_wishlist
     @user = User.find(params[:user_id])
     @preferences = @user.preferences
