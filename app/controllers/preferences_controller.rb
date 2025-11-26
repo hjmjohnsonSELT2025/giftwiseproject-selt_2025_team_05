@@ -2,6 +2,16 @@ class PreferencesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_preference, only: [ :edit, :update, :destroy ]
 
+  def claim_preference
+    @item = Preference.find(params[:item_id])
+    @item.giver = User.find(params[:user_id])
+    if @item.save
+      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id), notice: "Gift claimed successfully!"
+    else
+      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id), alert: "Could not claim gift."
+    end
+  end
+
   def view_user_wishlist
     @user = User.find(params[:user_id])
     @preferences = @user.preferences

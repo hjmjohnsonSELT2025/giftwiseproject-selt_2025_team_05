@@ -19,11 +19,11 @@
           <td> <%= "#{number_to_currency(item.cost)}" %></td>
           <td> <%= "#{item.notes}" %></td>
           <% if !item.giver_id.nil? %>
-            <td> <%= "#{item.giver_id}" %></td>
+            <td> <%= "#{item.giver.first_name}" %></td>
           <% else %>
             <td><%= button_to "Claim this gift",
-                          view_user_wishlist_preferences_path(user_id: 1),
-                          method: :get,
+                              claim_preference_preferences_path(item_id: item.id, user_id: current_user.id),
+                              method: :post,
                           class: "btn btn-sm btn-success" %></td>
           <% end %>
           <td> <%= check_box_tag "preference_ids[]", item.id, disabled: (item.giver_id != current_user.id) %> </td>

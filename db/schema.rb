@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_26_042120) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_26_050123) do
   create_table "event_users", force: :cascade do |t|
     t.integer "event_id", null: false
     t.integer "user_id", null: false
@@ -55,10 +55,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_26_042120) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "giver_id"
     t.boolean "purchased"
     t.boolean "on_user_wishlist"
     t.integer "events_id"
+    t.integer "giver_id"
     t.index ["events_id"], name: "index_preferences_on_events_id"
     t.index ["giver_id"], name: "index_preferences_on_giver_id"
     t.index ["user_id"], name: "index_preferences_on_user_id"

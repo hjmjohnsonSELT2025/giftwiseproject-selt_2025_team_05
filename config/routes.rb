@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   resources :preferences do
     post :create_on_wishlist, on: :collection
     get 'view_user_wishlist/:user_id', to: 'preferences#view_user_wishlist', on: :collection, as: :view_user_wishlist
-
+    post 'claim_preference', to: 'preferences#claim_preference', on: :collection, as: :claim_preference
   end
 
   resources :friendships, only: [:index, :new, :create, :update, :destroy]
