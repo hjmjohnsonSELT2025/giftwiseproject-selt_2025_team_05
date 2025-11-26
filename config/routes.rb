@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     post 'claim_preference', to: 'preferences#claim_preference', on: :collection, as: :claim_preference
     post 'unclaim_preference', to: 'preferences#unclaim_preference', on: :collection, as: :unclaim_preference
     post :toggle_purchase, on: :member
+    post :toggle_purchase_show, on: :member
   end
 
   resources :friendships, only: [:index, :new, :create, :update, :destroy]

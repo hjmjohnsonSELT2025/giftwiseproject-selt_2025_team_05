@@ -102,6 +102,44 @@
 <% end %>
 <%end %>
 
+<h2>My Gifts To Others</h2>
+
+<% gifts = Preference.where(giver: current_user, event: @event) %>
+
+<% if gifts.any? %>
+  <table class="table table-striped" style="max-width: 600px;">
+    <thead>
+    <tr>
+      <th>Item Name</th>
+      <th>Cost</th>
+      <th>Recipient</th>
+      <th>Purchased?</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% gifts.each do |gift| %>
+      <tr>
+        <td><%= "#{gift.item_name}" %></td>
+        <td><%= "#{gift.cost}" %></td>
+        <td><%= "#{User.find_by(id: gift.user_id).first_name}" %></td>
+        <td>
+          <!-- Checkbox from ChatGPT -->
+          <%= form_with model: gift, url: toggle_purchase_show_preference_path(gift), method: :post, local: true do |f| %>
+
+            <%= f.check_box :purchased, checked: gift.purchased,  onchange: 'this.form.submit();' %>
+
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No gifts yet.</p>
+<% end %>
+
+
+
 
 <br>
 <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
