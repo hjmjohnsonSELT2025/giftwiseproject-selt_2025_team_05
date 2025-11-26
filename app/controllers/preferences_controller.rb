@@ -3,8 +3,10 @@ class PreferencesController < ApplicationController
   before_action :set_preference, only: [ :edit, :update, :destroy ]
 
   def index
-    @preferences = current_user.preferences.order(created_at: :desc)
+    #@preferences = current_user.preferences.order(created_at: :desc)
+    @preferences = current_user.preferences.where(on_wishlist: true).order(created_at: :desc)
   end
+
 
   def new
     @preference = Preference.new
