@@ -29,7 +29,6 @@
 
 <h2>Participants</h2>
 
-<%# FIXED: Added :invited to the list of statuses so invited users appear in the list %>
 <% participants = @event.event_users.where(status: [:joined, :pending, :invited]) %>
 
 <% if participants.any? %>
