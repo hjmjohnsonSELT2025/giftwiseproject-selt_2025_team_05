@@ -66,7 +66,7 @@
                   <% if event_user.user != current_user %>
                     <%= link_to "Get gift ideas",
                                 event_event_user_gift_suggestions_path(@event, event_user),
-                                class: "btn btn-sm btn-outline-primary" %>
+                                class: "btn btn-sm btn-primary" %>
                   <% end %>
                 </td>
                 <% if @event.user_id == current_user.id %>
@@ -101,7 +101,7 @@
                                 value: params[:query],
                                 placeholder: "Search email or name...",
                                 class: "form-control" %>
-            <%= form.submit "Search", class: "btn btn-primary" %>
+            <%= form.submit "Search", class: "btn btn-outline-primary" %>
             <% if params[:query].present? %>
               <%= link_to "Clear", event_path(@event), class: "btn btn-secondary" %>
             <% end %>
