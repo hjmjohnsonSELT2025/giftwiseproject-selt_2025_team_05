@@ -93,3 +93,6 @@ group :development do
   gem "brakeman", require: false
 end
 gem "rubocop-rails-omakase", "~> 1.1", group: :development
+
+gem 'google-api-client', '~> 0.53'
+gem 'dotenv-rails'

@@ -23,8 +23,18 @@ Rails.application.configure do
   config.cache_store = :memory_store
 
   # Mailer
-  config.action_mailer.default_url_options = { host: "example.com" }
-
-  config.i18n.fallbacks = true
-  config.active_record.dump_schema_after_migration = false
+  # config.action_mailer.default_url_options = { host: "example.com" }
+  # config.i18n.fallbacks = true
+  # config.active_record.dump_schema_after_migration = false
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: 'smtp.gmail.com',
+    port: 587,
+    domain: 'heroku-domain.com',
+    user_name: ENV['GMAIL_USERNAME'],
+    password: ENV['GMAIL_APP_PASSWORD'],
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
+  config.action_mailer.default_url_options = { host: 'heroku-domain.com' }
 end
