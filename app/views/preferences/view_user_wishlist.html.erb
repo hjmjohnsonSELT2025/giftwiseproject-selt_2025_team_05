@@ -1,5 +1,5 @@
 <div>
-  <h1><%= @user.first_name %>'s Wishlist</h1>
+  <h1><%= @user.first_name %>'s Wishlist for <%=@event.name%></h1>
 
   <% if @preferences.any? %>
     <table class="table table-striped" style="max-width: 600px;">
@@ -25,13 +25,13 @@
             <%= "#{item.giver.first_name}" %>
             <% if item.giver == current_user %>
                 <%= button_to "Unclaim",
-                              unclaim_preference_preferences_path(item_id: item.id, user_id: current_user.id),
+                              unclaim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id),
                               method: :post,
                               class: "btn btn-sm btn-danger" %></td>
             <% end %>
           <% else %>
             <%= button_to "Claim this gift",
-                              claim_preference_preferences_path(item_id: item.id, user_id: current_user.id),
+                              claim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id),
                               method: :post,
                           class: "btn btn-sm btn-success" %>
           <% end %>

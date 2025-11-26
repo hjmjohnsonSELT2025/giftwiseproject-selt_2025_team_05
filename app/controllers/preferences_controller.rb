@@ -5,10 +5,11 @@ class PreferencesController < ApplicationController
   def claim_preference
     @item = Preference.find(params[:item_id])
     @item.giver = User.find(params[:user_id])
+    @item.event = Event.find(params[:event_id])
     if @item.save
-      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id), notice: "Gift claimed successfully!"
+      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id,  event_id: @item.event), notice: "Gift claimed successfully!"
     else
-      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id), alert: "Could not claim gift."
+      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id,  event_id: @item.event), alert: "Could not claim gift."
     end
   end
 
@@ -16,10 +17,12 @@ class PreferencesController < ApplicationController
     @item = Preference.find(params[:item_id])
     @item.giver = nil
     @item.purchased = nil
+    @item.event = nil
+    @event = Event.find(params[:event_id])
     if @item.save
-      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id), notice: "Gift unclaimed successfully!"
+      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id, event_id: @event.id), notice: "Gift unclaimed successfully!"
     else
-      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id), alert: "Could not unclaim gift."
+      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id, event_id: @event.id), alert: "Could not unclaim gift."
     end
   end
 
@@ -32,15 +35,17 @@ class PreferencesController < ApplicationController
       @preference.purchased = false
     end
     if @preference.save
-      redirect_to view_user_wishlist_preferences_path(user_id: @preference.user_id), notice: "Purchased status changed successfully!"
+      redirect_to view_user_wishlist_preferences_path(user_id: @preference.user_id, event_id: @preference.event), notice: "Purchased status changed successfully!"
     else
-      redirect_to view_user_wishlist_preferences_path(user_id: @preference.user_id), alert: "Could not change purchase status."
+      redirect_to view_user_wishlist_preferences_path(user_id: @preference.user_id, event_id: @preference.event), alert: "Could not change purchase status."
     end
 
   end
 
   def view_user_wishlist
     @user = User.find(params[:user_id])
+
+    @event = Event.find(params[:event_id])
     @preferences = @user.preferences
   end
 
