@@ -4,7 +4,7 @@ Feature: Add likes
   So my friends can give me gifts I'll like
 
   Background:
-    Given I am a logged in user
+    Given I am logged in as a user
 
   Scenario: Adding my interests to my bio
     When I click "View Profile"

@@ -19,18 +19,39 @@ class EventUsersController < ApplicationController
 
   def update
     @event_user = @event.event_users.find(params[:id])
+    new_status = params[:status].to_s
+    is_owner = @event.user_id == current_user.id
+    is_self = @event_user.user_id == current_user.id
 
-    if @event_user.user == current_user
-      new_status = params[:status].presence || 'joined'
+    if is_owner && !is_self
+      if new_status == 'left'
+        @event_user.update(status: :left)
+        redirect_to @event, notice: "#{@event_user.user.first_name} has been removed from the event."
+      else
+        redirect_to @event, alert: "As the owner, you can only remove participants."
+      end
 
-      if ['joined', 'declined'].include?(new_status.to_s)
+    elsif is_self
+
+      if new_status == 'left' && is_owner
+        redirect_to root_path, alert: "You cannot leave your own event. You must delete it instead."
+        return
+      end
+
+      if ['joined', 'declined', 'left'].include?(new_status)
         @event_user.update(status: new_status)
 
-        message = new_status.to_s == 'joined' ? "You have successfully joined the event!" : "You have declined the invitation."
+        message = case new_status
+                  when 'joined' then "You have successfully joined the event!"
+                  when 'declined' then "You have declined the invitation."
+                  when 'left' then "You have left the event."
+                  end
+
         redirect_to root_path, notice: message
       else
         redirect_to root_path, alert: "Invalid status update."
       end
+
     else
       redirect_to root_path, alert: "You are not authorized to perform this action."
     end
