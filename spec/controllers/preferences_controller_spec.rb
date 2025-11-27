@@ -23,9 +23,9 @@ RSpec.describe PreferencesController, type: :controller do
         created_preference = Preference.last
         expect(created_preference.on_user_wishlist).to eq(false)
       end
-      it 'redirects to event index with notice' do
+      it 'redirects to user wishlist with notice' do
         post :create_for_someone_else, params: { preference: valid_attributes, recipient_id: recipient.id, event_id: event.id}
-        expect(response).to redirect_to(event)
+        expect(response).to redirect_to(view_user_wishlist_preferences_path(event_id: event.id, user_id: recipient))
         expect(flash[:notice]).to eq("Item added!")
       end
       end
