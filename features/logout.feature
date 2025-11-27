@@ -4,7 +4,7 @@ Feature: Log out
   So no one else can access my account info
 
   Background:
-    Given a user is signed in
+    Given I am logged in as a user
 
   Scenario: Signing out from the home page
     When I click "Sign out"
