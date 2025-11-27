@@ -4,7 +4,7 @@ Feature: Add an item to my wishlist
   So people know what I want to get
 
   Background:
-    Given I am a user logged in
+    Given I am logged in as a user
 
   Scenario: Adding an item to my wishlist
     When I visit the wishlist page
