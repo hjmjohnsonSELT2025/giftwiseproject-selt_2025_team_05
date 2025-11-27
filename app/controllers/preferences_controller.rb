@@ -146,9 +146,9 @@ class PreferencesController < ApplicationController
     @preference.on_user_wishlist = false
 
     if @preference.save
-      redirect_to @event, notice: "Item added!"
+      redirect_to view_user_wishlist_preferences_path(user_id: @preference.user_id, event_id: @preference.event), notice: "Item added!"
     else
-      redirect_to @event, alert: "Could not add item."
+      redirect_to view_user_wishlist_preferences_path(user_id: @preference.user_id, event_id: @preference.event), alert: "Could not add item."
     end
   end
 
