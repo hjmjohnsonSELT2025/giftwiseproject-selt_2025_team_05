@@ -28,7 +28,7 @@ jobs:
           curl https://cli-assets.heroku.com/install.sh | sh
 
       - name: Push to Heroku
-        uses: akhileshns/heroku-deploy@v3.14.15
+        uses: akhileshns/heroku-deploy@v4
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "test-heroku-gift"
