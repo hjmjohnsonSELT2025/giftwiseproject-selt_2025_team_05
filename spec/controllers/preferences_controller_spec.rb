@@ -8,6 +8,7 @@ RSpec.describe PreferencesController, type: :controller do
   let(:event) {Event.create!(name: "Christmas", user: user)}
   let(:unclaimed_item) {Preference.create!(user: recipient, item_name: 'Test Item', cost: 999.99, event: event, on_user_wishlist: true)}
   let(:claimed_item) {Preference.create!(user: recipient, item_name: 'Test Item', cost: 999.99, event: event, giver: user, on_user_wishlist: true)}
+  let!(:claimed_item_not_wishlist) {Preference.create!(user: recipient, item_name: 'Test Item', cost: 999.99, event: event, giver: user, on_user_wishlist: false)}
 
   before do
     sign_in user
@@ -82,6 +83,11 @@ RSpec.describe PreferencesController, type: :controller do
         post :unclaim_preference, params: { item_id: claimed_item.id, user_id: user.id, event_id: event.id}
         expect(response).to redirect_to(view_user_wishlist_preferences_path(event_id: event.id, user_id: recipient))
       end
+      it 'deletes an unclaimed preference from the database if the preference is not on user wish list' do
+        expect {
+        post :unclaim_preference, params: { item_id: claimed_item_not_wishlist.id, user_id: user.id, event_id: event.id}
+        }.to change(Preference, :count).by(-1)
+      end
     end
   end
 
@@ -95,6 +101,11 @@ RSpec.describe PreferencesController, type: :controller do
       it 'redirects to the event index page' do
         post :unclaim_show_preference, params: { item_id: claimed_item.id, user_id: user.id, event_id: event.id}
         expect(response).to redirect_to(event)
+      end
+      it 'deletes an unclaimed preference from the database if the preference is not on user wish list' do
+        expect {
+          post :unclaim_show_preference, params: { item_id: claimed_item_not_wishlist.id, user_id: user.id, event_id: event.id}
+        }.to change(Preference, :count).by(-1)
       end
     end
   end

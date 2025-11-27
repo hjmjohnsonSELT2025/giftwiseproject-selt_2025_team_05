@@ -14,6 +14,9 @@ class PreferencesController < ApplicationController
   end
 
   def unclaim_preference
+
+
+
     @item = Preference.find(params[:item_id])
     @event = Event.find(params[:event_id])
     #if item.on_user_wishlist is false, then destroy the item.
