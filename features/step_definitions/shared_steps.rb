@@ -3,6 +3,7 @@ When("I fill in {string} with {string}") do |field, value|
 end
 
 When("I click {string}") do |button|
+  save_and_open_page
   click_on button
 end
 
