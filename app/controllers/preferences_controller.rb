@@ -149,17 +149,7 @@ class PreferencesController < ApplicationController
     end
   end
 
-  def create
-    @preference = Preference.new(preference_params)
-    @preference.user = current_user
-    @preference.on_user_wishlist = false
 
-    if @preference.save
-      redirect_to preferences_path, notice: "Item added to wish list!"
-    else
-      render :new
-    end
-  end
 
   def edit
     # @preference is set by set_preference before_action
