@@ -156,9 +156,22 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.6.2)
     docile (1.4.1)
+    dotenv (3.1.8)
+    dotenv-rails (3.1.8)
+      dotenv (= 3.1.8)
+      railties (>= 6.1)
     drb (2.2.3)
     erb (5.1.3)
     erubi (1.13.1)
+    event_stream_parser (1.0.0)
+    faraday (2.14.0)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-multipart (1.1.1)
+      multipart-post (~> 2.0)
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
     ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-aarch64-linux-musl)
     ffi (1.17.2-arm-linux-gnu)
@@ -204,7 +217,10 @@ GEM
     minitest (5.26.1)
     msgpack (1.8.0)
     multi_test (1.1.0)
+    multipart-post (2.4.1)
     mutex_m (0.3.0)
+    net-http (0.8.0)
+      uri (>= 0.11.1)
     net-imap (0.5.12)
       date
       net-protocol
@@ -364,6 +380,10 @@ GEM
       rubocop (>= 1.72)
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
+    ruby-openai (8.3.0)
+      event_stream_parser (>= 0.3.0, < 2.0.0)
+      faraday (>= 1)
+      faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     rubyzip (3.2.2)
     securerandom (0.4.1)
@@ -414,6 +434,7 @@ GEM
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.1.0)
+    uri (1.1.1)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.1)
@@ -451,6 +472,7 @@ DEPENDENCIES
   database_cleaner-active_record
   debug
   devise
+  dotenv-rails
   importmap-rails
   jbuilder
   pg (= 1.6.0.rc1)
@@ -464,6 +486,7 @@ DEPENDENCIES
   rspec-rails
   rubocop
   rubocop-rails-omakase (~> 1.1)
+  ruby-openai
   selenium-webdriver
   shoulda-matchers (~> 5.0)
   simplecov

@@ -47,6 +47,7 @@
               <th>Name</th>
               <th>Status</th>
               <th>Actions</th>
+              <th>AI Gift Assistant</th>
               <% if @event.user_id == current_user.id %>
                 <th>Manage</th>
               <% end %>
@@ -62,9 +63,6 @@
                     <%= event_user.status.capitalize %>
                   </span>
                 </td>
-                <td>
-
-                </td>
 
                 <td>
                   <% if event_user.joined? && event_user.user_id != current_user.id %>
@@ -73,6 +71,14 @@
                                   method: :get,
                                   class: "btn btn-sm btn-success" %>
                   <%end %>
+                </td>
+
+                <td>
+                  <% if event_user.user != current_user %>
+                    <%= link_to "Get gift ideas",
+                                event_event_user_gift_suggestions_path(@event, event_user),
+                                class: "btn btn-sm btn-primary" %>
+                  <% end %>
                 </td>
 
                 <% if @event.user_id == current_user.id %>
@@ -123,6 +129,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Action</th>
+
               </tr>
               </thead>
               <tbody>
@@ -136,6 +143,7 @@
                                   method: :post,
                                   class: "btn btn-sm btn-success" %>
                   </td>
+
                 </tr>
               <% end %>
               </tbody>
