@@ -18,7 +18,9 @@ Rails.application.routes.draw do
   #check app health
   get "/up", to: proc { [200, {}, ["OK"]] }
 
-  resources :preferences
+  resources :preferences do
+    post :create_on_wishlist, on: :collection
+  end
 
   resources :friendships, only: [:index, :new, :create, :update, :destroy]
 

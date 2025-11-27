@@ -9,16 +9,18 @@ RSpec.describe PreferencesController, type: :controller do
     sign_in user
   end
 
-  describe 'POST #create' do
+  describe 'POST #create_on_wishlist' do
     context 'with valid parameters' do
-      it 'creates a new preference' do
+      it 'creates a new preference with on_user_wishlist == true' do
         expect {
-          post :create, params: { preference: valid_attributes }
+          post :create_on_wishlist, params: { preference: valid_attributes }
         }.to change(Preference, :count).by(1)
+        created_preference = Preference.last
+        expect(created_preference.on_user_wishlist).to eq(true)
       end
 
       it 'redirects to preferences index with notice' do
-        post :create, params: { preference: valid_attributes }
+        post :create_on_wishlist, params: { preference: valid_attributes }
         expect(response).to redirect_to(preferences_path)
         expect(flash[:notice]).to eq('Item added to wish list!')
       end

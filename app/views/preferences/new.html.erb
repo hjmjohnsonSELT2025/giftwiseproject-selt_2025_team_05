@@ -5,7 +5,7 @@
 
     </div>
 
-    <%= form_with model: @preference, url: preferences_path do |form| %>
+    <%= form_with model: @preference, url: create_on_wishlist_preferences_path do |form| %>
       <div>
         <%= form.label :item_name, "Item Name *" %>
         <%= form.text_field :item_name, required: true, placeholder: "Enter item name" %>
