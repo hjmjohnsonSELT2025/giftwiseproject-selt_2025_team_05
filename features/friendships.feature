@@ -32,4 +32,16 @@ Feature: Manage friends
     Given "bob@test.com" has sent a friend request to "alice@test.com"
     When I go to the friends page
     And I press "Accept"
-    Then I should see "bob@test.com" in my friends list
+    Then I should see "bob@test.com" on the friends page
+
+  Scenario: Declining a friend request
+    Given "bob@test.com" has sent a friend request to "alice@test.com"
+    When I go to the friends page
+    And I press "Decline"
+    Then I should see "Friend removed."
+
+  Scenario: Removing a friend
+    Given I am friends with "bob@test.com"
+    When I go to the friends page
+    And I press "Remove"
+    Then I should see "Friend removed."
