@@ -23,9 +23,9 @@ end
 #fill_in field, with: string
 #end
 
-Then('I should not see {string}') do |string|
-  expect(page).not_to have_content(string)
-end
+#Then('I should not see {string}') do |string|
+#expect(page).not_to have_content(string)
+#end
 
 Given('{string} has sent a friend request to {string}') do |send, rec|
   sender = User.find_by!(email: send)
@@ -61,8 +61,4 @@ end
 Then('I should see {string} within the row for {string}') do |text, email|
   row = find(:xpath, "//tr[td[contains(., '#{email}')] and .//*[contains(., '#{text}')]]")
   expect(row).to have_content(text)
-end
-
-Then('I sghould see {string} on the friends page') do |string|
-  expect(page).to have_content(string)
 end
