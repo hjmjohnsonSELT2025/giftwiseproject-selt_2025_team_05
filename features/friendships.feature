@@ -45,3 +45,20 @@ Feature: Manage friends
     When I go to the friends page
     And I press "Remove"
     Then I should see "Friend removed."
+
+  Scenario: Visiting the friends page
+    Given "bob@test.com" has sent a friend request to "alice@test.com"
+    And I have sent a friend request to "bob@test.com"
+    And I am friends with "charlie@test.com"
+    When I go to the friends page
+    Then I should see "Incoming Request" within the row for "bob@test.com"
+    And I should see "Accept" within the row for "bob@test.com"
+    And I should see "Decline" within the row for "bob@test.com"
+    And I should see "Pending (Sent)" within the row for "bob@test.com"
+    And I should see "Cancel" within the row for "bob@test.com"
+    And I should see "Friend" within the row for "charlie@test.com"
+    And I should see "Remove" within the row for "charlie@test.com"
+
+
+
+
