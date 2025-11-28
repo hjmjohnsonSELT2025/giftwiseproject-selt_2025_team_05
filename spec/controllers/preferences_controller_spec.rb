@@ -31,6 +31,13 @@ RSpec.describe PreferencesController, type: :controller do
       end
   end
 
+  describe 'GET #view_user_wishlist' do
+    it 'returns user preferences' do
+      get :view_user_wishlist, params: { user_id: user.id, event_id: event.id }
+      expect(assigns(:preferences)).to eq(user.preferences) #this line's syntax from ChatGPT
+    end
+  end
+
   describe 'GET #new_for_someone_else' do
     context 'with valid parameters' do
       it 'redirects to the "adding to someone else wish list" page with notice' do
