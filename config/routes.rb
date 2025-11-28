@@ -20,6 +20,15 @@ Rails.application.routes.draw do
 
   resources :preferences do
     post :create_on_wishlist, on: :collection
+    get 'view_user_wishlist/:user_id/:event_id', to: 'preferences#view_user_wishlist', on: :collection, as: :view_user_wishlist #chatgpt helped generate the syntax for this custom route
+    post 'claim_preference', to: 'preferences#claim_preference', on: :collection, as: :claim_preference
+    post 'unclaim_preference', to: 'preferences#unclaim_preference', on: :collection, as: :unclaim_preference
+    post 'unclaim_show_preference', to: 'preferences#unclaim_show_preference', on: :collection, as: :unclaim_show_preference
+    post :toggle_purchase, on: :member
+    post :toggle_purchase_show, on: :member
+    post 'create_for_someone_else', to: 'preferences#create_for_someone_else', on: :collection, as: :create_for_someone_else
+    get 'new_for_someone_else', to: 'preferences#new_for_someone_else', on: :collection, as: :new_for_someone_else
+
   end
 
   resources :friendships, only: [:index, :new, :create, :update, :destroy]
