@@ -39,7 +39,7 @@ https://github.com/eltonlazzarin/friends-list-rails
         <%= button_to "Decline",
                       friendship_path(incoming_friend),
                       method: :delete,
-                      data: { confirm: "Decline this friend request?" },
+                      data: { turbo_confirm: "Decline this friend request?" },
                       class: "btn btn-sm btn-danger" %>
 
       </td>
@@ -61,7 +61,7 @@ https://github.com/eltonlazzarin/friends-list-rails
         <%= button_to "Cancel",
                       friendship_path(outgoing_friend),
                       method: :delete,
-                      data: { confirm: "Cancel this pending request?" },
+                      data: { turbo_confirm: "Cancel this pending request?" },
                       class: "btn btn-sm btn-danger" %>
 
       </td>

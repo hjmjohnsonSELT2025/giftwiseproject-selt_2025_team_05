@@ -80,4 +80,49 @@ RSpec.describe "Friendships", type: :request do
       expect(flash[:alert]).to eq("Not authorized to remove this friendship.")
     end
   end
+
+  describe "GET /friendships" do
+    it "assigns incoming, outgoing, and accepted friendships" do
+      incoming = Friendship.create!(user: friend, friend: user, status: :pending)
+      outgoing = Friendship.create!(user: user, friend: friend, status: :pending)
+
+      # Use a *different* user to avoid violating uniqueness validation
+      other_user = User.create!(email: "c@test.com", password: "password")
+      accepted   = Friendship.create!(user: user, friend: other_user, status: :accepted)
+
+      get friendships_path
+
+      expect(response).to have_http_status(:ok)
+      expect(assigns(:incoming)).to include(incoming)
+      expect(assigns(:outgoing)).to include(outgoing)
+      expect(assigns(:friends)).to include(other_user)
+    end
+  end
+
+  describe "GET /friendships/new" do
+    it "performs case-insensitive searching" do
+      upper = User.create!(email: "UPPER@test.com", first_name: "MIKE", last_name: "SMITH", password: "password")
+
+      get new_friendship_path, params: { q: "mike" }  # lowercase search
+
+      expect(assigns(:results)).to include(upper)
+    end
+
+    it "returns the users matching the search query" do
+      match = User.create!(email: "charlie@test.com", first_name: "Charlie", last_name: "Brown", password: "password")
+      no_match = User.create!(email: "zzz@test.com", first_name: "Zed", last_name: "Zebra", password: "password")
+
+      get new_friendship_path, params: { q: "char" }
+      results = assigns(:results)
+
+      expect(results).to include(match)
+      expect(results).not_to include(no_match)
+      expect(results).not_to include(user)
+    end
+
+    it "returns an empty array when no search is provided" do
+      get new_friendship_path
+      expect(assigns(:results)).to eq([])
+    end
+  end
 end
