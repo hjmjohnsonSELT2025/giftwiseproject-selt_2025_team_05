@@ -4,7 +4,7 @@ class HomeController < ApplicationController
   def index
     @upcoming_events = current_user.event_users
                                    .includes(:event)
-                                   .where(status: :joined)
+                                   .where(status: [ :invited, :joined ])
                                    .where("events.deleted = ? AND events.date >= ?", false, Date.today)
                                    .references(:event)
                                    .order("events.date")

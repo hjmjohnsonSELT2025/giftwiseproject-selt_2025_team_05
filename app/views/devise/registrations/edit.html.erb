@@ -52,8 +52,9 @@
   </div>
 
   <div class="actions">
-    <%= f.submit "Update" %>
+    <br>
+    <%= f.submit "Update", class: "btn btn-primary" %>
   </div>
 <% end %>
-
-<%= link_to "Back to Profile", user_show_path %>
+<br>
+<%= link_to "Back to Profile", user_show_path, class: "btn btn-secondary" %>

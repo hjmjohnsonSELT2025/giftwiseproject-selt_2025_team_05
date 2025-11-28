@@ -10,39 +10,55 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_13_041825) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_26_023738) do
   create_table "event_users", force: :cascade do |t|
     t.integer "event_id", null: false
+    t.integer "user_id", null: false
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "budget", precision: 10, scale: 2, default: "0.0"
-    t.integer "user_id"
+    t.index ["event_id", "user_id"], name: "index_event_users_on_event_id_and_user_id", unique: true
     t.index ["event_id"], name: "index_event_users_on_event_id"
-    t.index ["event_id"], name: "index_event_users_on_event_id_and_user_id", unique: true
     t.index ["user_id"], name: "index_event_users_on_user_id"
   end
 
   create_table "events", force: :cascade do |t|
     t.string "name", null: false
+    t.integer "user_id", null: false
     t.datetime "date"
     t.string "address"
     t.text "description"
     t.boolean "deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.integer "event_type", default: 0, null: false
     t.index ["user_id", "name"], name: "index_events_on_user_id_and_name", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
+  create_table "friendships", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "friend_id", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friend_id"], name: "index_friendships_on_friend_id"
+    t.index ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true
+    t.index ["user_id"], name: "index_friendships_on_user_id"
+  end
+
   create_table "preferences", force: :cascade do |t|
+    t.integer "user_id", null: false
     t.string "item_name"
     t.decimal "cost"
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.integer "giver_id"
+    t.boolean "purchased"
+    t.boolean "on_user_wishlist"
+    t.index ["giver_id"], name: "index_preferences_on_giver_id"
     t.index ["user_id"], name: "index_preferences_on_user_id"
   end
 
@@ -65,5 +81,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_13_041825) do
   add_foreign_key "event_users", "events"
   add_foreign_key "event_users", "users"
   add_foreign_key "events", "users"
+  add_foreign_key "friendships", "users"
+  add_foreign_key "friendships", "users", column: "friend_id"
   add_foreign_key "preferences", "users"
+  add_foreign_key "preferences", "users", column: "giver_id"
 end

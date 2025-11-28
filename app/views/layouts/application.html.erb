@@ -1,37 +1,96 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>GiftwiseprojectSelt2025Team05</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>GiftwiseprojectSelt2025Team05</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-    <%= javascript_importmap_tags %>
-  </head>
+  <%= javascript_importmap_tags %>
+</head>
 
-  <body>
-  <% flash.each do |type, message| %>
-    <% if message.present? %>
-      <% bootstrap_class =
-           case type.to_sym
-           when :notice then "alert-success"
-           when :alert  then "alert-warning"
-           else "alert-info"
-           end
-      %>
-      <div class="container mt-3">
-        <div class="alert <%= bootstrap_class %> alert-dismissible fade show text-center" role="alert">
-          <%= message %>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+  <div class="container">
+
+    <!-- LEFT: GiftWise brand -->
+    <%= link_to "🎁 GiftWise", root_path, class: "navbar-brand fs-3 fw-bold text-primary" %>
+
+    <!-- Toggle button for mobile view -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- CENTER: Navigation Tabs -->
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <% if user_signed_in? %>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <%= link_to "Events", root_path, class: "nav-link px-3 fw-semibold #{'active text-primary' if current_page?(root_path)}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Friends", friendships_path, class: "nav-link px-3 fw-semibold #{'active text-primary' if current_page?(friendships_path)}" %>
+          </li>
+          <li class="nav-item">
+            <!-- If this route is not defined yet, change to root_path temporarily -->
+            <%= link_to "Wishlist", preferences_path, class: "nav-link px-3 fw-semibold #{'active text-primary' if current_page?(preferences_path)}" %>
+          </li>
+        </ul>
+      <% end %>
+    </div>
+
+    <!-- RIGHT: User menu -->
+    <div class="d-flex align-items-center gap-3">
+      <% if user_signed_in? %>
+
+        <span class="fw-semibold d-none d-md-inline">Hi, <%= current_user.first_name %>!</span>
+
+        <%= link_to "View Profile",
+                    user_show_path,
+                    class: "btn btn-outline-primary btn-sm" %>
+
+        <%= button_to "Sign out",
+                      destroy_user_session_path,
+                      method: :delete,
+                      class: "btn btn-outline-danger btn-sm",
+                      form: { class: "d-inline" } %>
+
+      <% else %>
+
+        <%= link_to "Sign in",
+                    new_user_session_path,
+                    class: "btn btn-outline-primary btn-sm" %>
+
+      <% end %>
+    </div>
+
+  </div>
+</nav>
+
+<% flash.each do |type, message| %>
+  <% if message.present? %>
+    <% bootstrap_class =
+         case type.to_sym
+         when :notice then "alert-success"
+         when :alert  then "alert-warning"
+         else "alert-info"
+         end
+    %>
+    <div class="container mt-3">
+      <div class="alert <%= bootstrap_class %> alert-dismissible fade show text-center" role="alert">
+        <%= message %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-    <% end %>
+    </div>
   <% end %>
-  <%= yield %>
+<% end %>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  </body>
+<%= yield %>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
 </html>

@@ -10,6 +10,8 @@ gem "sprockets-rails"
 
 gem "devise"
 
+gem "ruby-openai"
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
@@ -44,6 +46,8 @@ gem "bootsnap", require: false
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
+  # Loads variables from .env into server on startup
+  gem "dotenv-rails"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
   # Use sqlite3 as the database for Active Record
@@ -74,6 +78,7 @@ group :test do
   gem "cucumber"
   gem "cucumber-rails", require: false
   gem "database_cleaner-active_record"
+  gem "shoulda-matchers", "~> 5.0"
 end
 
 # from textbook section 4.8

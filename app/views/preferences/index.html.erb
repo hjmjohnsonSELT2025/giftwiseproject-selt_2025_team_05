@@ -2,7 +2,6 @@
   <div>
     <h1>My Wish List</h1>
     <%= link_to "Add New Item", new_preference_path, class: "btn btn-primary" %>
-    <%= link_to "Back to Home", root_path, class: "btn btn-secondary" %>
   </div>
 
   <% if @preferences.any? %>

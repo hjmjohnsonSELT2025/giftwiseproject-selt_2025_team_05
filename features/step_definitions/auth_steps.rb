@@ -4,7 +4,7 @@ Given("a registered user exists") do
   end
 end
 
-Given("a user is signed in") do
+Given("I am logged in as a user") do
   @user = User.create!(email: "logouttester@example.com", password: "password")
   visit new_user_session_path
   fill_in "Email", with: @user.email
