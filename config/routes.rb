@@ -5,7 +5,10 @@ Rails.application.routes.draw do
   }
 
   resources :events do
-    resources :event_users, only: [:create, :update]
+    resources :event_users, only: [:create, :update, :show] do
+      get :gift_suggestions, to: "gift_suggestions#show"
+      post :gift_suggestions, to: "gift_suggestions#create"
+    end
   end
 
   devise_scope :user do
@@ -15,7 +18,18 @@ Rails.application.routes.draw do
   #check app health
   get "/up", to: proc { [200, {}, ["OK"]] }
 
-  resources :preferences
+  resources :preferences do
+    post :create_on_wishlist, on: :collection
+    get 'view_user_wishlist/:user_id/:event_id', to: 'preferences#view_user_wishlist', on: :collection, as: :view_user_wishlist
+    post 'claim_preference', to: 'preferences#claim_preference', on: :collection, as: :claim_preference
+    post 'unclaim_preference', to: 'preferences#unclaim_preference', on: :collection, as: :unclaim_preference
+    post 'unclaim_show_preference', to: 'preferences#unclaim_show_preference', on: :collection, as: :unclaim_show_preference
+    post :toggle_purchase, on: :member
+    post :toggle_purchase_show, on: :member
+    post 'create_for_someone_else', to: 'preferences#create_for_someone_else', on: :collection, as: :create_for_someone_else
+    get 'new_for_someone_else', to: 'preferences#new_for_someone_else', on: :collection, as: :new_for_someone_else
+
+  end
 
   resources :friendships, only: [:index, :new, :create, :update, :destroy]
 

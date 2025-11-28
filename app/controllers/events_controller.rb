@@ -2,6 +2,7 @@ class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :authorize_event_owner!, only: [:edit, :update, :destroy]
+
   def new
     @event = current_user.events.build
   end
@@ -23,8 +24,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    if params[:query].present?
-      # We exclude users who are already participants to avoid duplicates
+    if params[:query].present? && @event.user_id == current_user.id
       participant_ids = @event.event_users.where(status: [:joined, :invited]).pluck(:user_id)
       @found_users = User.search_by_name_or_email(params[:query])
                          .where.not(id: participant_ids)
@@ -33,7 +33,6 @@ class EventsController < ApplicationController
 
   def edit
   end
-
 
   def update
     if @event.update(event_params)
@@ -46,7 +45,10 @@ class EventsController < ApplicationController
   private
 
   def set_event
-    @event = Event.find(params[:id])
+    @event = Event.find_by(id: params[:id])
+    if @event.nil? || @event.deleted
+      redirect_to root_path, alert: "Event not found or has been deleted."
+    end
   end
 
   def authorize_event_owner!

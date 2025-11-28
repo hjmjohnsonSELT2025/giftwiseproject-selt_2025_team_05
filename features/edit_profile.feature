@@ -4,7 +4,7 @@ Feature: Edit profile information
   So my profile accurately reflects me and my friends can recognize me
 
   Background:
-    Given I am a logged in user
+    Given I am logged in as a user
 
   Scenario: Changing profile info
     When I click "View Profile"
