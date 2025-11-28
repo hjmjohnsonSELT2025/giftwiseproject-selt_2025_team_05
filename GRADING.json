@@ -2,7 +2,7 @@
   "GROUP" : "G005",
   "ALL_SPRINTS" : {
     "SPRINT1_URL" : "https://test-heroku-gift-d2da158a293e.herokuapp.com",
-    "SPRINT2_URL" : "http://blah.blee.boo/myapp",
+    "SPRINT2_URL" : "https://test-heroku-gift-d2da158a293e.herokuapp.com",
     "SPRINT3_URL" : "http://blah.blee.boo/myapp",
     "FINAL_URL" : "http://blah.blee.boo/myapp"
   }
