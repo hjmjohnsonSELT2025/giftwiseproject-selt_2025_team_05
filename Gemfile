@@ -78,7 +78,7 @@ group :test do
   gem "cucumber"
   gem "cucumber-rails", require: false
   gem "database_cleaner-active_record"
-  gem "shoulda-matchers", "~> 5.0"
+  gem "shoulda-matchers", "~> 7.0"
 end
 
 # from textbook section 4.8
