@@ -33,14 +33,16 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     port: 587,
-    domain: 'gmail.com',
+    domain: 'test-heroku-gift-d2da158a293e.herokuapp.com',
     user_name: ENV['GMAIL_USERNAME'],
     password: ENV['GMAIL_APP_PASSWORD'],
     authentication: 'plain',
     enable_starttls_auto: true
   }
 
+
   config.action_mailer.default_url_options = {
-    host: 'email-passward-test-da694bad9f78.herokuapp.com'
+    host: 'test-heroku-gift-d2da158a293e.herokuapp.com',
+    protocol: 'https'
   }
 end
