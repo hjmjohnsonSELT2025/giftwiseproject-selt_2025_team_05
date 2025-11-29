@@ -56,3 +56,4 @@ coverage/
 /config/*.key
 
 Gemfile.lock
+Gemfile.lock
