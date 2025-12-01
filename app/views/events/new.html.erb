@@ -1,47 +1,53 @@
-<h1>New Event</h1>
+<div class="container py-4">
+  <div class="text-center mb-5">
+    <h1 class="h4 mb-1">Create a New Event</h1>
+  </div>
 
-<%= form_with(model: @event, local: true) do |form| %>
-  <% if @event.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
-      <ul>
-        <% @event.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <%= form_with(model: @event, local: true, html: { class: "mx-auto", style: "max-width: 480px;" }) do |form| %>
+    <% if @event.errors.any? %>
+      <div class="alert alert-danger">
+        <strong><%= pluralize(@event.errors.count, "error") %></strong> prevented this event from being saved:
+        <ul class="mb-0">
+          <% @event.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="mb-3">
+      <%= form.label :name, class: "form-label" %>
+      <%= form.text_field :name, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :date, "Event Date", class: "form-label" %>
+      <%= form.date_field :date, value: @event.date&.to_date, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :time, "Event Time", class: "form-label" %>
+      <%= form.time_field :date, value: @event.date&.strftime("%H:%M"), class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :address, class: "form-label" %>
+      <%= form.text_field :address, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :event_type, "Event Type", class: "form-label" %>
+      <%= form.select :event_type, Event.event_types.keys.map { |t| [t.titleize, t] }, {}, class: "form-select" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :description, class: "form-label" %>
+      <%= form.text_area :description, class: "form-control", rows: 3 %>
+    </div>
+
+    <div class="d-flex gap-2">
+      <%= form.submit "Create Event", class: "btn btn-primary" %>
+      <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
     </div>
   <% end %>
-
-  <div>
-    <%= form.label :name %><br>
-    <%= form.text_field :name %>
-  </div>
-
-  <div>
-    <%= form.label :date %><br>
-    <%= form.datetime_select :date %>
-  </div>
-
-  <div>
-    <%= form.label :address %><br>
-    <%= form.text_field :address %>
-  </div>
-
-  <div>
-    <%= form.label :event_type, "Event Type" %><br>
-    <%= form.select :event_type,
-                    Event.event_types.keys.map { |t| [t.titleize, t] },
-                    {},
-                    class: "form-select" %>
-  </div>
-
-
-  <div>
-    <%= form.label :description %><br>
-    <%= form.text_area :description %>
-  </div>
-
-  <%= form.submit "Create Event", class: "btn btn-primary" %>
-<% end %>
-<br>
-<%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
+</div>
