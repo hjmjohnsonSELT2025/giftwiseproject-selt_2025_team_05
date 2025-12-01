@@ -155,49 +155,49 @@
       </div>
     </div>
   <% end %>
-  <h2>My Gifts To Others</h2>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title h5 mb-3">My Gifts To Others</h2>
 
-  <% gifts = Preference.where(giver: current_user, event: @event) %>
+      <% gifts = Preference.where(giver: current_user, event: @event) %>
 
-  <% if gifts.any? %>
-    <table class="table table-striped" style="max-width: 600px;">
-      <thead>
-      <tr>
-        <th>Item Name</th>
-        <th>Cost</th>
-        <th>Recipient</th>
-        <th>Purchased?</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% gifts.each do |gift| %>
-        <tr>
-          <td><%= "#{gift.item_name}" %></td>
-          <td><%= "#{gift.cost}" %></td>
-          <td><%= "#{User.find_by(id: gift.user_id).first_name}" %></td>
-          <td>
-            <!-- Checkbox from ChatGPT -->
-            <%= form_with model: gift, url: toggle_purchase_show_preference_path(gift), method: :post, local: true do |f| %>
-
-              <%= f.check_box :purchased, checked: gift.purchased,  onchange: 'this.form.submit();' %>
-
+      <% if gifts.any? %>
+        <div class="table-responsive" style="max-width: 700px;">
+          <table class="table table-striped align-middle mb-0">
+            <thead class="table-light">
+            <tr>
+              <th>Item Name</th>
+              <th>Cost</th>
+              <th>Recipient</th>
+              <th>Purchased?</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% gifts.each do |gift| %>
+              <tr>
+                <td><%= "#{gift.item_name}" %></td>
+                <td><%= "#{gift.cost}" %></td>
+                <td><%= "#{User.find_by(id: gift.user_id).first_name}" %></td>
+                <td>
+                  <%= form_with model: gift, url: toggle_purchase_show_preference_path(gift), method: :post, local: true do |f| %>
+                    <%= f.check_box :purchased, checked: gift.purchased, onchange: 'this.form.submit();' %>
+                  <% end %>
+                </td>
+                <td><%= button_to "Unclaim",
+                                  unclaim_show_preference_preferences_path(item_id: gift.id, user_id: current_user.id, event_id: @event.id),
+                                  method: :post,
+                                  class: "btn btn-sm btn-danger" %></td>
+              </tr>
             <% end %>
-          </td>
-          <td><%= button_to "Unclaim",
-                            unclaim_show_preference_preferences_path(item_id: gift.id, user_id: current_user.id, event_id: @event.id),
-                            method: :post,
-                            class: "btn btn-sm btn-danger" %></td>
-        </tr>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <p class="text-muted mb-0">No gifts yet.</p>
       <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p>No gifts yet.</p>
-  <% end %>
-
-
-
-
+    </div>
+  </div>
   <br>
   <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
 
