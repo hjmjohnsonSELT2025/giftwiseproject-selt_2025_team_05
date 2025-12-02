@@ -1,42 +1,48 @@
-<div>
-  <div>
-    <h1>My Wish List</h1>
+<div class="container py-4">
+  <h1 class="h4 mb-1 text-center">My Wish List</h1>
+  <p class="text-muted mb-0 text-center">Add the gift ideas that you would like to receive.</p>
+  <div class="text-center my-3">
     <%= link_to "Add New Item", new_preference_path, class: "btn btn-primary" %>
   </div>
 
+
   <% if @preferences.any? %>
-    <div class="wishlist-stats">
-      <p>Total items: <%= @preferences.count %></p>
-      <p>Total value: $<%= number_with_precision(@preferences.sum(:cost), precision: 2) %></p>
+    <div class="card shadow-sm mb-3">
+      <div class="card-body d-flex gap-4 flex-wrap">
+        <div><strong>Total items:</strong> <%= @preferences.count %></div>
+        <div><strong>Total value:</strong> $<%= number_with_precision(@preferences.sum(:cost), precision: 2) %></div>
+      </div>
     </div>
 
-    <div class="wishlist-items">
+    <div class="row row-cols-1 row-cols-md-2 g-3">
       <% @preferences.each do |preference| %>
-        <div class="wishlist-item">
-          <div class="item-header">
-            <h3><%= preference.item_name %></h3>
-            <span class="cost">$<%= number_with_precision(preference.cost, precision: 2) %></span>
-          </div>
+        <div class="col">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h3 class="h6 mb-0"><%= preference.item_name %></h3>
+                <span class="badge bg-secondary">$<%= number_with_precision(preference.cost, precision: 2) %></span>
+              </div>
 
-          <% if preference.notes.present? %>
-            <p class="notes"><%= preference.notes %></p>
-          <% end %>
+              <% if preference.notes.present? %>
+                <p class="text-muted mb-3"><%= preference.notes %></p>
+              <% end %>
 
-          <div class="item-actions">
-            <%= link_to "Edit", edit_preference_path(preference), class: "btn btn-secondary" %>
-            <%= button_to "Delete", preference_path(preference),
-                          method: :delete,
-                          data: { confirm: 'Remove this item from your wishlist?' },
-                          class: "btn btn-danger",
-                          form: { class: "inline-form" } %>
+              <div class="d-flex gap-2">
+                <%= link_to "Edit", edit_preference_path(preference), class: "btn btn-outline-warning btn-sm" %>
+                <%= button_to "Delete", preference_path(preference), method: :delete, data: { confirm: 'Remove this item from your wishlist?' }, class: "btn btn-outline-danger btn-sm" %>
+              </div>
+            </div>
           </div>
         </div>
       <% end %>
     </div>
   <% else %>
-    <div class="empty-wishlist">
-      <h3>No items in your wishlist yet</h3>
-      <p><%= link_to "Add your first item!", new_preference_path, class: "btn btn-primary" %></p>
+    <div class="card border shadow-sm text-center mt-6">
+      <div class="card-body">
+        <h5 class="mb-2">No items in your wishlist yet</h5>
+        <p class="mb-3 text-muted">Start adding ideas so friends know you like</p>
+      </div>
     </div>
   <% end %>
 </div>
