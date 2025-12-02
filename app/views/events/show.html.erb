@@ -69,7 +69,7 @@
                     <%= button_to "View Wish List",
                                   view_user_wishlist_preferences_path(user_id: event_user.user.id, event_id: @event.id),
                                   method: :get,
-                                  class: "btn btn-sm btn-success" %>
+                                  class: "btn btn-sm btn-info text-white" %>
                   <%end %>
                 </td>
 
@@ -114,7 +114,7 @@
                                 value: params[:query],
                                 placeholder: "Search email or name...",
                                 class: "form-control" %>
-            <%= form.submit "Search", class: "btn btn-outline-primary" %>
+            <%= form.submit "Search", class: "btn btn-success" %>
             <% if params[:query].present? %>
               <%= link_to "Clear", event_path(@event), class: "btn btn-secondary" %>
             <% end %>
