@@ -12,38 +12,95 @@
     </div>
   <% end %>
 
-  <div class="mb-3">
-    <%= form.label :name, class: "form-label" %>
-    <%= form.text_field :name, class: "form-control" %>
+  <div class="row">
+    <div class="col-md-7">
+      <div class="mb-3">
+        <%= form.label :name, class: "form-label" %>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :date, class: "form-label" %>
+        <%= form.datetime_field :date,
+                                min: Time.current.strftime("%Y-%m-%dT%H:%M"),
+                                class: "form-control" %>
+        <small class="text-muted">You cannot select a date in the past.</small>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :address, class: "form-label" %>
+        <%= form.text_field :address, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :event_type, "Event Type", class: "form-label" %>
+        <%= form.select :event_type,
+                        Event.event_types.keys.map { |t| [t.titleize, t] },
+                        {},
+                        class: "form-select" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :description, class: "form-label" %>
+        <%= form.text_area :description, class: "form-control", rows: 4 %>
+      </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="card shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Invite Friends</h5>
+        </div>
+        <div class="card-body">
+          <input type="text" id="friend-search" class="form-control mb-3" placeholder="Search friends by name...">
+
+          <div class="friend-list-container" style="max-height: 400px; overflow-y: auto;">
+            <% if @friends.any? %>
+              <% @friends.each do |friend| %>
+                <div class="form-check friend-item">
+                  <%= check_box_tag "participant_ids[]", friend.id, false, class: "form-check-input", id: "user_#{friend.id}" %>
+                  <label class="form-check-label w-100" for="user_<%= friend.id %>">
+                    <strong><%= friend.first_name %> <%= friend.last_name %></strong><br>
+                    <small class="text-muted"><%= friend.email %></small>
+                  </label>
+                </div>
+                <hr class="my-1 text-muted">
+              <% end %>
+            <% else %>
+              <p class="text-muted small">You don't have any friends to invite yet.</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :date, class: "form-label" %>
-    <%= form.datetime_field :date,
-                            min: Time.current.strftime("%Y-%m-%dT%H:%M"),
-                            class: "form-control" %>
-    <small class="text-muted">You cannot select a date in the past.</small>
+  <div class="mt-4">
+    <%= form.submit "Create Event", class: "btn btn-primary" %>
+    <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary ms-2" %>
   </div>
-
-  <div class="mb-3">
-    <%= form.label :address, class: "form-label" %>
-    <%= form.text_field :address, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :event_type, "Event Type", class: "form-label" %>
-    <%= form.select :event_type,
-                    Event.event_types.keys.map { |t| [t.titleize, t] },
-                    {},
-                    class: "form-select" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :description, class: "form-label" %>
-    <%= form.text_area :description, class: "form-control" %>
-  </div>
-
-  <%= form.submit "Create Event", class: "btn btn-primary" %>
 <% end %>
-<br>
-<%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("friend-search");
+        const friendItems = document.querySelectorAll(".friend-item");
+
+        if(searchInput) {
+            searchInput.addEventListener("keyup", function(e) {
+                const searchText = e.target.value.toLowerCase();
+
+                friendItems.forEach(function(item) {
+                    const label = item.querySelector("label").innerText.toLowerCase();
+                    if (label.includes(searchText)) {
+                        item.style.display = "block";
+                        // Make sure the separator line is also handled if necessary,
+                        // but for simplicity we just hide the item div
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+            });
+        }
+    });
+</script>

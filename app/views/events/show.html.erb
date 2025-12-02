@@ -120,7 +120,8 @@
   <% if @event.user_id == current_user.id && !is_past %>
     <div class="card shadow-sm mb-4">
       <div class="card-body">
-        <h3 class="card-title mb-3">Find Users to Invite</h3>
+        <h3 class="card-title mb-3">Invite Friends</h3>
+
         <%= form_with(url: event_path(@event), method: :get, local: true, class: "search-form") do |form| %>
           <div class="input-group mb-3" style="max-width: 600px;">
             <%= form.text_field :query,
@@ -128,6 +129,7 @@
                                 placeholder: "Search email or name...",
                                 class: "form-control" %>
             <%= form.submit "Search", class: "btn btn-outline-primary" %>
+
             <% if params[:query].present? %>
               <%= link_to "Clear", event_path(@event), class: "btn btn-secondary" %>
             <% end %>
@@ -135,13 +137,21 @@
         <% end %>
 
         <% if @found_users.present? %>
+          <p class="text-muted mb-2">
+            <% if params[:query].present? %>
+              Search Results:
+            <% else %>
+              Suggestions (Your Friends):
+            <% end %>
+          </p>
+
           <div class="table-responsive">
-            <table class="table table-bordered mb-0" style="max-width: 600px;">
-              <thead>
+            <table class="table table-bordered mb-0 align-middle" style="max-width: 600px;">
+              <thead class="table-light">
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Action</th>
+                <th style="width: 150px;">Action</th>
               </tr>
               </thead>
               <tbody>
@@ -153,15 +163,24 @@
                     <%= button_to "Add to Event",
                                   event_event_users_path(@event, user_id: user.id),
                                   method: :post,
-                                  class: "btn btn-sm btn-success" %>
+                                  class: "btn btn-sm btn-success w-100" %>
                   </td>
                 </tr>
               <% end %>
               </tbody>
             </table>
           </div>
-        <% elsif params[:query].present? %>
-          <p class="text-muted mb-0">No users found matching "<%= params[:query] %>"</p>
+
+        <% else %>
+          <% if params[:query].present? %>
+            <div class="alert alert-warning">
+              No users found matching "<%= params[:query] %>"
+            </div>
+          <% else %>
+            <div class="alert alert-light text-muted">
+              No friends available to invite. (They might already be in the event!)
+            </div>
+          <% end %>
         <% end %>
       </div>
     </div>

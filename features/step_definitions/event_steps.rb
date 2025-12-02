@@ -20,7 +20,7 @@ Given("there is another user named {string} with email {string}") do |name, emai
 end
 
 Given("I am logged in as a user named {string}") do |name|
-  email = "#{name.downcase}@test.com"
+  email = "#{name.downcase}@gmail.com"
   @user = User.find_or_create_by!(email: email) do |u|
     u.first_name = name
     u.last_name = "User"
@@ -109,9 +109,24 @@ Then("I should see {string} in the participants list with status {string}") do |
   expect(row).to have_content(status)
 end
 
-Then("I should not see {string} in the participants list") do |participant_name|
-  if page.has_css?('table')
-    expect(page).not_to have_css('table', text: participant_name)
+
+# 1. Affirmative Step: Check that someone IS in the participants list
+Then("I should see {string} in the participants list") do |name|
+  # Find the specific Card that contains the header "Participants"
+  participant_card = find('.card', text: 'Participants')
+
+  within(participant_card) do
+    expect(page).to have_content(name)
+  end
+end
+
+# 2. Negative Step: Check that someone is NOT in the participants list
+# This will now PASS even if Bob is visible in the "Invite Friends" list below
+Then("I should not see {string} in the participants list") do |name|
+  participant_card = find('.card', text: 'Participants')
+
+  within(participant_card) do
+    expect(page).not_to have_content(name)
   end
 end
 
@@ -160,5 +175,62 @@ When("I click {string} for {string}") do |link_text, row_text|
   # 2. Scope the click action to ONLY happen inside that specific row
   within(row) do
     click_link(link_text)
+  end
+end
+
+Given("I have a friend named {string}") do |full_name|
+  first, last = full_name.split(" ")
+  friend = User.create!(
+    email: "#{first.downcase}@example.com",
+    password: "password",
+    first_name: first,
+    last_name: last
+  )
+
+  # Create the friendship in the database (Adjust based on your Friendship model)
+  # Assuming you have a standard Friendship model
+  Friendship.create!(user: @user, friend: friend, status: :accepted)
+  Friendship.create!(user: friend, friend: @user, status: :accepted)
+end
+
+Then("I should see {string} next to {string}") do |status, name|
+  # Finds the row containing the name, checks for status badge
+  row = find('tr', text: name)
+  expect(row).to have_content(status)
+end
+
+Then("I should see {string} within the invite suggestions") do |name|
+  # This targets the "Invite Friends" card/table
+  within(".card", text: "Invite Friends") do
+    expect(page).to have_content(name)
+  end
+end
+
+Then("I should not see {string} within the invite suggestions") do |name|
+  within(".card", text: "Invite Friends") do
+    expect(page).not_to have_content(name)
+  end
+end
+
+When("I click {string} for user {string}") do |button_text, user_name|
+  # 1. Scope strictly to the "Invite Friends" card so we don't accidentally
+  #    find the user in the "Participants" list (if they are already there).
+  within(".card", text: "Invite Friends") do
+
+    # 2. Find the row containing the user's name.
+    #    Add `match: :first` to ignore duplicates if the user appears twice in the list.
+    row = find('tr', text: user_name, match: :first)
+
+    # 3. Click the specific button inside that row
+    within(row) do
+      click_button button_text
+    end
+  end
+end
+
+When("I check {string}") do |label_text|
+  # Scope to the specific list and grab the first match to ignore any ambiguity
+  within(".friend-list-container") do
+    check(label_text, allow_label_click: true, match: :first)
   end
 end
