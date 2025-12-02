@@ -30,7 +30,7 @@ https://github.com/eltonlazzarin/friends-list-rails
           <td><%= user.email %></td>
           <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
           <td><%= truncate(user.bio.to_s, length: 40) %></td>
-          <td><span class="badge bg-warning text-dark">Incoming</span></td>
+          <td><span class="badge bg-warning text-dark">Incoming Request</span></td>
           <td class="text-end">
             <div class="btn-group" role="group">
               <%= button_to "Accept",
@@ -55,7 +55,7 @@ https://github.com/eltonlazzarin/friends-list-rails
           <td><%= user.email %></td>
           <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
           <td><%= truncate(user.bio.to_s, length: 40) %></td>
-          <td><span class="badge bg-info text-dark">Pending</span></td>
+          <td><span class="badge bg-info text-dark">Pending (Sent)</span></td>
           <td class="text-end">
             <div class="btn-group" role="group">
               <%= button_to "Cancel",
