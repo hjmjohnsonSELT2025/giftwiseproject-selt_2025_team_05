@@ -34,8 +34,8 @@ class EventsController < ApplicationController
   def show
     # Only run this logic if the current user is the host
     if @event.user_id == current_user.id
-      # Get IDs of everyone already associated with the event (joined, invited, etc.)
-      participant_ids = @event.event_users.pluck(:user_id)
+      # Get IDs of users who are already joined or invited (exclude left/declined so they can be re-invited)
+      participant_ids = @event.event_users.where(status: [:joined, :invited]).pluck(:user_id)
 
       if params[:query].present?
         # CASE 1: User is searching for someone specific
