@@ -57,6 +57,21 @@ class EventUsersController < ApplicationController
     end
   end
 
+  def edit_budget
+    @event_user = @event.event_users.find(params[:event_user_id])
+  end
+
+  def update_budget
+    @event_user = @event.event_users.find(params[:event_user_id])
+
+    if @event_user.update(budget_params)
+      redirect_to @event, notice: "Budget updated!"
+    else
+      flash.now[:alert] = "Invalid budget value."
+      render :edit_budget, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_event
@@ -68,4 +83,9 @@ class EventUsersController < ApplicationController
       redirect_to @event, alert: "You are not authorized to invite people to this event."
     end
   end
+
+  def budget_params
+    params.require(:event_user).permit(:budget)
+  end
+
 end
