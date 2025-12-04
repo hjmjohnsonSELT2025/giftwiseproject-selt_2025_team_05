@@ -81,11 +81,12 @@
     </tr>
     </thead>
     <tbody>
-    <% @event_users.each do |event_user| %>
+    <% @event_users.each_with_index do |event_user, index| %>
       <% event = event_user.event %>
       <% is_past = event.date < Date.today %>
+      <% past_row_class = index.even? ? 'table-secondary' : 'table-light' %>
 
-      <tr class="<%= is_past ? 'table-secondary text-muted' : '' %>">
+      <tr class="<%= is_past ? "#{past_row_class} text-muted" : '' %>">
         <td>
           <strong><%= event.name %></strong>
         </td>
