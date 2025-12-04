@@ -64,7 +64,7 @@ class EventUsersController < ApplicationController
       redirect_to @event, notice: "Budget updated!"
     else
       flash.now[:alert] = "Invalid budget value."
-      render :edit_budget, status: :unprocessable_entity
+      render "events/show", status: :unprocessable_entity
     end
   end
 
@@ -81,7 +81,11 @@ class EventUsersController < ApplicationController
   end
 
   def budget_params
-    params.require(:event_user).permit(:budget)
+    permitted = params.require(:event_user).permit(:budget)
+
+    permitted[:budget] = nil if permitted[:budget].blank?
+
+    permitted
   end
 
 end
