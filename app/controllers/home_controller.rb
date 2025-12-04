@@ -27,10 +27,10 @@ class HomeController < ApplicationController
 
     # Apply date filter
     if params[:date_from].present?
-      base_query = base_query.where("events.date >= ?", params[:date_from])
+      base_query = base_query.where("events.date >= ?", Date.parse(params[:date_from]).beginning_of_day)
     end
     if params[:date_to].present?
-      base_query = base_query.where("events.date <= ?", params[:date_to])
+      base_query = base_query.where("events.date <= ?", Date.parse(params[:date_to]).end_of_day)
     end
 
     # Apply search filter if query is present
