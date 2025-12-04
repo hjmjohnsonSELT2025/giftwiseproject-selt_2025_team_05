@@ -57,10 +57,6 @@ class EventUsersController < ApplicationController
     end
   end
 
-  def edit_budget
-    @event_user = @event.event_users.find(params[:event_user_id])
-  end
-
   def update_budget
     @event_user = @event.event_users.find(params[:event_user_id])
 
