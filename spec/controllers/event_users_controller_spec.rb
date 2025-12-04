@@ -7,7 +7,6 @@ RSpec.describe EventUsersController, type: :controller do
   # UPDATED: Changed event_type from "public" to "friend"
   let(:event) { owner.events.create!(name: "Party", date: Date.tomorrow, address: "123 Main St", description: "Fun", event_type: "friend") }
 
-  # Helper to create an existing relationship
   let!(:event_user_guest) { EventUser.create!(event: event, user: guest, status: :invited) }
 
   describe "POST #create (Invite)" do

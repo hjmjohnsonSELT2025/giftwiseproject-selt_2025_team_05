@@ -4,7 +4,6 @@ end
 
 Given("there is another user named {string}") do |name|
   email = "#{name.downcase}@example.com"
-  # Create user if not exists to prevent duplicates in some test runs
   User.find_or_create_by!(email: email) do |user|
     user.first_name = name
     user.last_name = "Doe"
@@ -21,8 +20,7 @@ Given("there is another user named {string} with email {string}") do |name, emai
 end
 
 Given("I am logged in as a user named {string}") do |name|
-  # Create the user
-  email = "#{name.downcase}@test.com"
+  email = "#{name.downcase}@gmail.com"
   @user = User.find_or_create_by!(email: email) do |u|
     u.first_name = name
     u.last_name = "User"
@@ -36,7 +34,6 @@ Given("I am logged in as a user named {string}") do |name|
 end
 
 Given("I have an existing event named {string}") do |event_name|
-  # Assumes @user is set by a previous login step
   @user.events.create!(
     name: event_name,
     date: Date.tomorrow,
@@ -77,7 +74,6 @@ Given("I have joined {string}") do |event_name|
   EventUser.create!(user: @user, event: event, status: :joined)
 end
 
-# Navigation Steps
 When("I visit the event page for {string}") do |event_name|
   event = Event.find_by!(name: event_name)
   visit event_path(event)
@@ -96,8 +92,6 @@ Then("I should see {string} in the search results") do |text|
 end
 
 Then("I should see {string} within the {string} row") do |text, row_identifier|
-  # Finds a table row (tr) that contains the row_identifier (e.g., event name)
-  # Then checks if that specific row contains the text (e.g., "Joined")
   row = find('tr', text: row_identifier)
   expect(row).to have_content(text)
 end
@@ -111,13 +105,132 @@ Then("I should not see {string} in the list of events") do |text|
 end
 
 Then("I should see {string} in the participants list with status {string}") do |participant_name, status|
-  # Finds the row containing the participant's name and ensures it has the correct status
   row = find('tr', text: participant_name)
   expect(row).to have_content(status)
 end
 
-Then("I should not see {string} in the participants list") do |participant_name|
-  if page.has_css?('table')
-    expect(page).not_to have_css('table', text: participant_name)
+
+# 1. Affirmative Step: Check that someone IS in the participants list
+Then("I should see {string} in the participants list") do |name|
+  # Find the specific Card that contains the header "Participants"
+  participant_card = find('.card', text: 'Participants')
+
+  within(participant_card) do
+    expect(page).to have_content(name)
+  end
+end
+
+# 2. Negative Step: Check that someone is NOT in the participants list
+# This will now PASS even if Bob is visible in the "Invite Friends" list below
+Then("I should not see {string} in the participants list") do |name|
+  participant_card = find('.card', text: 'Participants')
+
+  within(participant_card) do
+    expect(page).not_to have_content(name)
+  end
+end
+
+Given("the following events exist:") do |table|
+  # Table headers: name, date_offset (days), status
+  table.hashes.each do |row|
+    date = row['date_offset'].to_i.days.from_now
+
+    # We use save(validate: false) if date is in the past to bypass the creation validation
+    event = Event.new(
+      name: row['name'],
+      date: date,
+      address: "123 Cucumber St",
+      event_type: "family",
+      description: "Auto generated",
+      user: @user
+    )
+    event.save(validate: false)
+
+    EventUser.create!(user: @user, event: event, status: row['status'])
+  end
+end
+
+When("I click the {string} link") do |link_text|
+  click_link link_text
+end
+
+Then("{string} should have a dimmed style") do |event_name|
+  # Finds the row containing the event name, checks for the class 'text-muted'
+  row = find('tr', text: event_name)
+  expect(row[:class]).to include('text-muted')
+end
+
+Then("I should see {string} badge") do |text|
+  expect(page).to have_css('.badge', text: text)
+end
+
+Then("I should not see button {string}") do |button_text|
+  expect(page).not_to have_button(button_text)
+end
+
+When("I click {string} for {string}") do |link_text, row_text|
+  # 1. Find the table row (tr) that contains the event name (row_text)
+  row = find('tr', text: row_text)
+
+  # 2. Scope the click action to ONLY happen inside that specific row
+  within(row) do
+    click_link(link_text)
+  end
+end
+
+Given("I have a friend named {string}") do |full_name|
+  first, last = full_name.split(" ")
+  friend = User.create!(
+    email: "#{first.downcase}@example.com",
+    password: "password",
+    first_name: first,
+    last_name: last
+  )
+
+  # Create the friendship in the database (Adjust based on your Friendship model)
+  # Assuming you have a standard Friendship model
+  Friendship.create!(user: @user, friend: friend, status: :accepted)
+  Friendship.create!(user: friend, friend: @user, status: :accepted)
+end
+
+Then("I should see {string} next to {string}") do |status, name|
+  # Finds the row containing the name, checks for status badge
+  row = find('tr', text: name)
+  expect(row).to have_content(status)
+end
+
+Then("I should see {string} within the invite suggestions") do |name|
+  # This targets the "Invite Friends" card/table
+  within(".card", text: "Invite Friends") do
+    expect(page).to have_content(name)
+  end
+end
+
+Then("I should not see {string} within the invite suggestions") do |name|
+  within(".card", text: "Invite Friends") do
+    expect(page).not_to have_content(name)
+  end
+end
+
+When("I click {string} for user {string}") do |button_text, user_name|
+  # 1. Scope strictly to the "Invite Friends" card so we don't accidentally
+  #    find the user in the "Participants" list (if they are already there).
+  within(".card", text: "Invite Friends") do
+
+    # 2. Find the row containing the user's name.
+    #    Add `match: :first` to ignore duplicates if the user appears twice in the list.
+    row = find('tr', text: user_name, match: :first)
+
+    # 3. Click the specific button inside that row
+    within(row) do
+      click_button button_text
+    end
+  end
+end
+
+When("I check {string}") do |label_text|
+  # Scope to the specific list and grab the first match to ignore any ambiguity
+  within(".friend-list-container") do
+    check(label_text, allow_label_click: true, match: :first)
   end
 end
