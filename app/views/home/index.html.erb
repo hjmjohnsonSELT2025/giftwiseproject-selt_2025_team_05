@@ -1,13 +1,71 @@
-<ul class="nav nav-pills mb-3">
-  <li class="nav-item">
-    <%= link_to "Upcoming Events", root_path(view: 'upcoming'),
-                class: "nav-link #{@view_mode == 'upcoming' ? 'active' : 'text-secondary'}" %>
-  </li>
-  <li class="nav-item">
-    <%= link_to "Past Events", root_path(view: 'past'),
-                class: "nav-link #{@view_mode == 'past' ? 'active' : 'text-secondary'}" %>
-  </li>
-</ul>
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+  <ul class="nav nav-pills mb-0">
+    <li class="nav-item">
+      <%= link_to "Upcoming Events", root_path(view: 'upcoming', query: params[:query], event_type: params[:event_type], status: params[:status], date_from: params[:date_from], date_to: params[:date_to]),
+                  class: "nav-link #{@view_mode == 'upcoming' ? 'active' : 'text-secondary'}" %>
+    </li>
+    <li class="nav-item">
+      <%= link_to "Past Events", root_path(view: 'past', query: params[:query], event_type: params[:event_type], status: params[:status], date_from: params[:date_from], date_to: params[:date_to]),
+                  class: "nav-link #{@view_mode == 'past' ? 'active' : 'text-secondary'}" %>
+    </li>
+  </ul>
+</div>
+
+<%= form_with url: root_path, method: :get, local: true, class: "mb-3" do |form| %>
+  <%= hidden_field_tag :view, @view_mode %>
+
+  <div class="row g-2 align-items-end">
+    <!-- Search Box -->
+    <div class="col-md-4">
+      <label class="form-label small text-muted">Search</label>
+      <%= form.text_field :query,
+                          value: params[:query],
+                          placeholder: "Name, address, organizer...",
+                          class: "form-control" %>
+    </div>
+
+    <!-- Event Type Filter -->
+    <div class="col-md-2">
+      <label class="form-label small text-muted">Type</label>
+      <%= form.select :event_type,
+                      options_for_select([["All Types", ""]] + Event.event_types.keys.map { |t| [t.titleize, t] }, params[:event_type]),
+                      {},
+                      class: "form-select" %>
+    </div>
+
+    <!-- Status Filter -->
+    <div class="col-md-2">
+      <label class="form-label small text-muted">Status</label>
+      <%= form.select :status,
+                      options_for_select([["All", ""], ["Joined", "joined"], ["Invited", "invited"]], params[:status]),
+                      {},
+                      class: "form-select" %>
+    </div>
+
+    <!-- Date From Filter -->
+    <div class="col-md-2">
+      <label class="form-label small text-muted">From</label>
+      <%= form.date_field :date_from,
+                          value: params[:date_from],
+                          class: "form-control" %>
+    </div>
+
+    <!-- Date To Filter -->
+    <div class="col-md-2">
+      <label class="form-label small text-muted">To</label>
+      <%= form.date_field :date_to,
+                          value: params[:date_to],
+                          class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="mt-2 d-flex gap-2">
+    <%= form.submit "Apply Filters", class: "btn btn-primary" %>
+    <% if params[:query].present? || params[:event_type].present? || params[:status].present? || params[:date_from].present? || params[:date_to].present? %>
+      <%= link_to "Clear All", root_path(view: @view_mode), class: "btn btn-outline-secondary" %>
+    <% end %>
+  </div>
+<% end %>
 
 <% if @event_users.any? %>
   <table class="table table-hover table-striped align-middle">
@@ -69,7 +127,10 @@
 <% else %>
   <div class="alert alert-light text-center mt-3">
     <p class="mb-0">
-      <% if @view_mode == 'past' %>
+      <% has_filters = params[:query].present? || params[:event_type].present? || params[:status].present? || params[:date_from].present? || params[:date_to].present? %>
+      <% if has_filters %>
+        No events found matching your filters.
+      <% elsif @view_mode == 'past' %>
         You have no past events.
       <% else %>
         You haven't joined any upcoming events yet.
