@@ -10,5 +10,8 @@ class EventUser < ApplicationRecord
   }, _default: :invited
 
   validates :status, presence: true
-  validates :budget, numericality: { greater_than_or_equal_to: 0 }
+  validates :budget, numericality: {
+    greater_than_or_equal_to: 0,
+    less_than_or_equal_to: 10000,
+  }, allow_nil: true
 end
