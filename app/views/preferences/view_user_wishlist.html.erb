@@ -1,5 +1,10 @@
-<div>
-  <h1><%= @user.first_name %>'s Gifts for <%=@event.name%></h1>
+<h1>Find gifts for <%= @user.first_name %></h1>
+
+<h2>Event: <%=@event.name%></h2>
+<br>
+<div class="view_user_wishlist_grid">
+  <div>
+  <h2><%= @user.first_name %>'s Wishlist</h2>
 
   <% if @preferences.any? %>
     <table class="table table-striped" style="max-width: 600px;">
@@ -56,5 +61,47 @@
   <% else %>
     <p>No items on wish list yet.</p>
   <% end %>
-  <%= link_to "Back to event", @event, class: "btn btn-secondary" %>
+  </div>
+
+  <div>
+    <h2>My Gift Ideas for <%= @user.first_name %></h2>
+
+    <% if @preferences.any? %>
+      <table class="table table-striped" style="max-width: 600px;">
+        <thead>
+        <tr>
+          <th>Item Name</th>
+          <th>Cost</th>
+          <th>Details</th>
+          <th>Purchased?</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <% @preferences.each do |item| %>
+          <tr>
+
+            <td><%= "#{item.item_name}" %></td>
+            <td> <%= "#{number_to_currency(item.cost)}" %></td>
+            <td> <%= "#{item.notes}" %></td>
+
+              <td>
+                <!-- Checkbox based off of ChatGPT response -->
+                <%= form_with model: item, url: toggle_purchase_preference_path(item), method: :post, local: true do |f| %>
+
+                  <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();', disabled: (item.giver != current_user) %>
+
+                <% end %>
+              </td>
+              </tr>
+
+        <% end %>
+
+        </tbody>
+      </table>
+    <% else %>
+      <p>No gift ideas yet.</p>
+    <% end %>
+  </div>
 </div>
+<%= link_to "Back to event", @event, class: "btn btn-secondary" %>

@@ -158,3 +158,10 @@ th {
     background: #fffbea;          /* soft yellow background */
     border-color: #ffe08a;        /* matching border */
 }
+/*grid style from ChatGPT*/
+.view_user_wishlist_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
