@@ -37,7 +37,7 @@ class PreferencesController < ApplicationController
     @event = Event.find(params[:event_id])
     #if item.on_user_wishlist is false, then destroy the item.
 
-    if @item.on_user_wishlist
+    
       @item.giver = nil
       @item.purchased = nil
       @item.event = nil
@@ -47,13 +47,7 @@ class PreferencesController < ApplicationController
       else
         redirect_to @event, alert: "Could not unclaim gift."
       end
-    else
 
-      @user_id = @item.user_id
-      @item.destroy
-      redirect_to @event, notice: "Gift unclaimed successfully!"
-
-    end
   end
 
 
