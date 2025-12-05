@@ -6,30 +6,15 @@ RSpec.describe PreferencesController, type: :controller do
   let(:preference) { Preference.create!(user: user, item_name: 'Test Item', cost: 100.00) }
   let(:valid_attributes) { { item_name: 'car', cost: 999.99, notes: 'for Christmas' } }
   let(:event) {Event.create!(name: "Christmas", user: user)}
-  let(:unclaimed_item) {Preference.create!(user: recipient, item_name: 'Test Item', cost: 999.99, event: event, on_user_wishlist: true)}
-  let(:claimed_item) {Preference.create!(user: recipient, item_name: 'Test Item', cost: 999.99, event: event, giver: user, on_user_wishlist: true)}
-  let!(:claimed_item_not_wishlist) {Preference.create!(user: recipient, item_name: 'Test Item', cost: 999.99, event: event, giver: user, on_user_wishlist: false)}
+  let(:unclaimed_item) {Preference.create!(user: recipient, item_name: 'Test Item', cost: 999.99, event: event)}
+  let(:claimed_item) {Preference.create!(user: recipient, item_name: 'Test Item', cost: 999.99, event: event, giver: user)}
+  let!(:claimed_item_not_wishlist) {Preference.create!(user: recipient, item_name: 'Test Item', cost: 999.99, event: event, giver: user)}
 
   before do
     sign_in user
   end
 
-  describe 'POST #create_for_someone_else' do
-    context 'with valid parameters' do
-      it 'creates a new preference with on_user_wishlist == false' do
-        expect {
-          post :create_for_someone_else, params: { preference: valid_attributes, recipient_id: recipient.id, event_id: event.id}
-        }.to change(Preference, :count).by(1)
-        created_preference = Preference.last
-        expect(created_preference.on_user_wishlist).to eq(false)
-      end
-      it 'redirects to user wishlist with notice' do
-        post :create_for_someone_else, params: { preference: valid_attributes, recipient_id: recipient.id, event_id: event.id}
-        expect(response).to redirect_to(view_user_wishlist_preferences_path(event_id: event.id, user_id: recipient))
-        expect(flash[:notice]).to eq("Item added!")
-      end
-      end
-  end
+
 
   describe 'GET #view_user_wishlist' do
     it 'returns user preferences' do
@@ -38,27 +23,18 @@ RSpec.describe PreferencesController, type: :controller do
     end
   end
 
-  describe 'GET #new_for_someone_else' do
-    context 'with valid parameters' do
-      it 'redirects to the "adding to someone else wish list" page with notice' do
-        get :new_for_someone_else, params: {recipient_id: recipient.id, event_id: event.id}
-        expect(response).to render_template(:new_for_someone_else)
-      end
-    end
-  end
 
-  describe 'POST #create_on_wishlist' do
+  describe 'POST #create' do
     context 'with valid parameters' do
-      it 'creates a new preference with on_user_wishlist == true' do
+      it 'creates a new preference' do
         expect {
-          post :create_on_wishlist, params: { preference: valid_attributes }
+          post :create, params: { preference: valid_attributes }
         }.to change(Preference, :count).by(1)
         created_preference = Preference.last
-        expect(created_preference.on_user_wishlist).to eq(true)
       end
 
       it 'redirects to preferences index with notice' do
-        post :create_on_wishlist, params: { preference: valid_attributes }
+        post :create, params: { preference: valid_attributes }
         expect(response).to redirect_to(preferences_path)
         expect(flash[:notice]).to eq('Item added to wish list!')
       end
@@ -90,11 +66,6 @@ RSpec.describe PreferencesController, type: :controller do
         post :unclaim_preference, params: { item_id: claimed_item.id, user_id: user.id, event_id: event.id}
         expect(response).to redirect_to(view_user_wishlist_preferences_path(event_id: event.id, user_id: recipient))
       end
-      it 'deletes an unclaimed preference from the database if the preference is not on user wish list' do
-        expect {
-        post :unclaim_preference, params: { item_id: claimed_item_not_wishlist.id, user_id: user.id, event_id: event.id}
-        }.to change(Preference, :count).by(-1)
-      end
     end
   end
 
@@ -108,11 +79,6 @@ RSpec.describe PreferencesController, type: :controller do
       it 'redirects to the event index page' do
         post :unclaim_show_preference, params: { item_id: claimed_item.id, user_id: user.id, event_id: event.id}
         expect(response).to redirect_to(event)
-      end
-      it 'deletes an unclaimed preference from the database if the preference is not on user wish list' do
-        expect {
-          post :unclaim_show_preference, params: { item_id: claimed_item_not_wishlist.id, user_id: user.id, event_id: event.id}
-        }.to change(Preference, :count).by(-1)
       end
     end
   end
