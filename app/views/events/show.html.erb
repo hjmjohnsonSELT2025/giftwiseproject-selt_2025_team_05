@@ -14,31 +14,22 @@
 
       <div class="mt-4 p-3 border rounded bg-light">
         <h4>My Budget</h4>
-
         <% show_form = params[:show_budget_form] == "true" %>
-
         <% if show_form %>
-
           <% @event_user = current_event_user %>
           <%= render "event_users/budget_form", event: @event, event_user: current_event_user %>
-
         <% else %>
-
           <% if current_event_user&.budget.present? && current_event_user.budget > 0 %>
             <p><strong>Budget:</strong> $<%= number_with_precision(current_event_user.budget, precision: 2) %></p>
-
             <%= link_to "Edit Budget",
                         event_path(@event, show_budget_form: true),
                         class: "btn btn-secondary btn-sm" %>
-
           <% else %>
             <p class="text-muted">No budget set yet.</p>
-
             <%= link_to "Set Budget",
                         event_path(@event, show_budget_form: true),
                         class: "btn btn-primary btn-sm" %>
           <% end %>
-
         <% end %>
       </div>
 
