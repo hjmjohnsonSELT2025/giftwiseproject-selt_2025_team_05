@@ -1,0 +1,7 @@
+<!-- app/views/event_mailer/event_reminder.html.erb -->
+<h1>Event Reminder</h1>
+<p>Hello <%= @user.first_name || @user.email %>,</p>
+<p><strong><%= @event.name %></strong> is coming up in <strong><%= @days_until %></strong> days!</p>
+<p><strong>Date:</strong> <%= @event.date.strftime("%B %d, %Y at %I:%M %p") %></p>
+<p><strong>Location:</strong> <%= @event.address %></p>
+<p><%= link_to "View event", event_url(@event) %></p>
