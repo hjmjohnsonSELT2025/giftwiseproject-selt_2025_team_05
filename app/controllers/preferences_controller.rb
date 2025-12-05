@@ -98,10 +98,9 @@ class PreferencesController < ApplicationController
     @preference = Preference.new
   end
 
-  def create_on_wishlist
+  def create
     @preference = Preference.new(preference_params)
     @preference.user = current_user
-    @preference.on_user_wishlist = true
 
     if @preference.save
       redirect_to preferences_path, notice: "Item added to wish list!"
