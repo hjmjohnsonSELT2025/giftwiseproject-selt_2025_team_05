@@ -11,8 +11,8 @@
 
   <div class="mb-3">
     <div class="btn-group" role="group">
-      <%= link_to "Upcoming", root_path(view: 'upcoming'), class: "btn btn-outline-primary #{'active' if @view_mode == 'upcoming'}" %>
-      <%= link_to "Past", root_path(view: 'past'), class: "btn btn-outline-primary #{'active' if @view_mode == 'past'}" %>
+      <%= link_to "Upcoming Events", root_path(view: 'upcoming'), class: "btn btn-outline-primary #{'active' if @view_mode == 'upcoming'}" %>
+      <%= link_to "Past Events", root_path(view: 'past'), class: "btn btn-outline-primary #{'active' if @view_mode == 'past'}" %>
     </div>
   </div>
 
@@ -32,12 +32,13 @@
       <tbody>
       <% @event_users.each do |event_user| %>
         <% event = event_user.event %>
-        <tr>
+        <% row_class = @view_mode == 'past' ? 'table-secondary text-muted' : '' %>
+        <tr class="<%= row_class %>">
           <td><%= event.name %></td>
           <td><%= event.date&.strftime("%B %d, %Y") %></td>
           <td><%= event.address %></td>
-          <td><%= event.event_type.titleize %></td>
-          <td><%= event.user.first_name + " " + event.user.last_name %></td>
+          <td><%= event.event_type&.titleize %></td>
+          <td><%= [event.user&.first_name, event.user&.last_name].compact.join(" ").presence || "—" %></td>
           <td>
             <% if event_user.status == 'joined' %>
               <span class="badge bg-success">Joined</span>

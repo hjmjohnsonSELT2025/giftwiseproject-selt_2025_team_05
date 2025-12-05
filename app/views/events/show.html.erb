@@ -121,7 +121,7 @@
   <% if @event.user_id == current_user.id && !is_past %>
     <div class="card shadow-sm mb-4">
       <div class="card-body">
-        <h3 class="card-title mb-3">Find Users to Invite</h3>
+        <h3 class="card-title mb-3">Invite Friends</h3>
         <%= form_with(url: event_path(@event), method: :get, local: true, class: "search-form") do |form| %>
           <div class="input-group mb-3" style="max-width: 600px;">
             <%= form.text_field :query,
@@ -164,7 +164,7 @@
             </table>
           </div>
         <% elsif params[:query].present? %>
-          <p class="text-muted mb-0">No users found matching "<%= params[:query] %>"</p>
+          <p class="text-muted mb-0">No users found matching "<%= params[:query] %>". User could already be in the event!</p>
         <% end %>
       </div>
     </div>
