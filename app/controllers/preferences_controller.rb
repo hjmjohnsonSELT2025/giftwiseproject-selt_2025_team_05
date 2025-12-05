@@ -37,7 +37,7 @@ class PreferencesController < ApplicationController
     @event = Event.find(params[:event_id])
     #if item.on_user_wishlist is false, then destroy the item.
 
-    
+
       @item.giver = nil
       @item.purchased = nil
       @item.event = nil
@@ -90,8 +90,7 @@ class PreferencesController < ApplicationController
   end
 
   def index
-    #@preferences = current_user.preferences.order(created_at: :desc)
-    @preferences = current_user.preferences.where(on_user_wishlist: true).order(created_at: :desc)
+    @preferences = current_user.preferences.order(created_at: :desc)
   end
 
 
