@@ -1,16 +1,49 @@
 require 'rails_helper'
 
 RSpec.describe EventsController, type: :controller do
+  include Devise::Test::ControllerHelpers
+
   let(:user) { User.create!(email: "owner@example.com", password: "password", first_name: "Owner", last_name: "User") }
   let(:other_user) { User.create!(email: "other@example.com", password: "password", first_name: "Other", last_name: "User") }
+  let(:friend) { User.create!(email: "friend@example.com", password: "password", first_name: "Best", last_name: "Friend") }
 
   # Ensure event_type matches your valid Enum/String values
   let(:event) { user.events.create!(name: "Conference", date: Date.tomorrow, address: "City Hall", description: "Annual event", event_type: "friend") }
 
-  before { sign_in user }
+  before do
+    sign_in user
+    # Create the actual friendship in the DB so current_user.all_friends finds it naturally
+    Friendship.create!(user: user, friend: friend, status: 'accepted')
+    Friendship.create!(user: friend, friend: user, status: 'accepted')
+  end
+
+  describe "GET #new" do
+    it "assigns a new event" do
+      get :new
+      expect(assigns(:event)).to be_a_new(Event)
+    end
+
+    it "assigns @friends for the checkbox list" do
+      get :new
+      expect(assigns(:friends)).to include(friend)
+    end
+  end
 
   describe "GET #show" do
     let!(:potential_guest) { User.create!(email: "guest@example.com", password: "password", first_name: "John", last_name: "Doe") }
+
+    context "when owner views the page (Default / Empty Query)" do
+      it "assigns @found_users to the friends list by default" do
+        get :show, params: { id: event.id }
+        expect(assigns(:found_users)).to include(friend)
+      end
+
+      it "does not show friends who are already participants" do
+        EventUser.create!(event: event, user: friend, status: :invited)
+        get :show, params: { id: event.id }
+        expect(assigns(:found_users)).not_to include(friend)
+      end
+    end
 
     context "when owner searches for a user" do
       it "assigns @found_users with matching results" do
@@ -36,7 +69,6 @@ RSpec.describe EventsController, type: :controller do
 
     context "when event is deleted" do
       before do
-        # FIXED: Use update_columns to ensure the DB is updated ignoring validations/callbacks
         event.update_columns(deleted: true)
       end
 
@@ -49,21 +81,55 @@ RSpec.describe EventsController, type: :controller do
   end
 
   describe "POST #create" do
-    it "creates a new event" do
-      expect {
-        post :create, params: { event: { name: "New Event", date: Date.tomorrow, address: "City Hall", description: "Desc", event_type: "friend" } }
-      }.to change(Event, :count).by(1)
+    let(:valid_attributes) {
+      { name: "New Event", date: Date.tomorrow, address: "City Hall", description: "Desc", event_type: "friend" }
+    }
+
+    context "with valid params" do
+      it "creates a new event" do
+        expect {
+          post :create, params: { event: valid_attributes }
+        }.to change(Event, :count).by(1)
+      end
+
+      it "creates an initial event_user record with joined status for host" do
+        post :create, params: { event: valid_attributes }
+        expect(EventUser.last.status).to eq("joined")
+        expect(EventUser.last.user).to eq(user)
+      end
+
+      it "redirects to the event show page" do
+        post :create, params: { event: valid_attributes }
+        expect(response).to redirect_to(assigns(:event))
+      end
     end
 
-    it "creates an initial event_user record with joined status" do
-      post :create, params: { event: { name: "New Event", date: Date.tomorrow, address: "City Hall", description: "Desc", event_type: "friend" } }
-      expect(EventUser.last.status).to eq("joined")
-      expect(EventUser.last.user).to eq(user)
+    context "with participants (Inviting Friends)" do
+      it "creates invited EventUser records for selected friends" do
+        expect {
+          post :create, params: {
+            event: valid_attributes,
+            participant_ids: [friend.id]
+          }
+        }.to change(EventUser, :count).by(2) # 1 Host (Joined) + 1 Friend (Invited)
+
+        # Verify the friend's status
+        friend_invite = EventUser.find_by(user: friend)
+        expect(friend_invite.status).to eq("invited")
+        expect(friend_invite.event).to eq(Event.last)
+      end
     end
 
-    it "redirects to the event show page" do
-      post :create, params: { event: { name: "Conference", date: Date.tomorrow, address: "Home", event_type: "friend" } }
-      expect(response).to redirect_to(assigns(:event))
+    context "with invalid params" do
+      it "reloads @friends and re-renders new template" do
+        # Invalid because name is missing
+        post :create, params: { event: { name: "" } }
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to render_template(:new)
+        # Critical: Ensure friends list is present for the re-rendered form
+        expect(assigns(:friends)).to include(friend)
+      end
     end
   end
 

@@ -21,8 +21,6 @@ Feature: Invite and Manage Participants
     Given "Alice" is a participant in "Team Lunch"
     When I visit the event page for "Team Lunch"
     Then I should see "Alice"
-    # Since the default driver ignores JS, it ignores the confirmation dialog.
-    # We can just click "Remove" directly.
     When I click "Remove"
     Then I should see "Alice has been removed from the event."
     And I should not see "Alice" in the participants list

@@ -3,6 +3,7 @@ Given("I have an event with another participant") do
     name: "Holiday Party",
     address: "Old Capital Mall",
     description: "Celebrating end of finals!",
+    date: 1.week.from_now,
     event_type: :family
   )
 
