@@ -56,6 +56,5 @@
   <% else %>
     <p>No items on wish list yet.</p>
   <% end %>
-  <%= link_to "Add New Item", new_for_someone_else_preferences_path(recipient_id: @user.id, event_id: @event.id), class: "btn btn-primary" %>
   <%= link_to "Back to event", @event, class: "btn btn-secondary" %>
 </div>
