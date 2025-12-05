@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :event_users
   has_many :joined_events, through: :event_users, source: :event
   has_many :preferences, dependent: :destroy
+  has_many :suggestions
 
   # Friend requests the user has SENT
   has_many :sent_friendships, class_name: "Friendship", foreign_key: :user_id, dependent: :destroy

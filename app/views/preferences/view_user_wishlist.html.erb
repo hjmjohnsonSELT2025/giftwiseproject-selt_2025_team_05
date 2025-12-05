@@ -66,7 +66,7 @@
   <div>
     <h2>My Gift Ideas for <%= @user.first_name %></h2>
 
-    <% if @preferences.any? %>
+    <% if @suggestions.any? %>
       <table class="table table-striped" style="max-width: 600px;">
         <thead>
         <tr>
@@ -78,7 +78,7 @@
         </thead>
         <tbody>
 
-        <% @preferences.each do |item| %>
+        <% @suggestions.each do |item| %>
           <tr>
 
             <td><%= "#{item.item_name}" %></td>
@@ -86,7 +86,7 @@
             <td> <%= "#{item.notes}" %></td>
 
               <td>
-                <!-- Checkbox based off of ChatGPT response -->
+                <!-- Checkbox based off of ChatGPT response FIX THIS-->
                 <%= form_with model: item, url: toggle_purchase_preference_path(item), method: :post, local: true do |f| %>
 
                   <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();', disabled: (item.giver != current_user) %>

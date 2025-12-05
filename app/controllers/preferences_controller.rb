@@ -84,9 +84,9 @@ class PreferencesController < ApplicationController
 
   def view_user_wishlist
     @user = User.find(params[:user_id])
-
     @event = Event.find(params[:event_id])
     @preferences = @user.preferences
+    @suggestions = current_user.suggestions.where(:event_id => @event.id, :recipient_id => @user.id)
   end
 
   def index
