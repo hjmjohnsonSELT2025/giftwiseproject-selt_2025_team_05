@@ -58,7 +58,6 @@
               <th>Status</th>
               <% unless is_past %>
                 <th>Actions</th>
-                <th>AI Gift Assistant</th>
                 <% if @event.user_id == current_user.id %>
                   <th>Manage</th>
                 <% end %>
@@ -79,21 +78,12 @@
                 <% unless is_past %>
                   <td>
                     <% if event_user.joined? && event_user.user_id != current_user.id %>
-                      <%= button_to "View Wish List",
+                      <%= button_to "Get Gifts",
                                     view_user_wishlist_preferences_path(user_id: event_user.user.id, event_id: @event.id),
                                     method: :get,
                                     class: "btn btn-sm btn-success" %>
                     <%end %>
                   </td>
-
-                  <td>
-                    <% if event_user.user != current_user %>
-                      <%= link_to "Get gift ideas",
-                                  event_event_user_gift_suggestions_path(@event, event_user),
-                                  class: "btn btn-sm btn-primary" %>
-                    <% end %>
-                  </td>
-
                   <% if @event.user_id == current_user.id %>
                     <td>
                       <% if event_user.user_id != current_user.id %>

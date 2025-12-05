@@ -87,6 +87,7 @@ class PreferencesController < ApplicationController
     @event = Event.find(params[:event_id])
     @preferences = @user.preferences
     @suggestions = current_user.suggestions.where(:event_id => @event.id, :recipient_id => @user.id)
+    @event_user = EventUser.where(:event_id => @event.id, :user_id => @user.id).first
   end
 
   def index

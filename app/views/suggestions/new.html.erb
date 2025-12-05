@@ -1,0 +1,36 @@
+<div>
+  <div>
+    <div>
+      <h1>Add New Wishlist Item</h1>
+
+    </div>
+
+    <%= form_with model: @preference do |form| %>
+      <div>
+        <%= form.label :item_name, "Item Name *" %>
+        <%= form.text_field :item_name, required: true, placeholder: "Enter item name" %>
+      </div>
+
+      <div>
+        <%= form.label :cost, "Cost" %>
+        <div class="cost-input-container">
+          <span class="currency-symbol">$</span>
+          <%= form.number_field :cost, step: 0.01, placeholder: "0.00" %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.label :notes, "Notes" %>
+        <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences..." %>
+      </div>
+
+      <div>
+        <%= form.submit "Add to Wishlist", class: "btn btn-primary" %>
+        <%= link_to "Cancel", preferences_path, class: "btn btn-secondary" %>
+
+      </div>
+      <br>
+      <%= link_to "Back to Wishlist", preferences_path, class: "btn btn-secondary" %>
+    <% end %>
+  </div>
+</div>

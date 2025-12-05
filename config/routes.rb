@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 
   resources :friendships, only: [:index, :new, :create, :update, :destroy]
 
+  resources :suggestions
 
   root to: "home#index"
 end

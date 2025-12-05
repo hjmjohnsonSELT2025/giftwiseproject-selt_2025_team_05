@@ -102,6 +102,11 @@
     <% else %>
       <p>No gift ideas yet.</p>
     <% end %>
+    <%= link_to "Add gift suggestion", new_suggestion_path, class: "btn btn-secondary" %>
+    <br>
+    <%= link_to "Generate gift ideas with AI Gift Assistant",
+                event_event_user_gift_suggestions_path(@event, @event_user),
+                class: "btn btn-sm btn-primary" %>
   </div>
 </div>
 <%= link_to "Back to event", @event, class: "btn btn-secondary" %>

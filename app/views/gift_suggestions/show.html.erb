@@ -70,7 +70,7 @@
   </div>
 
 
-  <%= link_to "Back", event_path(@event), class: "btn btn-secondary mt-4" %>
+  <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary mt-4" %>
 </div>
 
 <%# Chatgpt came up with this logic of adding "Thinking" text to the button after a chat is submitted %>>
