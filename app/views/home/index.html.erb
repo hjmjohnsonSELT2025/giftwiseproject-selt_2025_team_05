@@ -40,17 +40,17 @@
           <td><%= event.event_type&.titleize %></td>
           <td><%= [event.user&.first_name, event.user&.last_name].compact.join(" ").presence || "—" %></td>
           <td>
-            <% status_class =
+            <% status_class, status_label =
                  if @view_mode == 'past'
-                   'bg-secondary text-dark'
+                   ['bg-secondary text-dark', event_user.status.humanize]
                  elsif event_user.status == 'joined'
-                   'bg-success'
+                   ['bg-success', 'Joined']
                  elsif event_user.status == 'invited'
-                   'bg-warning text-dark'
+                   ['bg-warning text-dark', 'Pending Invite']
                  else
-                   'bg-secondary'
+                   ['bg-secondary', event_user.status.humanize]
                  end %>
-            <span class="badge <%= status_class %>"><%= event_user.status.humanize %></span>
+            <span class="badge <%= status_class %>"><%= status_label %></span>
           </td>
           <td>
             <div class="d-flex gap-2">
