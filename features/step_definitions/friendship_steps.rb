@@ -19,14 +19,6 @@ When('I press {string}') do |string|
   click_button string
 end
 
-#When('I fill in {string} with {string}') do |field, string|
-#fill_in field, with: string
-#end
-
-#Then('I should not see {string}') do |string|
-#expect(page).not_to have_content(string)
-#end
-
 Given('{string} has sent a friend request to {string}') do |send, rec|
   sender = User.find_by!(email: send)
   receiver = User.find_by!(email: rec)
