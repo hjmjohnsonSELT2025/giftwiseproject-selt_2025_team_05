@@ -57,4 +57,35 @@ RSpec.describe BudgetHelper, type: :helper do
       expect(helper.remaining_budget_for(e_u)).to eq(-50)
     end
   end
+
+  describe "#can_claim_gift?" do
+    it "returns false when event_user does not exist" do
+      event.event_users.destroy_all
+      expect(helper.can_claim_gift?(event, user, 10)).to eq(false)
+    end
+
+    it "returns true when user has no budget set" do
+      eu = EventUser.create!(event: event, user: user, budget: nil)
+      expect(helper.can_claim_gift?(event, user, 10)).to eq(true)
+    end
+
+    it "returns true if claimed + gift_cost <= budget" do
+      event_user
+      Preference.create!(giver: user, user: user, event: event, cost: 30)
+      expect(helper.can_claim_gift?(event, user, 20)).to eq(true)
+    end
+
+    it "returns true when claiming exactly up to the limit" do
+      event_user
+      Preference.create!(giver: user, user: user, event: event, cost: 50)
+      expect(helper.can_claim_gift?(event, user, 50)).to eq(true)
+    end
+
+    it "returns false if claiming would exceed budget" do
+      event_user
+      Preference.create!(giver: user, user: user, event: event, cost: 90)
+      expect(helper.can_claim_gift?(event, user, 20)).to eq(false)
+    end
+  end
+
 end
