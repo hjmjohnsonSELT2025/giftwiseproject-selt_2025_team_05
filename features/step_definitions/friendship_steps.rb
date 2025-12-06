@@ -5,6 +5,7 @@ Given('a user {string} exists') do |email|
 end
 
 Given('I am logged in as {string}') do |email|
+  @current_user_email = email
   visit new_user_session_path
   fill_in "Email", with: email
   fill_in "Password", with: "password"
