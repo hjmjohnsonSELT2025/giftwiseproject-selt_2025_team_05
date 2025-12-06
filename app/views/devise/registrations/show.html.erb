@@ -1,36 +1,38 @@
-<h2>My Profile</h2>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-
-  <div class="profile-row">
-    <span class="label"><%= f.label :email %> </span>
-    <span class="value"> <%= f.object.email %> </span>
+<div class="container py-4">
+  <div class="text-center mb-4">
+    <h2 class="h mb-1">My Profile</h2>
+    <p class="text-muted mb-0">Review your details and keep them up to date
   </div>
 
-  <div class="profile-row">
-    <span class="label"><%= f.label :first_name %></span>
-    <span class="value"><%= f.object.first_name %></span>
+  <div class="d-flex justify-content-center">
+    <div class="card shadow-sm" style="max-width: 600px; width: 100%;">
+      <div class="card-body">
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+          <%= render "devise/shared/error_messages", resource: resource %>
+
+          <dl class="row mb-0">
+            <dt class="col-sm-4">Email</dt>
+            <dd class="col-sm-8"><%= f.object.email %></dd>
+
+            <dt class="col-sm-4">First name</dt>
+            <dd class="col-sm-8"><%= f.object.first_name %></dd>
+
+            <dt class="col-sm-4">Last name</dt>
+            <dd class="col-sm-8"><%= f.object.last_name %></dd>
+
+            <dt class="col-sm-4">Birthdate</dt>
+            <dd class="col-sm-8"><%= f.object.birthdate %></dd>
+
+            <dt class="col-sm-4">Bio</dt>
+            <dd class="col-sm-8"><%= f.object.bio %></dd>
+          </dl>
+        <% end %>
+
+        <div class="mt-3">
+          <%= button_to "Edit Profile Info", edit_user_registration_path, method: :get, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="profile-row">
-    <span class="label"><%= f.label :last_name %><br /></span>
-    <span class="value"><%= f.object.last_name %></span>
-  </div>
-
-  <div class="profile-row">
-    <span class="label"> <%= f.label :birthdate %></span>
-    <span class="value"> <%= f.object.birthdate %></span>
-  </div>
-
-  <div class="profile-row">
-    <span class="label"><%= f.label :bio %><br /></span>
-    <span class="value"><%= f.object.bio %></span>
-  </div>
-
-<% end %>
-
-<%= button_to "Edit Profile Info", edit_user_registration_path, method: :get, class: "btn btn-primary" %>
-
+</div>
 

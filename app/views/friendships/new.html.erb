@@ -1,46 +1,57 @@
-<h1>Find Friends</h1>
-
-<%= form_with url: new_friendship_path, method: :get, local: true do %>
-  <div class="mb-3">
-    <%= label_tag :q, "Search by name or email" %>
-    <%= text_field_tag :q, params[:q], class: "form-control" %>
+<div class="container py-4">
+  <div class="text-center mb-5">
+    <h2 class="mb-1">Find Friends</h2>
+    <p class="text-muted mb-0">Search by name or email to send a request.</p>
   </div>
 
-  <%= submit_tag "Search", class: "btn btn-primary" %>
-<% end %>
+  <div class="d-flex justify-content-center mb-4">
+    <div class="card shadow-sm" style="max-width: 560px; width: 100%;">
+      <div class="card-body">
+        <%= form_with url: new_friendship_path, method: :get, local: true do %>
+          <div class="mb-3">
+            <%= label_tag :q, "Search by name or email", class: "form-label" %>
+            <%= text_field_tag :q, params[:q], class: "form-control" %>
+          </div>
 
-<hr>
-
-<% if @results.present? %>
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Birthday</th>
-      <th>Bio</th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @results.each do |user| %>
-      <tr>
-        <td><%= "#{user.first_name} #{user.last_name}" %></td>
-        <td><%= user.email %></td>
-        <td><%= user.birthdate %></td>
-        <td><%= user.bio %></td>
-        <td>
-          <%= button_to "Add Friend",
-                        friendships_path(friend_id: user.id),
-                        method: :post,
-                        class: "btn btn-sm btn-success" %>
-        </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-<% elsif params[:q].present? %>
-  <div class=" alert alert-warning mt-3">
-    No users found.
+          <%= submit_tag "Search", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
   </div>
-<% end %>
+
+  <% if @results.present? %>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Birthday</th>
+          <th>Bio</th>
+          <th class="text-end">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @results.each do |user| %>
+          <tr>
+            <td><%= "#{user.first_name} #{user.last_name}" %></td>
+            <td><%= user.email %></td>
+            <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
+            <td><%= truncate(user.bio.to_s, length: 50) %></td>
+            <td class="text-end">
+              <%= button_to "Add Friend",
+                            friendships_path(friend_id: user.id),
+                            method: :post,
+                            class: "btn btn-sm btn-success" %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% elsif params[:q].present? %>
+    <div class="alert alert-warning mt-3">
+      No users found.
+    </div>
+  <% end %>
+</div>

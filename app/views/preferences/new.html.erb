@@ -1,36 +1,37 @@
-<div>
-  <div>
-    <div>
-      <h1>Add New Wishlist Item</h1>
+<div class="container py-4">
+  <div class="text-center mb-4">
+    <h2 class="h4 mb-1">Add New Wishlist Item</h2>
+    <p class="text-muted mb-0">Be descriptive, friends and family will view this to inspire their gift giving!</p>
+  </div>
 
+  <div class="d-flex justify-content-center">
+    <div class="card shadow-sm" style="max-width: 600px; width: 100%;">
+      <div class="card-body">
+        <%= form_with model: @preference, url: create_on_wishlist_preferences_path do |form| %>
+          <div class="mb-3">
+            <%= form.label :item_name, "Item Name *", class: "form-label" %>
+            <%= form.text_field :item_name, required: true, placeholder: "Enter item name", class: "form-control" %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :cost, "Cost", class: "form-label" %>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <%= form.number_field :cost, step: 1, placeholder: "0.00", class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :notes, "Notes", class: "form-label" %>
+            <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences...", class: "form-control" %>
+          </div>
+
+          <div class="d-flex gap-2">
+            <%= form.submit "Add to Wishlist", class: "btn btn-primary" %>
+            <%= link_to "Cancel", preferences_path, class: "btn btn-secondary" %>
+          </div>
+        <% end %>
+      </div>
     </div>
-
-    <%= form_with model: @preference, url: create_on_wishlist_preferences_path do |form| %>
-      <div>
-        <%= form.label :item_name, "Item Name *" %>
-        <%= form.text_field :item_name, required: true, placeholder: "Enter item name" %>
-      </div>
-
-      <div>
-        <%= form.label :cost, "Cost" %>
-        <div class="cost-input-container">
-          <span class="currency-symbol">$</span>
-          <%= form.number_field :cost, step: 0.01, placeholder: "0.00" %>
-        </div>
-      </div>
-
-      <div>
-        <%= form.label :notes, "Notes" %>
-        <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences..." %>
-      </div>
-
-      <div>
-        <%= form.submit "Add to Wishlist", class: "btn btn-primary" %>
-        <%= link_to "Cancel", preferences_path, class: "btn btn-secondary" %>
-
-      </div>
-      <br>
-      <%= link_to "Back to Wishlist", preferences_path, class: "btn btn-secondary" %>
-    <% end %>
   </div>
 </div>
