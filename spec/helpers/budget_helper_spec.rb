@@ -32,4 +32,29 @@ RSpec.describe BudgetHelper, type: :helper do
       expect(helper.total_purchased_for(event, user)).to eq(25)
     end
   end
+
+  describe "#remaining_budget_for" do
+    it "returns nil if event_user has no budget" do
+      e_u = EventUser.create!(event: event, user: user, budget: nil)
+      expect(helper.remaining_budget_for(e_u)).to be_nil
+    end
+
+    it "returns full budget when no gifts are purchased" do
+      e_u = event_user
+      expect(helper.remaining_budget_for(e_u)).to eq(100)
+    end
+
+    it "subtracts purchased gift total from the budget" do
+      e_u = event_user
+      Preference.create!(giver: user, user: user, event: event, cost: 30, purchased: true)
+      Preference.create!(giver: user, user: user, event: event, cost: 20, purchased: true)
+      expect(helper.remaining_budget_for(e_u)).to eq(50)
+    end
+
+    it "returns negative values if user overspends" do
+      e_u = event_user
+      Preference.create!(giver: user, user: user, event: event, cost: 150, purchased: true)
+      expect(helper.remaining_budget_for(e_u)).to eq(-50)
+    end
+  end
 end
