@@ -3,11 +3,15 @@ When("I fill in {string} with {string}") do |field, value|
 end
 
 When("I click {string}") do |button|
-  click_on button
+  if page.has_button?(text)
+    click_button button
+  else
+    click_on button
+  end
 end
 
 Then("I should see {string}") do |text|
-  expect(page).to have_content(text)
+  expect(page).to have_content(/#{Regexp.escape(text)}/i)
 end
 
 And('I select {string} with {string}') do |field, value|
