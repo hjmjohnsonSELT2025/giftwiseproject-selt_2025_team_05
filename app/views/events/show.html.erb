@@ -242,21 +242,49 @@
     <div class="col-md-4">
       <div class="p-3 border rounded bg-light">
         <h4>My Budget</h4>
-
         <% current_event_user = @event.event_users.find_by(user: current_user) %>
-        <% show_form = params[:show_budget_form] == "true" %>
+        <% claimed_total = total_claimed_for(@event, current_user) %>
+        <% purchased_total = total_purchased_for(@event, current_user) %>
+        <% remaining = remaining_budget_for(current_event_user) %>
 
+        <p><strong>Budget:</strong>
+          <%= number_to_currency(current_event_user&.budget || 0) %>
+        </p>
+
+        <p><strong>Total Claimed:</strong>
+          <%= number_to_currency(claimed_total) %>
+        </p>
+
+        <p><strong>Total Purchased:</strong>
+          <%= number_to_currency(purchased_total) %>
+        </p>
+
+        <p><strong>Remaining:</strong>
+          <% if remaining.present? %>
+            <% if remaining < 0 %>
+      <span class="text-danger fw-bold">
+        <%= number_to_currency(remaining) %> (Over budget)
+      </span>
+            <% else %>
+      <span class="text-success fw-bold">
+        <%= number_to_currency(remaining) %>
+      </span>
+            <% end %>
+          <% else %>
+            <span class="text-muted">No budget set</span>
+          <% end %>
+        </p>
+
+        <% show_form = params[:show_budget_form] == "true" %>
         <% if show_form %>
           <% @event_user = current_event_user %>
           <%= render "event_users/budget_form", event: @event, event_user: current_event_user %>
         <% else %>
-          <% if current_event_user&.budget.present? && current_event_user.budget > 0 %>
-            <p><strong>Budget:</strong> $<%= number_with_precision(current_event_user.budget, precision: 2) %></p>
+          <% if current_event_user&.budget.present? %>
             <%= link_to "Edit Budget",
                         event_path(@event, show_budget_form: true),
                         class: "btn btn-secondary btn-sm" %>
           <% else %>
-            <p class="text-muted">No budget set yet.</p>
             <%= link_to "Set Budget",
                         event_path(@event, show_budget_form: true),
                         class: "btn btn-primary btn-sm" %>
@@ -265,7 +293,6 @@
       </div>
     </div>
   </div>
-
 
   <br>
   <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
