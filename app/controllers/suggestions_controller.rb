@@ -23,6 +23,23 @@ class SuggestionsController < ApplicationController
     end
   end
 
+
+  #redirects to the user gift summary's show view
+  def toggle_purchase_suggestion
+    @suggestion = Suggestion.find(params[:id])
+    if params[:suggestion][:purchased] == "1"
+      @suggestion.purchased = true
+    else
+      @suggestion.purchased = false
+    end
+    if @suggestion.save
+      redirect_to user_gift_summary_path(user_id: @suggestion.recipient_id, event_id: @suggestion.event), notice: "Purchased status changed successfully!"
+    else
+      redirect_to user_gift_summary_path(user_id: @suggestion.recipient_id, event_id: @suggestion.event), alert: "Could not change purchase status."
+    end
+
+  end
+
   def show
 
   end

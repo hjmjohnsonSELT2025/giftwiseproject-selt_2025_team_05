@@ -30,7 +30,11 @@ Rails.application.routes.draw do
 
   resources :friendships, only: [:index, :new, :create, :update, :destroy]
 
-  resources :suggestions
+  resources :suggestions do
+    post :toggle_purchase_suggestion, on: :member
+  end
+
+  get '/user_gift_summary/:user_id/:event_id', to: 'user_gift_summary#show', as: :user_gift_summary
 
   root to: "home#index"
 end

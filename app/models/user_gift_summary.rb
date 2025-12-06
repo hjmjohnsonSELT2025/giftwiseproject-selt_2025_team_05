@@ -1,0 +1,3 @@
+class UserGiftSummary < ApplicationRecord
+
+end

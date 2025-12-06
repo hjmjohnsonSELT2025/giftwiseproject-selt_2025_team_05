@@ -1,0 +1,55 @@
+<h1>we're here</h1>
+
+<h2>My Gifts to  <%= @recipient.first_name %> for <%= @event.name %></h2>
+
+<% if @combined_items.any? %>
+  <table class="table table-striped" style="max-width: 600px;">
+    <thead>
+    <tr>
+      <th>Item Name</th>
+      <th>Cost</th>
+      <th>Details</th>
+      <th>Purchased?</th>
+      <th>Wishlist Info</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <% @combined_items.each do |item| %>
+      <tr>
+
+        <td><%= "#{item.item_name}" %></td>
+        <td> <%= "#{number_to_currency(item.cost)}" %></td>
+        <td> <%= "#{item.notes}" %></td>
+
+        <td>
+          <% if item.class.name == "Suggestion"%>
+            <!-- Checkbox based off of ChatGPT response -->
+            <%= form_with model: item, url: toggle_purchase_suggestion_suggestion_path(item), method: :post, local: true do |f| %>
+
+              <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();', disabled: (item.user != current_user) %>
+
+            <% end %>
+          <%else %>
+            <%= form_with model: item, url: toggle_purchase_preference_path(item), method: :post, local: true do |f| %>
+
+              <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();', disabled: (item.giver != current_user) %>
+
+            <% end %>
+          <%end %>
+        </td>
+        <td>
+          <% if item.class.name == "Preference"%>
+            <p>On <%= @recipient.first_name %>'s Wishlist</p>
+
+          <%end %>
+        </td>
+      </tr>
+
+    <% end %>
+
+    </tbody>
+  </table>
+<% else %>
+  <p>No gifts yet.</p>
+<% end %>

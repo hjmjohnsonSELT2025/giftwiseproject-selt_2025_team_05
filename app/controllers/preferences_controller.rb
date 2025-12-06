@@ -59,9 +59,9 @@ class PreferencesController < ApplicationController
       @preference.purchased = false
     end
     if @preference.save
-      redirect_to view_user_wishlist_preferences_path(user_id: @preference.user_id, event_id: @preference.event), notice: "Purchased status changed successfully!"
+      redirect_to user_gift_summary_path(user_id: @preference.user_id, event_id: @preference.event), notice: "Purchased status changed successfully!"
     else
-      redirect_to view_user_wishlist_preferences_path(user_id: @preference.user_id, event_id: @preference.event), alert: "Could not change purchase status."
+      redirect_to user_gift_summary_path(user_id: @preference.user_id, event_id: @preference.event), alert: "Could not change purchase status."
     end
 
   end

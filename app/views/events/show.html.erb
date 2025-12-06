@@ -79,7 +79,7 @@
                   <td>
                     <% if event_user.joined? && event_user.user_id != current_user.id %>
                       <%= button_to "Get Gifts",
-                                    view_user_wishlist_preferences_path(user_id: event_user.user.id, event_id: @event.id),
+                                    user_gift_summary_path(user_id: event_user.user.id, event_id: @event.id),
                                     method: :get,
                                     class: "btn btn-sm btn-success" %>
                     <%end %>
