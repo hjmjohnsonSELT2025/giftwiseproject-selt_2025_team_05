@@ -1,11 +1,12 @@
 <div>
   <div>
     <div>
-      <h1>Add New Wishlist Item</h1>
+      <h1>Add New Gift Suggestion for <%= @user.first_name %></h1>
+      <h2>Event: <%=@event.name%></h2>
 
     </div>
 
-    <%= form_with model: @preference do |form| %>
+    <%= form_with model: @suggestion do |form| %>
       <div>
         <%= form.label :item_name, "Item Name *" %>
         <%= form.text_field :item_name, required: true, placeholder: "Enter item name" %>
@@ -24,13 +25,16 @@
         <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences..." %>
       </div>
 
+      <%=hidden_field_tag :recipient_id, @user.id%>
+      <%=hidden_field_tag :event_id, @event.id%>
+      <%=hidden_field_tag :user_id, current_user.id%>
+
       <div>
-        <%= form.submit "Add to Wishlist", class: "btn btn-primary" %>
-        <%= link_to "Cancel", preferences_path, class: "btn btn-secondary" %>
+        <%= form.submit "Add Gift Suggestion", class: "btn btn-primary" %>
 
       </div>
       <br>
-      <%= link_to "Back to Wishlist", preferences_path, class: "btn btn-secondary" %>
+
     <% end %>
   </div>
 </div>

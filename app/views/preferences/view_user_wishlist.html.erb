@@ -1,10 +1,12 @@
-<h1>Find gifts for <%= @user.first_name %></h1>
-
-<h2>Event: <%=@event.name%></h2>
+<h1>Find gifts for <%= @user.first_name %> for <%=@event.name%></h1>
+<br>
+<h2>Shopping List for <%= @user.first_name %> </h2>
+<h5>These are all the gifts you plan to buy for <%= @user.first_name %>. Add gifts from <%= @user.first_name %>'s wishlist, or add your own gift ideas.</h5>
 <br>
 <div class="view_user_wishlist_grid">
   <div>
   <h2><%= @user.first_name %>'s Wishlist</h2>
+    <h5><%= @user.first_name %>'s requested gifts.</h5>
 
   <% if @preferences.any? %>
     <table class="table table-striped" style="max-width: 600px;">
@@ -89,7 +91,7 @@
                 <!-- Checkbox based off of ChatGPT response FIX THIS-->
                 <%= form_with model: item, url: toggle_purchase_preference_path(item), method: :post, local: true do |f| %>
 
-                  <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();', disabled: (item.giver != current_user) %>
+                  <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();', disabled: (item.user != current_user) %>
 
                 <% end %>
               </td>
@@ -102,7 +104,7 @@
     <% else %>
       <p>No gift ideas yet.</p>
     <% end %>
-    <%= link_to "Add gift suggestion", new_suggestion_path, class: "btn btn-secondary" %>
+    <%= link_to "Add gift suggestion", new_suggestion_path(user_id: @user.id, event_id: @event.id), class: "btn btn-secondary" %>
     <br>
     <%= link_to "Generate gift ideas with AI Gift Assistant",
                 event_event_user_gift_suggestions_path(@event, @event_user),

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_05_041727) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_06_220147) do
   create_table "event_users", force: :cascade do |t|
     t.integer "event_id", null: false
     t.integer "user_id", null: false
@@ -71,9 +71,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_05_041727) do
     t.text "notes"
     t.boolean "purchased"
     t.integer "recipient_id", null: false
-    t.integer "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "event_id"
     t.index ["event_id"], name: "index_suggestions_on_event_id"
     t.index ["recipient_id"], name: "index_suggestions_on_recipient_id"
     t.index ["user_id"], name: "index_suggestions_on_user_id"
@@ -103,7 +103,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_05_041727) do
   add_foreign_key "preferences", "events"
   add_foreign_key "preferences", "users"
   add_foreign_key "preferences", "users", column: "giver_id"
+  add_foreign_key "suggestions", "events"
   add_foreign_key "suggestions", "users"
-  add_foreign_key "suggestions", "users", column: "event_id"
   add_foreign_key "suggestions", "users", column: "recipient_id"
 end
