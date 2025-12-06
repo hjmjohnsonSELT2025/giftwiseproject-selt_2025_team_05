@@ -70,7 +70,13 @@
               <tr>
                 <td><%= "#{event_user.user.first_name} #{event_user.user.last_name}" %></td>
                 <td>
-                  <% status_class = event_user.status == 'joined' ? 'bg-success' : 'bg-warning text-dark' %>
+                  <% status_class = if is_past
+                                      'bg-secondary text-dark'
+                                    elsif event_user.status == 'joined'
+                                      'bg-success'
+                                    else
+                                      'bg-warning text-dark'
+                                    end %>
                   <span class="badge <%= status_class %>">
                     <%= event_user.status.capitalize %>
                   </span>
