@@ -33,6 +33,7 @@ Rails.application.routes.draw do
 
   resources :suggestions do
     post :toggle_purchase_suggestion, on: :member
+    post :toggle_purchase_suggestion_show, on: :member
   end
 
   get '/user_gift_summary/:user_id/:event_id', to: 'user_gift_summary#show', as: :user_gift_summary

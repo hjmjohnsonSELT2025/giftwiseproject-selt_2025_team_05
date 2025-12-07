@@ -1,4 +1,8 @@
 <h1>My Gifts to  <%= @recipient.first_name %> for <%= @event.name %></h1>
+<h5>These are all the gift's you're planning to get for <%= @recipient.first_name %>.</h5>
+<h5>Click "Add Gift" to add a gift from <%= @recipient.first_name %>'s wishlist or create your own gift suggestion.</h5>
+<h5>You can edit or delete gift suggestions that you create yourself. If the gift is from <%= @recipient.first_name %>'s wishlist,
+you can unclaim the gift to remove it from your list.</h5>
 
 <% if @combined_items.any? %>
   <table class="table table-striped" style="max-width: 600px;">
@@ -45,7 +49,7 @@
         <td>
           <% if item.class.name == "Suggestion"%>
             <!-- Can edit or remove the suggestion -->
-            <%= link_to "Edit or Delete Gift", edit_suggestion_path(id: item.id), class: "btn btn-secondary" %>
+            <%= link_to "Edit or Delete Gift", edit_suggestion_path(id: item.id), class: "btn btn-primary" %>
         <%else %>
             <!-- Unclaim button -->
             <%= button_to "Unclaim Wishlist Gift",

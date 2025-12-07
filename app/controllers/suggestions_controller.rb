@@ -40,6 +40,21 @@ class SuggestionsController < ApplicationController
 
   end
 
+  def toggle_purchase_suggestion_show
+    @suggestion = Suggestion.find(params[:id])
+    if params[:suggestion][:purchased] == "1"
+      @suggestion.purchased = true
+    else
+      @suggestion.purchased = false
+    end
+    if @suggestion.save
+      redirect_to @suggestion.event, notice: "Purchased status changed successfully!"
+    else
+      redirect_to @suggestion.event, alert: "Could not change purchase status."
+    end
+
+  end
+
   def show
 
   end

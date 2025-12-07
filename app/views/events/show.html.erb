@@ -178,7 +178,7 @@
 
   <h2>My Gifts To Others</h2>
 
-  <% gifts = Preference.where(giver: current_user, event: @event) %>
+  <% gifts = Preference.where(giver: current_user, event: @event) + Suggestion.where(user: current_user, event: @event) %>
 
   <% if gifts.any? %>
     <table class="table table-striped" style="max-width: 600px;">
@@ -198,23 +198,48 @@
         <tr>
           <td><%= "#{gift.item_name}" %></td>
           <td><%= "#{gift.cost}" %></td>
-          <td><%= "#{User.find_by(id: gift.user_id).first_name}" %></td>
+          <td>
+            <% if gift.class.name == "Suggestion"%>
+              <%= "#{User.find_by(id: gift.recipient_id).first_name}" %>
+            <%else %>
+              <%= "#{User.find_by(id: gift.user_id).first_name}" %>
+            <% end %>
+          </td>
           <td>
             <% if is_past %>
               <input type="checkbox" disabled <%= 'checked' if gift.purchased %>>
             <% else %>
-              <%= form_with model: gift, url: toggle_purchase_show_preference_path(gift), method: :post, local: true do |f| %>
-                <%= f.check_box :purchased, checked: gift.purchased,  onchange: 'this.form.submit();' %>
-              <% end %>
+
+              <% if gift.class.name == "Suggestion"%>
+                <!-- Checkbox based off of ChatGPT response -->
+                <%= form_with model: gift, url: toggle_purchase_suggestion_show_suggestion_path(gift), method: :post, local: true do |f| %>
+
+                  <%= f.check_box :purchased, checked: gift.purchased,  onchange: 'this.form.submit();', disabled: (gift.user != current_user) %>
+
+                <% end %>
+              <%else %>
+                <%= form_with model: gift, url: toggle_purchase_show_preference_path(gift), method: :post, local: true do |f| %>
+
+                  <%= f.check_box :purchased, checked: gift.purchased,  onchange: 'this.form.submit();', disabled: (gift.giver != current_user) %>
+
+                <% end %>
+              <%end %>
             <% end %>
           </td>
 
           <% unless is_past %>
             <td>
-              <%= button_to "Unclaim",
-                            unclaim_show_preference_preferences_path(item_id: gift.id, user_id: current_user.id, event_id: @event.id),
-                            method: :post,
-                            class: "btn btn-sm btn-danger" %>
+
+              <% if gift.class.name == "Suggestion"%>
+                <!-- Can edit or remove the suggestion -->
+                <%= link_to "Edit or Delete Gift", edit_suggestion_path(id: gift.id), class: "btn btn-primary" %>
+              <%else %>
+                <!-- Unclaim button -->
+                <%= button_to "Unclaim Wishlist Gift",
+                              unclaim_preference_summary_preferences_path(item_id: gift.id, event_id: @event.id, user_id: current_user.id),
+                              form: {data: { turbo_confirm: "Are you sure you want to unclaim this wishlist gift?" }},
+                              class: "btn btn-danger" %>
+              <%end %>
             </td>
           <% end %>
         </tr>
