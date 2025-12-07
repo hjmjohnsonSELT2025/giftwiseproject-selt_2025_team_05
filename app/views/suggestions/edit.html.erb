@@ -1,47 +1,41 @@
-<div>
-  <div>
-    <div>
-      <h1>Edit Gift Idea</h1>
-
+<div class="container py-4">
+  <div class="text-center mb-4">
+    <h2 class="mb-1">Edit Gift Idea</h2>
+  </div>
+  <div class="d-flex justify-content-center">
+    <div class="card shadow-sm" style="max-width: 600px; width: 100%;">
+      <div class="card-body">
+        <%= form_with model: @suggestion, method: :patch do |form| %>
+          <div class="mb-3">
+            <%= form.label :item_name, "Item Name *" %>
+            <%= form.text_field :item_name, required: true, placeholder: "Enter item name", class: "form-control" %>
+          </div>
+          <div class="mb-3">
+            <%= form.label :cost, "Cost" %>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <%= form.number_field :cost, step: 0.01, placeholder: "0.00", class: "form-control" %>
+            </div>
+          </div>
+          <div class="mb-3">
+            <%= form.label :notes, "Notes", class: "form-label" %>
+            <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences...", class: "form-control" %>
+          </div>
+          <%= form.hidden_field :event_id, value: @suggestion.event.id %>
+          <%= form.hidden_field :user_id, value: current_user.id %>
+          <%= form.hidden_field :redirect, value: @redirect %>
+          <div>
+            <%= form.submit "Update Item", class: "btn btn-primary" %>
+            <%= button_to "Delete",
+                          suggestion_path(@suggestion),
+                          method: :delete,
+                          params: { redirect: @redirect },
+                          form: { data: { turbo_confirm: "Are you sure?" } },
+                          class: "btn btn-danger" %>
+            <!-- ChatGPT used for form: { data: { turbo_confirm: "Are you sure?" } } -->
+          </div>
+        <% end %>
+      </div>
     </div>
-
-    <%= form_with model: @suggestion, method: :patch do |form| %>
-      <div>
-        <%= form.label :item_name, "Item Name *" %>
-        <%= form.text_field :item_name, required: true, placeholder: "Enter item name" %>
-      </div>
-
-      <div>
-        <%= form.label :cost, "Cost" %>
-        <div>
-          <span>$</span>
-          <%= form.number_field :cost, step: 0.01, placeholder: "0.00" %>
-        </div>
-      </div>
-
-      <div>
-        <%= form.label :notes, "Notes" %>
-        <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences..." %>
-      </div>
-
-
-      <%= form.hidden_field :event_id, value: @suggestion.event.id %>
-      <%= form.hidden_field :user_id, value: current_user.id %>
-      <%= form.hidden_field :redirect, value: @redirect %>
-
-      <div>
-        <%= form.submit "Update Item", class: "btn btn-primary" %>
-
-      </div>
-
-
-    <% end %>
-    <%= button_to "Delete",
-                  suggestion_path(@suggestion),
-                  method: :delete,
-                  params: { redirect: @redirect },
-                  form: { data: { turbo_confirm: "Are you sure?" } },
-                  class: "btn btn-danger" %>
-    <!-- ChatGPT used for form: { data: { turbo_confirm: "Are you sure?" } } -->
   </div>
 </div>
