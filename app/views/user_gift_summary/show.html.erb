@@ -9,6 +9,7 @@
       <th>Details</th>
       <th>Purchased?</th>
       <th>Wishlist Info</th>
+      <th>Manage</th>
     </tr>
     </thead>
     <tbody>
@@ -40,6 +41,14 @@
           <% if item.class.name == "Preference"%>
             <p>On <%= @recipient.first_name %>'s Wishlist</p>
 
+          <%end %>
+        </td>
+        <td>
+          <% if item.class.name == "Suggestion"%>
+            <!-- Can edit or remove the suggestion -->
+            <%= link_to "Edit or Delete Suggestion", edit_suggestion_path(id: item.id), class: "btn btn-secondary" %>
+        <%else %>
+            <!-- Unclaim button -->
           <%end %>
         </td>
       </tr>

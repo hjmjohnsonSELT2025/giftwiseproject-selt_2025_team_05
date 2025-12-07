@@ -1,0 +1,44 @@
+<div>
+  <div>
+    <div>
+      <h1>Edit Gift Idea</h1>
+
+    </div>
+
+    <%= form_with model: @suggestion, method: :patch do |form| %>
+      <div>
+        <%= form.label :item_name, "Item Name *" %>
+        <%= form.text_field :item_name, required: true, placeholder: "Enter item name" %>
+      </div>
+
+      <div>
+        <%= form.label :cost, "Cost" %>
+        <div>
+          <span>$</span>
+          <%= form.number_field :cost, step: 0.01, placeholder: "0.00" %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.label :notes, "Notes" %>
+        <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences..." %>
+      </div>
+
+      <%= form.hidden_field :recipient_id, value: @suggestion.user.id %>
+      <%= form.hidden_field :event_id, value: @suggestion.event.id %>
+      <%= form.hidden_field :user_id, value: current_user.id %>
+
+      <div>
+        <%= form.submit "Update Item", class: "btn btn-primary" %>
+
+      </div>
+
+
+    <% end %>
+    <%= button_to "Delete",
+                  suggestion_path(@suggestion),
+                  method: :delete,
+                  form: { data: { turbo_confirm: "Are you sure?" } },
+                  class: "btn btn-danger" %>
+  </div>
+</div>

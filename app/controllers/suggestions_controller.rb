@@ -45,12 +45,33 @@ class SuggestionsController < ApplicationController
   end
 
   def edit
+    @suggestion = Suggestion.find(params[:id])
   end
 
   def update
-
+    @suggestion = Suggestion.find(params[:id])
+    @recipient = User.find(params[:suggestion][:recipient_id])
+    @event = Event.find(params[:suggestion][:event_id])
+    if @suggestion.update(suggestion_params)
+      redirect_to user_gift_summary_path(user_id: @recipient.id, event_id: @event.id), notice: "Item updated successfully!"
+    else
+      render :edit
+    end
   end
 
   def destroy
+    @suggestion = Suggestion.find(params[:id])
+    @recipient = @suggestion.recipient
+    @event = @suggestion.event
+    @suggestion.destroy
+    redirect_to user_gift_summary_path(user_id: @recipient.id, event_id: @event.id), notice: "Suggestion removed"
   end
+
+  private
+
+
+  def suggestion_params
+    params.require(:suggestion).permit(:item_name, :cost, :notes, :event_id, :user_id, :recipient_id)
+  end
+
 end
