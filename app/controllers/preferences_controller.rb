@@ -41,54 +41,6 @@ class PreferencesController < ApplicationController
 
   end
 
-  def unclaim_preference_wishlist
-    @item = Preference.find(params[:item_id])
-    @event = Event.find(params[:event_id])
-
-    @item.giver = nil
-    @item.purchased = nil
-    @item.event = nil
-
-    if @item.save
-      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id, event_id: @event.id), notice: "Gift unclaimed successfully!"
-    else
-      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id, event_id: @event.id), alert: "Could not unclaim gift."
-    end
-
-  end
-
-  def unclaim_preference_summary
-    @item = Preference.find(params[:item_id])
-    @event = Event.find(params[:event_id])
-
-    @item.giver = nil
-    @item.purchased = nil
-    @item.event = nil
-
-    if @item.save
-      redirect_to user_gift_summary_path(user_id: @item.user_id, event_id: @event.id), notice: "Gift unclaimed successfully!"
-    else
-      redirect_to user_gift_summary_path(user_id: @item.user_id, event_id: @event.id), alert: "Could not unclaim gift."
-    end
-
-  end
-
-  def unclaim_show_preference
-    @item = Preference.find(params[:item_id])
-    @event = Event.find(params[:event_id])
-    #if item.on_user_wishlist is false, then destroy the item.
-      @item.giver = nil
-      @item.purchased = nil
-      @item.event = nil
-      @event = Event.find(params[:event_id])
-      if @item.save
-        redirect_to @event, notice: "Gift unclaimed successfully!"
-      else
-        redirect_to @event, alert: "Could not unclaim gift."
-      end
-
-  end
-
   def toggle_purchase
     @preference = Preference.find(params[:id])
     if params[:preference][:purchased] == "1"

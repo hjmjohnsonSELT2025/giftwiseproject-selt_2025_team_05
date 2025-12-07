@@ -176,7 +176,7 @@
     </div>
   <% end %>
 
-  <h2>My Gifts To Others</h2>
+  <h2>My Shopping List</h2>
 
   <% gifts = Preference.where(giver: current_user, event: @event) + Suggestion.where(user: current_user, event: @event) %>
 
