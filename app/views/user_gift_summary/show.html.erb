@@ -49,7 +49,7 @@ you can unclaim the gift to remove it from your list.</h5>
         <td>
           <% if item.class.name == "Suggestion"%>
             <!-- Can edit or remove the suggestion -->
-            <%= link_to "Edit or Delete Gift", edit_suggestion_path(id: item.id), class: "btn btn-primary" %>
+            <%= link_to "Edit or Delete Gift", edit_suggestion_path(id: item.id, redirect: "user_gift_summary"), class: "btn btn-primary" %>
         <%else %>
             <!-- Unclaim button -->
             <%= button_to "Unclaim Wishlist Gift",

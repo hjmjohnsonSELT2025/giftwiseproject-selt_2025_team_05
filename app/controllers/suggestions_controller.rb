@@ -61,14 +61,19 @@ class SuggestionsController < ApplicationController
 
   def edit
     @suggestion = Suggestion.find(params[:id])
+    @redirect = params[:redirect]
   end
 
   def update
     @suggestion = Suggestion.find(params[:id])
-    @recipient = User.find(params[:suggestion][:recipient_id])
+    @recipient = @suggestion.recipient
     @event = Event.find(params[:suggestion][:event_id])
     if @suggestion.update(suggestion_params)
-      redirect_to user_gift_summary_path(user_id: @recipient.id, event_id: @event.id), notice: "Item updated successfully!"
+      if params[:suggestion][:redirect] == "user_gift_summary"
+        redirect_to user_gift_summary_path(user_id: @recipient.id, event_id: @event.id), notice: "Item updated successfully!"
+      else
+        redirect_to @event, notice: "Item updated successfully!"
+      end
     else
       render :edit
     end
@@ -79,7 +84,11 @@ class SuggestionsController < ApplicationController
     @recipient = @suggestion.recipient
     @event = @suggestion.event
     @suggestion.destroy
-    redirect_to user_gift_summary_path(user_id: @recipient.id, event_id: @event.id), notice: "Suggestion removed"
+    if params[:redirect] == "user_gift_summary"
+      redirect_to user_gift_summary_path(user_id: @recipient.id, event_id: @event.id), notice: "Suggestion removed"
+    else
+      redirect_to @event, notice: "Suggestion removed"
+    end
   end
 
   private

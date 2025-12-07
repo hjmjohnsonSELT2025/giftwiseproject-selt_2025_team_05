@@ -24,9 +24,10 @@
         <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences..." %>
       </div>
 
-      <%= form.hidden_field :recipient_id, value: @suggestion.user.id %>
+
       <%= form.hidden_field :event_id, value: @suggestion.event.id %>
       <%= form.hidden_field :user_id, value: current_user.id %>
+      <%= form.hidden_field :redirect, value: @redirect %>
 
       <div>
         <%= form.submit "Update Item", class: "btn btn-primary" %>
@@ -38,6 +39,7 @@
     <%= button_to "Delete",
                   suggestion_path(@suggestion),
                   method: :delete,
+                  params: { redirect: @redirect },
                   form: { data: { turbo_confirm: "Are you sure?" } },
                   class: "btn btn-danger" %>
     <!-- ChatGPT used for form: { data: { turbo_confirm: "Are you sure?" } } -->

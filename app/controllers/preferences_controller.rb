@@ -25,9 +25,9 @@ class PreferencesController < ApplicationController
       @item.event = nil
 
       if @item.save
-        redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id, event_id: @event.id), notice: "Gift unclaimed successfully!"
+        redirect_to @event, notice: "Gift unclaimed successfully!"
       else
-        redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id, event_id: @event.id), alert: "Could not unclaim gift."
+        redirect_to @event, alert: "Could not unclaim gift."
       end
 
   end
@@ -41,9 +41,9 @@ class PreferencesController < ApplicationController
     @item.event = nil
 
     if @item.save
-      redirect_to user_gift_summary_path(user_id: @item.user_id, event_id: @event.id), notice: "Gift unclaimed successfully!"
+      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id, event_id: @event.id), notice: "Gift unclaimed successfully!"
     else
-      redirect_to user_gift_summary_path(user_id: @item.user_id, event_id: @event.id), alert: "Could not unclaim gift."
+      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id, event_id: @event.id), alert: "Could not unclaim gift."
     end
 
   end
