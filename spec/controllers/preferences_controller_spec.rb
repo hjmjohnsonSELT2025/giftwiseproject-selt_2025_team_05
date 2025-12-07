@@ -14,8 +14,6 @@ RSpec.describe PreferencesController, type: :controller do
     sign_in user
   end
 
-
-
   describe 'GET #view_user_wishlist' do
     it 'returns user preferences' do
       get :view_user_wishlist, params: { user_id: user.id, event_id: event.id }
@@ -48,7 +46,7 @@ RSpec.describe PreferencesController, type: :controller do
         updated_preference = Preference.order(updated_at: :desc).first
         expect(updated_preference.giver).to eq(user)
       end
-      it 'redirects to the wish list of the user who will recieve the gift' do
+      it 'redirects to the wish list of the user who will receive the gift' do
         post :claim_preference, params: { item_id: unclaimed_item.id, user_id: user.id, event_id: event.id}
         expect(response).to redirect_to(view_user_wishlist_preferences_path(event_id: event.id, user_id: recipient))
       end
@@ -62,23 +60,9 @@ RSpec.describe PreferencesController, type: :controller do
         updated_preference = Preference.order(updated_at: :desc).first
         expect(updated_preference.giver).to eq(nil)
       end
-      it 'redirects to the wish list of the user who will receive the gift' do
-        post :unclaim_preference, params: { item_id: claimed_item.id, user_id: user.id, event_id: event.id}
+      it 'redirects to the wish list of the user who will receive the gift with redirect: wishlist' do
+        post :unclaim_preference, params: { item_id: claimed_item.id, user_id: user.id, event_id: event.id, redirect: "wishlist"}
         expect(response).to redirect_to(view_user_wishlist_preferences_path(event_id: event.id, user_id: recipient))
-      end
-    end
-  end
-
-  describe 'POST #unclaim_show_preference' do
-    context 'with valid parameters' do
-      it 'changes a preference from claimed to unclaimed' do
-        post :unclaim_show_preference, params: { item_id: claimed_item.id, user_id: user.id, event_id: event.id}
-        updated_preference = Preference.order(updated_at: :desc).first
-        expect(updated_preference.giver).to eq(nil)
-      end
-      it 'redirects to the event index page' do
-        post :unclaim_show_preference, params: { item_id: claimed_item.id, user_id: user.id, event_id: event.id}
-        expect(response).to redirect_to(event)
       end
     end
   end
@@ -90,25 +74,10 @@ RSpec.describe PreferencesController, type: :controller do
         updated_preference = Preference.order(updated_at: :desc).first
         expect(updated_preference.purchased).to eq(false)
       end
-      it 'redirects to the wish list of the user who will receive the gift' do
-        post :toggle_purchase, params: {id: claimed_item.id, preference: {purchased: claimed_item.purchased}}
+      it 'redirects to the user gift summary page of the user who will receive the gift with redirect: user_gift_summary' do
+        post :toggle_purchase, params: {id: claimed_item.id, preference: {purchased: claimed_item.purchased}, redirect: "user_gift_summary"}
         updated_preference = Preference.order(updated_at: :desc).first
-        expect(response).to redirect_to(view_user_wishlist_preferences_path(event_id: updated_preference.event.id, user_id: updated_preference.user.id))
-      end
-    end
-  end
-
-  describe 'POST #toggle_purchase_show' do
-    context 'with valid parameters' do
-      it 'changes a preference from unpurchased to purchased' do
-        post :toggle_purchase_show, params: {id: claimed_item.id, preference: {purchased: claimed_item.purchased}}
-        updated_preference = Preference.order(updated_at: :desc).first
-        expect(updated_preference.purchased).to eq(false)
-      end
-      it 'redirects to the event index page' do
-        post :toggle_purchase_show, params: {id: claimed_item.id, preference: {purchased: claimed_item.purchased}}
-        updated_preference = Preference.order(updated_at: :desc).first
-        expect(response).to redirect_to(updated_preference.event)
+        expect(response).to redirect_to(user_gift_summary_path(event_id: updated_preference.event.id, user_id: updated_preference.user.id))
       end
     end
   end
