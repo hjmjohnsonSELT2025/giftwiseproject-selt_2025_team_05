@@ -1,13 +1,86 @@
-<ul class="nav nav-pills mb-3">
-  <li class="nav-item">
-    <%= link_to "Upcoming Events", root_path(view: 'upcoming'),
-                class: "nav-link #{@view_mode == 'upcoming' ? 'active' : 'text-secondary'}" %>
-  </li>
-  <li class="nav-item">
-    <%= link_to "Past Events", root_path(view: 'past'),
-                class: "nav-link #{@view_mode == 'past' ? 'active' : 'text-secondary'}" %>
-  </li>
-</ul>
+<% title = @view_mode == 'past' ? 'Past Events' : 'Upcoming Events' %>
+
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+    <div>
+      <h2 class="h4 mb-1"><%= title %></h2>
+      <p class="text-muted mb-0">Manage invites, view events, or create a new one.</p>
+    </div>
+    <%= link_to "Create Event", new_event_path, class: "btn btn-primary" %>
+  </div>
+
+  <%
+    # Preserve filter parameters when switching between tabs
+    filter_params = {
+      query: params[:query],
+      event_type: params[:event_type],
+      status: params[:status],
+      date_from: params[:date_from],
+      date_to: params[:date_to]
+    }.compact_blank
+  %>
+  <div class="mb-3">
+    <div class="btn-group" role="group">
+      <%= link_to "Upcoming Events", root_path(filter_params.merge(view: 'upcoming')), class: "btn btn-outline-primary #{'active' if @view_mode == 'upcoming'}" %>
+      <%= link_to "Past Events", root_path(filter_params.merge(view: 'past')), class: "btn btn-outline-primary #{'active' if @view_mode == 'past'}" %>
+    </div>
+  </div>
+
+<%= form_with url: root_path, method: :get, local: true, class: "mb-3" do |form| %>
+  <%= hidden_field_tag :view, @view_mode %>
+
+  <div class="row g-2 align-items-end">
+    <!-- Search Box -->
+    <div class="col-md-4">
+      <label class="form-label small text-muted">Search</label>
+      <%= form.text_field :query,
+                          value: params[:query],
+                          placeholder: "Name, address, organizer...",
+                          class: "form-control" %>
+    </div>
+
+    <!-- Event Type Filter -->
+    <div class="col-md-2">
+      <label class="form-label small text-muted">Type</label>
+      <%= form.select :event_type,
+                      options_for_select([["All Types", ""]] + Event.event_types.keys.map { |t| [t.titleize, t] }, params[:event_type]),
+                      {},
+                      class: "form-select" %>
+    </div>
+
+    <!-- Status Filter -->
+    <div class="col-md-2">
+      <label class="form-label small text-muted">Status</label>
+      <%= form.select :status,
+                      options_for_select([["All", ""], ["Joined", "joined"], ["Invited", "invited"]], params[:status]),
+                      {},
+                      class: "form-select" %>
+    </div>
+
+    <!-- Date From Filter -->
+    <div class="col-md-2">
+      <label class="form-label small text-muted">From</label>
+      <%= form.date_field :date_from,
+                          value: params[:date_from],
+                          class: "form-control" %>
+    </div>
+
+    <!-- Date To Filter -->
+    <div class="col-md-2">
+      <label class="form-label small text-muted">To</label>
+      <%= form.date_field :date_to,
+                          value: params[:date_to],
+                          class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="mt-2 d-flex gap-2">
+    <%= form.submit "Apply Filters", class: "btn btn-primary" %>
+    <% if params[:query].present? || params[:event_type].present? || params[:status].present? || params[:date_from].present? || params[:date_to].present? %>
+      <%= link_to "Clear All", root_path(view: @view_mode), class: "btn btn-outline-secondary" %>
+    <% end %>
+  </div>
+<% end %>
 
 <% if @event_users.any? %>
   <table class="table table-hover table-striped align-middle">
@@ -23,11 +96,12 @@
     </tr>
     </thead>
     <tbody>
-    <% @event_users.each do |event_user| %>
+    <% @event_users.each_with_index do |event_user, index| %>
       <% event = event_user.event %>
       <% is_past = event.date < Date.today %>
+      <% past_row_class = index.even? ? 'table-secondary' : 'table-light' %>
 
-      <tr class="<%= is_past ? 'table-secondary text-muted' : '' %>">
+      <tr class="<%= is_past ? "#{past_row_class} text-muted" : '' %>">
         <td>
           <strong><%= event.name %></strong>
         </td>
@@ -48,11 +122,11 @@
           <div class="d-flex gap-2">
             <%= link_to "View", event_path(event), class: "btn btn-sm btn-outline-primary" %>
 
-            <% if event_user.status == 'invited' && !is_past %>
-              <%= button_to "Accept",
-                            event_event_user_path(event, event_user, status: 'joined'),
-                            method: :patch,
-                            class: "btn btn-sm btn-success" %>
+              <% if event_user.status == 'invited' && @view_mode != 'past' %>
+                <%= button_to "Accept",
+                              event_event_user_path(event, event_user, status: 'joined'),
+                              method: :patch,
+                              class: "btn btn-sm btn-success" %>
 
               <%= button_to "Decline",
                             event_event_user_path(event, event_user, status: 'declined'),
@@ -69,7 +143,10 @@
 <% else %>
   <div class="alert alert-light text-center mt-3">
     <p class="mb-0">
-      <% if @view_mode == 'past' %>
+      <% has_filters = params[:query].present? || params[:event_type].present? || params[:status].present? || params[:date_from].present? || params[:date_to].present? %>
+      <% if has_filters %>
+        No events found matching your filters.
+      <% elsif @view_mode == 'past' %>
         You have no past events.
       <% else %>
         You haven't joined any upcoming events yet.
@@ -77,5 +154,4 @@
     </p>
   </div>
 <% end %>
-
-<%= link_to "Create Event", new_event_path, class: "btn btn-primary mt-2" %>
+</div>
