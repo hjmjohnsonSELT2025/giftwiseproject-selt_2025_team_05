@@ -16,3 +16,5 @@ class SendEventRemindersJob < ApplicationJob
     end
   end
 end
+
+# Last deployed: 2025-12-06 20:21:50
