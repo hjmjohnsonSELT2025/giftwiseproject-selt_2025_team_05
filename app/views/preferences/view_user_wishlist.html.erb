@@ -1,7 +1,7 @@
 <div class="container py-4">
   <div class="text-center mb-4">
-    <h2 class="mb-1"><%= @user.first_name %>'s Gifts for <%= @event.name %></h2>
-    <p class="text-muted mb-0">Claim an item or add a new gift idea for this event</p>
+    <h2 class="mb-1"><%= @user.first_name %>'s Wishlist</h2>
+    <p class="text-muted mb-0">Claim a gift from <%= @user.first_name %>'s wishlist to purchase. Or, add your own gift suggestion with the "Add Gift" button below.</p>
   </div>
 
   <% if @preferences.any? %>
