@@ -30,13 +30,7 @@ class PreferencesController < ApplicationController
         redirect_to @event, notice: "Gift unclaimed successfully!"
       end
     else
-      if params[:redirect] == "wishlist"
-        redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id, event_id: @event.id), alert: "Could not unclaim gift."
-      elsif params[:redirect] == "user_gift_summary"
-        redirect_to user_gift_summary_path(user_id: @item.user_id, event_id: @event.id), alert: "Could not unclaim gift."
-      else
         redirect_to @event, alert: "Could not unclaim gift."
-      end
     end
 
   end
@@ -86,7 +80,7 @@ class PreferencesController < ApplicationController
       render :new
     end
   end
-  
+
   def edit
     # @preference is set by set_preference before_action
   end
