@@ -1,9 +1,8 @@
-<h1>Find gifts for <%= @user.first_name %> for <%=@event.name%></h1>
-<br>
-<div >
-  <div>
-  <h2><%= @user.first_name %>'s Wishlist</h2>
-    <h5><%= @user.first_name %>'s requested gifts.</h5>
+<div class="container py-4">
+  <div class="text-center mb-4">
+    <h2 class="mb-1"><%= @user.first_name %>'s Gifts for <%= @event.name %></h2>
+    <p class="text-muted mb-0">Claim an item or add a new gift idea for this event</p>
+  </div>
 
   <% if @preferences.any? %>
     <table class="table table-striped" style="max-width: 600px;">
@@ -58,14 +57,15 @@
   <% end %>
 
 
-
+  <div class="d-flex gap-2 mt-3">
     <%= link_to "Add my own gift suggestion", new_suggestion_path(user_id: @user.id, event_id: @event.id), class: "btn btn-primary" %>
     <br>
     <br>
     <%= link_to "Generate gift ideas with AI Gift Assistant",
                 event_event_user_gift_suggestions_path(@event, @event_user),
                 class: "btn btn-primary" %>
-
+  </div>
+</div>
 <br>
     <br>
 <%= link_to "Back", user_gift_summary_path(user_id: @user.id, event_id: @event.id), class: "btn btn-secondary" %>

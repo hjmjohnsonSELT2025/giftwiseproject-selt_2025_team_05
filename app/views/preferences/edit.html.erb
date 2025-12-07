@@ -1,37 +1,40 @@
-<div>
-  <div>
-    <div>
-      <h1>Edit Wishlist Item</h1>
-      <%= link_to "Back to Wishlist", preferences_path, class: "btn btn-secondary" %>
+<div class="container py-4">
+  <div class="text-center mb-4">
+    <h2 class="mb-1">Edit Wishlist Item</h2>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <div class="card shadow-sm" style="max-width: 600px; width: 100%;">
+      <div class="card-body">
+        <%= form_with model: @preference, url: preference_path(@preference), method: :patch do |form| %>
+          <div class="mb-3">
+            <%= form.label :item_name, "Item Name *", class: "form-label" %>
+            <%= form.text_field :item_name, required: true, placeholder: "Enter item name", class: "form-control" %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :cost, "Cost", class: "form-label" %>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <%= form.number_field :cost, step: 0.01, placeholder: "0.00", class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :notes, "Notes", class: "form-label" %>
+            <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences...", class: "form-control" %>
+          </div>
+
+          <div class="d-flex gap-2">
+            <%= form.submit "Update Item", class: "btn btn-primary" %>
+            <%= link_to "Cancel", preferences_path, class: "btn btn-secondary"%>
+            <%= link_to "Delete", preference_path(@preference),
+                        method: :delete,
+                        data: { confirm: 'Are you sure you want to remove this item from your wishlist?' },
+                        class: "btn btn-danger" %>
+          </div>
+        <% end %>
+      </div>
     </div>
-
-    <%= form_with model: @preference, url: preference_path(@preference), method: :patch do |form| %>
-      <div>
-        <%= form.label :item_name, "Item Name *" %>
-        <%= form.text_field :item_name, required: true, placeholder: "Enter item name" %>
-      </div>
-
-      <div>
-        <%= form.label :cost, "Cost" %>
-        <div>
-          <span>$</span>
-          <%= form.number_field :cost, step: 0.01, placeholder: "0.00" %>
-        </div>
-      </div>
-
-      <div>
-        <%= form.label :notes, "Notes" %>
-        <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences..." %>
-      </div>
-
-      <div>
-        <%= form.submit "Update Item", class: "btn btn-primary" %>
-        <%= link_to "Cancel", preferences_path, class: "btn btn-secondary"%>
-        <%= link_to "Delete", preference_path(@preference),
-                    method: :delete,
-                    data: { confirm: 'Are you sure you want to remove this item from your wishlist?' },
-                    class: "btn btn-danger" %>
-      </div>
-    <% end %>
   </div>
 </div>
