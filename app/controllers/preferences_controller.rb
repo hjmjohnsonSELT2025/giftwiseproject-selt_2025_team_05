@@ -17,15 +17,27 @@ class PreferencesController < ApplicationController
     @item = Preference.find(params[:item_id])
     @event = Event.find(params[:event_id])
 
-      @item.giver = nil
-      @item.purchased = nil
-      @item.event = nil
+    @item.giver = nil
+    @item.purchased = nil
+    @item.event = nil
 
-      if @item.save
+    if @item.save
+      if params[:redirect] == "wishlist"
+        redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id, event_id: @event.id), notice: "Gift unclaimed successfully!"
+      elsif params[:redirect] == "user_gift_summary"
+        redirect_to user_gift_summary_path(user_id: @item.user_id, event_id: @event.id), notice: "Gift unclaimed successfully!"
+      else
         redirect_to @event, notice: "Gift unclaimed successfully!"
+      end
+    else
+      if params[:redirect] == "wishlist"
+        redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id, event_id: @event.id), alert: "Could not unclaim gift."
+      elsif params[:redirect] == "user_gift_summary"
+        redirect_to user_gift_summary_path(user_id: @item.user_id, event_id: @event.id), alert: "Could not unclaim gift."
       else
         redirect_to @event, alert: "Could not unclaim gift."
       end
+    end
 
   end
 

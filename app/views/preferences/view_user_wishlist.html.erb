@@ -31,7 +31,7 @@
               <%else %>
                 <%= "#{item.giver.first_name}" %>
                 <%= button_to "Unclaim",
-                              unclaim_preference_wishlist_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id),
+                              unclaim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id, redirect: "wishlist"),
                               method: :post,
                               class: "btn btn-sm btn-danger" %></td>
               <% end %>
