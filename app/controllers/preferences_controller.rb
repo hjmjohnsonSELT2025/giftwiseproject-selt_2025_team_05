@@ -32,6 +32,22 @@ class PreferencesController < ApplicationController
 
   end
 
+  def unclaim_preference_summary
+    @item = Preference.find(params[:item_id])
+    @event = Event.find(params[:event_id])
+
+    @item.giver = nil
+    @item.purchased = nil
+    @item.event = nil
+
+    if @item.save
+      redirect_to user_gift_summary_path(user_id: @item.user_id, event_id: @event.id), notice: "Gift unclaimed successfully!"
+    else
+      redirect_to user_gift_summary_path(user_id: @item.user_id, event_id: @event.id), alert: "Could not unclaim gift."
+    end
+
+  end
+
   def unclaim_show_preference
     @item = Preference.find(params[:item_id])
     @event = Event.find(params[:event_id])
