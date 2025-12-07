@@ -6,7 +6,8 @@ class SendEventRemindersJob < ApplicationJob
 
     events.each do |event|
       creator = User.find(event.user_id)
-      participants = User.joins(:event_users).where(event_users: { event_id: event.id })
+      participants = User.joins(:event_users).where(event_users: { event_id: event.id ,
+                                                                   status: :joined })
       all_people = [creator] + participants.to_a
 
       all_people.uniq.each do |person|
