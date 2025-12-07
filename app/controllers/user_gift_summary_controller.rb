@@ -9,4 +9,10 @@ class UserGiftSummaryController < ApplicationController
     @suggestions = @giver.suggestions.where(event: @event, recipient: @recipient)
     @combined_items = @wishlist_items_claimed + @suggestions
   end
+  def add_gift
+    @event = Event.find(params[:event_id])
+    @giver = current_user
+    @recipient = User.find(params[:user_id])
+    @wishlist_items = @recipient.preferences
+  end
 end

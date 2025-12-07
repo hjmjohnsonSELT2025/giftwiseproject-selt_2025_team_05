@@ -17,7 +17,7 @@ class SuggestionsController < ApplicationController
     @suggestion.event = Event.find(params[:event_id])
 
     if @suggestion.save
-      redirect_to view_user_wishlist_preferences_path(user_id: @suggestion.recipient, event_id: @suggestion.event), notice: "Gift suggestion added!"
+      redirect_to user_gift_summary_path(user_id: @suggestion.recipient, event_id: @suggestion.event), notice: "Gift suggestion added!"
     else
       redirect_to new_suggestion_path(user_id: @user.id, event_id: @event.id), notice: "Unable to save gift suggestion."
     end

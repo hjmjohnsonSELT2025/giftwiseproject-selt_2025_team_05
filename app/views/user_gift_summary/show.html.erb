@@ -1,6 +1,4 @@
-<h1>we're here</h1>
-
-<h2>My Gifts to  <%= @recipient.first_name %> for <%= @event.name %></h2>
+<h1>My Gifts to  <%= @recipient.first_name %> for <%= @event.name %></h1>
 
 <% if @combined_items.any? %>
   <table class="table table-striped" style="max-width: 600px;">
@@ -53,3 +51,6 @@
 <% else %>
   <p>No gifts yet.</p>
 <% end %>
+
+<%= link_to "Add Gift", view_user_wishlist_preferences_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-secondary" %>
+
