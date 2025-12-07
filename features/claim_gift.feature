@@ -15,6 +15,7 @@ Feature: Claim gift
   Scenario: Claiming a gift
     When I click "Events"
     And I click "View"
-    And I click "View Wish List"
+    And I click "Get Gifts"
+    And I click "Add Gift"
     And I click "Claim this gift"
     Then I should see "Gift claimed successfully!"
