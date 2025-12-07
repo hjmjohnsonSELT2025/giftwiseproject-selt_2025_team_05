@@ -1,3 +1,4 @@
+<div class="wishlist-green-theme">
 <div class="container py-4">
   <div class="text-center mb-4">
     <h2 class="mb-1"><%= @user.first_name %>'s Wishlist</h2>
@@ -9,7 +10,7 @@
       <table class="table table-striped align-middle mb-0">
         <thead class="table-light">
         <tr>
-          <th>Item Name</th>
+          <th>Wishlist Item</th>
           <th>Cost</th>
           <th>Details</th>
           <th>Claimed By</th>
@@ -69,4 +70,5 @@
   </div>
   <br>
   <%= link_to "Back", user_gift_summary_path(user_id: @user.id, event_id: @event.id), class: "btn btn-secondary" %>
+</div>
 </div>
