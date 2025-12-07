@@ -33,30 +33,18 @@ class SuggestionsController < ApplicationController
       @suggestion.purchased = false
     end
     if @suggestion.save
-      redirect_to user_gift_summary_path(user_id: @suggestion.recipient_id, event_id: @suggestion.event), notice: "Purchased status changed successfully!"
+      if params[:redirect] == "user_gift_summary"
+        redirect_to user_gift_summary_path(user_id: @suggestion.recipient_id, event_id: @suggestion.event), notice: "Purchased status changed successfully!"
+      else
+        redirect_to @suggestion.event, notice: "Purchased status changed successfully!"
+      end
     else
       redirect_to user_gift_summary_path(user_id: @suggestion.recipient_id, event_id: @suggestion.event), alert: "Could not change purchase status."
     end
 
   end
 
-  def toggle_purchase_suggestion_show
-    @suggestion = Suggestion.find(params[:id])
-    if params[:suggestion][:purchased] == "1"
-      @suggestion.purchased = true
-    else
-      @suggestion.purchased = false
-    end
-    if @suggestion.save
-      redirect_to @suggestion.event, notice: "Purchased status changed successfully!"
-    else
-      redirect_to @suggestion.event, alert: "Could not change purchase status."
-    end
-
-  end
-
   def show
-
   end
 
   def edit
@@ -92,8 +80,6 @@ class SuggestionsController < ApplicationController
   end
 
   private
-
-
   def suggestion_params
     params.require(:suggestion).permit(:item_name, :cost, :notes, :event_id, :user_id, :recipient_id)
   end

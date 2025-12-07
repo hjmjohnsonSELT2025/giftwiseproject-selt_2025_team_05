@@ -212,13 +212,13 @@
 
               <% if gift.class.name == "Suggestion"%>
                 <!-- Checkbox based off of ChatGPT response -->
-                <%= form_with model: gift, url: toggle_purchase_suggestion_show_suggestion_path(gift), method: :post, local: true do |f| %>
+                <%= form_with model: gift, url: toggle_purchase_suggestion_suggestion_path(gift, redirect: "event"), method: :post, local: true do |f| %>
 
                   <%= f.check_box :purchased, checked: gift.purchased,  onchange: 'this.form.submit();', disabled: (gift.user != current_user) %>
 
                 <% end %>
               <%else %>
-                <%= form_with model: gift, url: toggle_purchase_show_preference_path(gift), method: :post, local: true do |f| %>
+                <%= form_with model: gift, url: toggle_purchase_preference_path(gift, redirect: "event"), method: :post, local: true do |f| %>
 
                   <%= f.check_box :purchased, checked: gift.purchased,  onchange: 'this.form.submit();', disabled: (gift.giver != current_user) %>
 

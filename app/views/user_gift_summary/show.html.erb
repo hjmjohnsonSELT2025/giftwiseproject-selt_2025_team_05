@@ -28,13 +28,13 @@ you can unclaim the gift to remove it from your list.</h5>
         <td>
           <% if item.class.name == "Suggestion"%>
             <!-- Checkbox based off of ChatGPT response -->
-            <%= form_with model: item, url: toggle_purchase_suggestion_suggestion_path(item), method: :post, local: true do |f| %>
+            <%= form_with model: item, url: toggle_purchase_suggestion_suggestion_path(item, redirect: "user_gift_summary"), method: :post, local: true do |f| %>
 
               <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();', disabled: (item.user != current_user) %>
 
             <% end %>
           <%else %>
-            <%= form_with model: item, url: toggle_purchase_preference_path(item), method: :post, local: true do |f| %>
+            <%= form_with model: item, url: toggle_purchase_preference_path(item, redirect: "user_gift_summary"), method: :post, local: true do |f| %>
 
               <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();', disabled: (item.giver != current_user) %>
 

@@ -14,7 +14,6 @@ class PreferencesController < ApplicationController
   end
 
   def unclaim_preference
-
     @item = Preference.find(params[:item_id])
     @event = Event.find(params[:event_id])
 
@@ -31,7 +30,6 @@ class PreferencesController < ApplicationController
   end
 
   def unclaim_preference_wishlist
-
     @item = Preference.find(params[:item_id])
     @event = Event.find(params[:event_id])
 
@@ -67,8 +65,6 @@ class PreferencesController < ApplicationController
     @item = Preference.find(params[:item_id])
     @event = Event.find(params[:event_id])
     #if item.on_user_wishlist is false, then destroy the item.
-
-
       @item.giver = nil
       @item.purchased = nil
       @item.event = nil
@@ -81,7 +77,6 @@ class PreferencesController < ApplicationController
 
   end
 
-
   def toggle_purchase
     @preference = Preference.find(params[:id])
     if params[:preference][:purchased] == "1"
@@ -90,27 +85,14 @@ class PreferencesController < ApplicationController
       @preference.purchased = false
     end
     if @preference.save
-      redirect_to user_gift_summary_path(user_id: @preference.user_id, event_id: @preference.event), notice: "Purchased status changed successfully!"
+      if params[:redirect] == "user_gift_summary"
+        redirect_to user_gift_summary_path(user_id: @preference.user_id, event_id: @preference.event), notice: "Purchased status changed successfully!"
+      else
+        redirect_to @preference.event, notice: "Purchased status changed successfully!"
+      end
     else
       redirect_to user_gift_summary_path(user_id: @preference.user_id, event_id: @preference.event), alert: "Could not change purchase status."
     end
-
-  end
-
-
-  def toggle_purchase_show
-    @preference = Preference.find(params[:id])
-    if params[:preference][:purchased] == "1"
-      @preference.purchased = true
-    else
-      @preference.purchased = false
-    end
-    if @preference.save
-      redirect_to @preference.event, notice: "Purchased status changed successfully!"
-    else
-      redirect_to @preference.event, alert: "Could not change purchase status."
-    end
-
   end
 
   def view_user_wishlist
