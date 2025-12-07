@@ -23,5 +23,9 @@ module GiftwiseprojectSelt2025Team05
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    #
+    # Set to Central Time to match Heroku
+    config.time_zone = 'Central Time (US & Canada)'
+    config.active_record.default_timezone = :local
   end
 end
