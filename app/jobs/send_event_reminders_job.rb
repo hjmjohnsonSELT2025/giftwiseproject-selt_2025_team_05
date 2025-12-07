@@ -10,8 +10,8 @@ class SendEventRemindersJob < ApplicationJob
       all_people = [creator] + participants.to_a
 
       all_people.uniq.each do |person|
-        ApplicationMailer.event_reminder(event, person).deliver_later
-        #ApplicationMailer.event_reminder(event, person).deliver_now
+        #ApplicationMailer.event_reminder(event, person).deliver_later
+        ApplicationMailer.event_reminder(event, person).deliver_now
       end
     end
   end
