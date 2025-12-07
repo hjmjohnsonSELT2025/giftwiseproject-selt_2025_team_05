@@ -1,43 +1,49 @@
-<h1>Edit Event</h1>
+<div class="container py-4">
+  <div class="text-center mb-4">
+    <h2 class="mb-1">Edit Event</h2>
+    <p class="text-muted mb-0">Update the details and keep your guests informed.</p>
+  </div>
 
-<%= form_with(model: @event, local: true) do |form| %>
-  <% if @event.errors.any? %>
-    <div class="alert alert-danger">
-      <h4><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h4>
-      <ul>
-        <% @event.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <%= form_with(model: @event, local: true, html: { class: "mx-auto", style: "max-width: 480px;" }) do |form| %>
+    <% if @event.errors.any? %>
+      <div class="alert alert-danger">
+        <strong><%= pluralize(@event.errors.count, "error") %></strong> prevented this event from being saved:
+        <ul class="mb-0">
+          <% @event.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="mb-3">
+      <%= form.label :name, class: "form-label" %>
+      <%= form.text_field :name, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :date, "Date", class: "form-label" %>
+      <%= form.datetime_field :date, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :address, class: "form-label" %>
+      <%= form.text_field :address, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :event_type, "Event Type", class: "form-label" %>
+      <%= form.select :event_type, Event.event_types.keys.map { |t| [t.titleize, t] }, {}, class: "form-select" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :description, class: "form-label" %>
+      <%= form.text_area :description, class: "form-control", rows: 3 %>
+    </div>
+
+    <div class="d-flex gap-2">
+      <%= form.submit "Update Event", class: "btn btn-primary" %>
+      <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
     </div>
   <% end %>
-
-  <div class="mb-3">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :date %>
-    <%= form.datetime_select :date, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :address %>
-    <%= form.text_field :address, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :event_type %>
-    <%= form.select :event_type, Event.event_types.keys.map { |t| [t.humanize, t] }, {}, class: "form-select" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :description %>
-    <%= form.text_area :description, class: "form-control" %>
-  </div>
-
-  <%= form.submit "Update Event", class: "btn btn-primary" %>
-<% end %>
-
-<%= link_to "Back", request.referer || root_path %>
+</div>

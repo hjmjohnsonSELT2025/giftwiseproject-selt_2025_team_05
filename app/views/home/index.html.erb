@@ -1,15 +1,30 @@
-<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-  <ul class="nav nav-pills mb-0">
-    <li class="nav-item">
-      <%= link_to "Upcoming Events", root_path(view: 'upcoming', query: params[:query], event_type: params[:event_type], status: params[:status], date_from: params[:date_from], date_to: params[:date_to]),
-                  class: "nav-link #{@view_mode == 'upcoming' ? 'active' : 'text-secondary'}" %>
-    </li>
-    <li class="nav-item">
-      <%= link_to "Past Events", root_path(view: 'past', query: params[:query], event_type: params[:event_type], status: params[:status], date_from: params[:date_from], date_to: params[:date_to]),
-                  class: "nav-link #{@view_mode == 'past' ? 'active' : 'text-secondary'}" %>
-    </li>
-  </ul>
-</div>
+<% title = @view_mode == 'past' ? 'Past Events' : 'Upcoming Events' %>
+
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+    <div>
+      <h2 class="h4 mb-1"><%= title %></h2>
+      <p class="text-muted mb-0">Manage invites, view events, or create a new one.</p>
+    </div>
+    <%= link_to "Create Event", new_event_path, class: "btn btn-primary" %>
+  </div>
+
+  <%
+    # Preserve filter parameters when switching between tabs
+    filter_params = {
+      query: params[:query],
+      event_type: params[:event_type],
+      status: params[:status],
+      date_from: params[:date_from],
+      date_to: params[:date_to]
+    }.compact_blank
+  %>
+  <div class="mb-3">
+    <div class="btn-group" role="group">
+      <%= link_to "Upcoming Events", root_path(filter_params.merge(view: 'upcoming')), class: "btn btn-outline-primary #{'active' if @view_mode == 'upcoming'}" %>
+      <%= link_to "Past Events", root_path(filter_params.merge(view: 'past')), class: "btn btn-outline-primary #{'active' if @view_mode == 'past'}" %>
+    </div>
+  </div>
 
 <%= form_with url: root_path, method: :get, local: true, class: "mb-3" do |form| %>
   <%= hidden_field_tag :view, @view_mode %>
@@ -107,11 +122,11 @@
           <div class="d-flex gap-2">
             <%= link_to "View", event_path(event), class: "btn btn-sm btn-outline-primary" %>
 
-            <% if event_user.status == 'invited' && !is_past %>
-              <%= button_to "Accept",
-                            event_event_user_path(event, event_user, status: 'joined'),
-                            method: :patch,
-                            class: "btn btn-sm btn-success" %>
+              <% if event_user.status == 'invited' && @view_mode != 'past' %>
+                <%= button_to "Accept",
+                              event_event_user_path(event, event_user, status: 'joined'),
+                              method: :patch,
+                              class: "btn btn-sm btn-success" %>
 
               <%= button_to "Decline",
                             event_event_user_path(event, event_user, status: 'declined'),
@@ -139,5 +154,3 @@
     </p>
   </div>
 <% end %>
-
-<%= link_to "Create Event", new_event_path, class: "btn btn-primary mt-2" %>
