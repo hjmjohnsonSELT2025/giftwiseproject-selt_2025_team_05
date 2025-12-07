@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     post 'claim_preference', to: 'preferences#claim_preference', on: :collection, as: :claim_preference
     post 'unclaim_preference_summary', to: 'preferences#unclaim_preference_summary', on: :collection, as: :unclaim_preference_summary
     post 'unclaim_preference', to: 'preferences#unclaim_preference', on: :collection, as: :unclaim_preference
+    post 'unclaim_preference_wishlist', to: 'preferences#unclaim_preference_wishlist', on: :collection, as: :unclaim_preference_wishlist
     post 'unclaim_show_preference', to: 'preferences#unclaim_show_preference', on: :collection, as: :unclaim_show_preference
     post :toggle_purchase, on: :member
     post :toggle_purchase_show, on: :member
