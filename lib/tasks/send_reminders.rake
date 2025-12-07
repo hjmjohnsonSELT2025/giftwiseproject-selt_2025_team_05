@@ -2,7 +2,7 @@ namespace :reminders do
   desc "Send event reminders"
   task send: :environment do
     puts "#{Time.now}: Starting to send event reminders..."
-
+    
     events = Event.where("DATE(date) = ?", 3.days.from_now.to_date)
                   .where(deleted: false)
 
@@ -18,7 +18,7 @@ namespace :reminders do
         ApplicationMailer.event_reminder(event, person).deliver_later
       end
     end
-
+    
     puts "Reminder sending complete!"
   end
 end
