@@ -46,9 +46,9 @@ RSpec.describe PreferencesController, type: :controller do
         updated_preference = Preference.order(updated_at: :desc).first
         expect(updated_preference.giver).to eq(user)
       end
-      it 'redirects to the wish list of the user who will receive the gift' do
+      it 'redirects to the user_gift_summary of the user who will receive the gift' do
         post :claim_preference, params: { item_id: unclaimed_item.id, user_id: user.id, event_id: event.id}
-        expect(response).to redirect_to(view_user_wishlist_preferences_path(event_id: event.id, user_id: recipient))
+        expect(response).to redirect_to(user_gift_summary_path(event_id: event.id, user_id: recipient))
       end
     end
   end
