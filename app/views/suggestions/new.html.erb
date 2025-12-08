@@ -1,40 +1,43 @@
-<div>
-  <div>
-    <div>
-      <h1>Add New Gift Suggestion for <%= @user.first_name %></h1>
-      <h2>Event: <%=@event.name%></h2>
+<div class="container py-4">
+  <div class="text-center mb-4">
+    <h2 class="h4 mb-1">Add New Gift Suggestion</h2>
+    <p class="text-muted mb-0">Add a new gift suggestion for <%= @user.first_name %></p>
+  </div>
 
+  <div class="d-flex justify-content-center">
+    <div class="card shadow-sm" style="max-width: 600px; width: 100%;">
+      <div class="card-body">
+        <%= form_with model: @suggestion do |form| %>
+          <div class="mb-3">
+            <%= form.label :item_name, "Item Name *", class: "form-label" %>
+            <%= form.text_field :item_name, required: true, placeholder: "Enter item name", class: "form-control" %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :cost, "Cost", class: "form-label" %>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <%= form.number_field :cost, step: 1, placeholder: "0.00", class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :notes, "Notes", class: "form-label" %>
+            <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences...", class: "form-control" %>
+          </div>
+
+          <%= hidden_field_tag :recipient_id, @user.id %>
+          <%= hidden_field_tag :event_id, @event.id %>
+          <%= hidden_field_tag :user_id, current_user.id %>
+
+          <div class="d-flex gap-2">
+            <%= form.submit "Add Gift Suggestion", class: "btn btn-primary" %>
+
+          </div>
+          <br>
+          <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
+        <% end %>
+      </div>
     </div>
-
-    <%= form_with model: @suggestion do |form| %>
-      <div>
-        <%= form.label :item_name, "Item Name *" %>
-        <%= form.text_field :item_name, required: true, placeholder: "Enter item name" %>
-      </div>
-
-      <div>
-        <%= form.label :cost, "Cost" %>
-        <div class="cost-input-container">
-          <span class="currency-symbol">$</span>
-          <%= form.number_field :cost, step: 0.01, placeholder: "0.00" %>
-        </div>
-      </div>
-
-      <div>
-        <%= form.label :notes, "Notes" %>
-        <%= form.text_area :notes, rows: 4, placeholder: "Any additional details, links, or preferences..." %>
-      </div>
-
-      <%=hidden_field_tag :recipient_id, @user.id%>
-      <%=hidden_field_tag :event_id, @event.id%>
-      <%=hidden_field_tag :user_id, current_user.id%>
-
-      <div>
-        <%= form.submit "Add Gift Suggestion", class: "btn btn-primary" %>
-
-      </div>
-      <br>
-
-    <% end %>
   </div>
 </div>
