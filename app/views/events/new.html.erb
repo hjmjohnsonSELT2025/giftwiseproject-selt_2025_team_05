@@ -54,7 +54,8 @@
           <% if @friends&.any? %>
             <% @friends.each do |friend| %>
               <div class="form-check friend-item">
-                <%= check_box_tag "participant_ids[]", friend.id, false, class: "form-check-input", id: "user_#{friend.id}" %>
+                <% is_selected = @selected_participant_ids&.include?(friend.id) %>
+                <%= check_box_tag "participant_ids[]", friend.id, is_selected, class: "form-check-input", id: "user_#{friend.id}" %>
                 <label class="form-check-label w-100" for="user_<%= friend.id %>">
                   <strong><%= friend.first_name %> <%= friend.last_name %></strong><br>
                   <small class="text-muted"><%= friend.email %></small>
