@@ -26,15 +26,16 @@
           <%= form.hidden_field :redirect, value: @redirect %>
           <div>
             <%= form.submit "Update Item", class: "btn btn-primary" %>
-            <%= button_to "Delete",
-                          suggestion_path(@suggestion),
-                          method: :delete,
-                          params: { redirect: @redirect },
-                          form: { data: { turbo_confirm: "Are you sure?" } },
-                          class: "btn btn-danger" %>
-            <!-- ChatGPT used for form: { data: { turbo_confirm: "Are you sure?" } } -->
           </div>
         <% end %>
+        <br>
+        <%= button_to "Delete",
+                      suggestion_path(@suggestion),
+                      method: :delete,
+                      params: { redirect: @redirect },
+                      data: { turbo_confirm: "Are you sure?" },
+                      class: "btn btn-danger" %>
+        <!-- ChatGPT provided data: { turbo_confirm: "Are you sure?" } -->
       </div>
     </div>
   </div>

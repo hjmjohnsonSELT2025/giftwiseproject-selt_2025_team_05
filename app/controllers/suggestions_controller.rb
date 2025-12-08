@@ -81,7 +81,7 @@ class SuggestionsController < ApplicationController
 
   private
   def suggestion_params
-    params.require(:suggestion).permit(:item_name, :cost, :notes, :event_id, :user_id, :recipient_id)
+    params.require(:suggestion).permit(:item_name, :cost, :notes, :event_id, :user_id)
   end
 
 end
