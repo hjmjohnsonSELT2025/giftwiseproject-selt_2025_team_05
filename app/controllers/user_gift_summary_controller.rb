@@ -8,6 +8,8 @@ class UserGiftSummaryController < ApplicationController
     @wishlist_items_claimed = @wishlist_items.where(giver: @giver, event: @event)
     @suggestions = @giver.suggestions.where(event: @event, recipient: @recipient)
     @combined_items = @wishlist_items_claimed + @suggestions
+
+    @event_user = EventUser.where(:event_id => @event.id, :user_id => @recipient.id).first
   end
   def add_gift
     @event = Event.find(params[:event_id])
