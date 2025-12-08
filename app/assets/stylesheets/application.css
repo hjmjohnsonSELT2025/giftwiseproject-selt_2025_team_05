@@ -15,13 +15,13 @@
  */
 
 /* ==========================================
-   🎄 CHRISTMAS THEME 🎄
+   ❄️ WINTER HOLIDAY THEME ❄️
    ========================================== */
 
 @import url("https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Crimson+Pro:wght@400;500;600;700&display=swap");
 
 :root {
-  /* Christmas Colors */
+  /* Holiday Colors */
   --xmas-red: #c41e3a;
   --xmas-red-dark: #8b0000;
   --xmas-green: #165b33;
@@ -259,12 +259,116 @@ body::before {
 
 .card::before,
 .wishlist-item::before {
-  content: "🎄";
+  content: "✨";
   position: absolute;
   top: -5px;
   right: 10px;
   font-size: 1.5rem;
   opacity: 0.3;
+}
+
+/* Card content - dark text on light background */
+.card h2,
+.card h3,
+.card h5,
+.card h6,
+.card .h2,
+.card .h3,
+.card .h5,
+.card .h6,
+.card .card-title {
+  color: var(--xmas-red-dark) !important;
+  font-weight: 600;
+}
+
+.card p,
+.card span,
+.card strong,
+.card div,
+.card label {
+  color: var(--xmas-pine) !important;
+}
+
+.card .text-muted,
+.card p.text-muted,
+.card p.text-muted.mb-0 {
+  color: #1a1a1a !important;
+  opacity: 1 !important;
+  font-weight: 600;
+  font-size: 1rem;
+  text-shadow: none !important;
+}
+
+/* Form labels inside cards need dark text */
+.card .form-label {
+  color: var(--xmas-pine) !important;
+  font-weight: 600;
+  text-shadow: none;
+}
+
+.card .badge {
+  color: white !important;
+}
+
+.card .badge.bg-secondary {
+  background: linear-gradient(
+    135deg,
+    var(--xmas-green) 0%,
+    var(--xmas-green-light) 100%
+  ) !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+/* Buttons inside cards need proper colors */
+.card .btn {
+  color: inherit;
+}
+
+.card .btn-outline-danger {
+  color: var(--xmas-red) !important;
+  border-color: var(--xmas-red) !important;
+  background: transparent !important;
+}
+
+.card .btn-outline-danger:hover {
+  color: white !important;
+  background: var(--xmas-red) !important;
+}
+
+.card .btn-success {
+  color: white !important;
+}
+
+.card .btn-outline-warning {
+  color: var(--xmas-pine) !important;
+}
+
+/* Page headings - centered */
+.text-center h2,
+h2.text-center {
+  color: var(--xmas-gold-light) !important;
+  font-family: "Mountains of Christmas", cursive;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.text-center p,
+.text-center .text-muted {
+  color: var(--xmas-gold-light) !important;
+}
+
+/* Edit button styling */
+.btn-outline-warning {
+  color: var(--xmas-pine) !important;
+  border-color: var(--xmas-gold) !important;
+  background: var(--xmas-gold-light) !important;
+  font-weight: 600;
+}
+
+.btn-outline-warning:hover {
+  background: var(--xmas-gold) !important;
+  color: var(--xmas-pine) !important;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
 
 /* Buttons - Christmas Style */
@@ -293,15 +397,35 @@ body::before {
 }
 
 .btn-outline-primary {
-  color: var(--xmas-green) !important;
-  border-color: var(--xmas-green) !important;
-  background: rgba(255, 255, 255, 0.9);
+  color: var(--xmas-pine) !important;
+  border-color: var(--xmas-gold) !important;
+  background: var(--xmas-gold-light) !important;
+  font-weight: 600;
 }
 
 .btn-outline-primary:hover {
-  background: var(--xmas-green) !important;
+  background: var(--xmas-gold) !important;
+  color: var(--xmas-pine) !important;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+}
+
+/* Navbar specific button styles for better visibility */
+.navbar .btn-outline-primary {
+  color: var(--xmas-pine) !important;
+  background: var(--xmas-gold-light) !important;
+  border-color: var(--xmas-gold) !important;
+}
+
+.navbar .btn-outline-danger {
   color: white !important;
-  box-shadow: 0 0 15px rgba(22, 91, 51, 0.5);
+  background: transparent !important;
+  border-color: var(--xmas-cream) !important;
+  font-weight: 600;
+}
+
+.navbar .btn-outline-danger:hover {
+  background: var(--xmas-cream) !important;
+  color: var(--xmas-red-dark) !important;
 }
 
 .btn-danger,
@@ -312,6 +436,7 @@ body::before {
     var(--xmas-red) 100%
   ) !important;
   border-color: var(--xmas-berry) !important;
+  color: white !important;
 }
 
 .btn-success {
@@ -363,6 +488,23 @@ td {
   color: #2d2d2d;
 }
 
+/* Buttons inside tables */
+table .btn-outline-danger {
+  color: var(--xmas-red) !important;
+  border-color: var(--xmas-red) !important;
+  background: transparent !important;
+}
+
+table .btn-outline-danger:hover {
+  color: white !important;
+  background: var(--xmas-red) !important;
+}
+
+table .btn-success {
+  color: white !important;
+  background: var(--xmas-green) !important;
+}
+
 /* Badges - Christmas Style */
 .badge {
   font-weight: 600;
@@ -385,6 +527,11 @@ td {
     var(--xmas-gold-light) 100%
   ) !important;
   color: #1a1a1a !important;
+}
+
+.badge.bg-info {
+  background: linear-gradient(135deg, #17a2b8 0%, #5bc0de 100%) !important;
+  color: white !important;
 }
 
 /* Alerts - Christmas Style */
@@ -440,13 +587,22 @@ td {
 }
 
 .form-label {
-  color: var(--xmas-cream);
+  color: var(--xmas-gold-light) !important;
   font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Small muted labels */
+.form-label.small.text-muted,
+label.small.text-muted {
+  color: var(--xmas-gold-light) !important;
+  font-weight: 500;
 }
 
 /* Text Colors for Dark Background */
 .text-muted {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: var(--xmas-gold-light) !important;
+  opacity: 0.9;
 }
 
 h1,
@@ -464,8 +620,13 @@ label {
   color: var(--xmas-cream);
 }
 
-.container > div > p.text-muted {
-  color: rgba(255, 255, 255, 0.7) !important;
+/* Description text under headings */
+.container > div > p.text-muted,
+.container p.text-muted,
+p.text-muted.mb-0 {
+  color: var(--xmas-gold-light) !important;
+  font-size: 1.05rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* User Greeting */
@@ -474,46 +635,32 @@ label {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Holly Decoration */
-.holly-corner {
+/* Snowflake Corner Decorations */
+.snowflake-corner {
   position: fixed;
-  font-size: 3rem;
+  font-size: 2.5rem;
   z-index: 1000;
-  animation: holly-sway 3s ease-in-out infinite;
+  animation: snowflake-spin 8s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
 }
 
-.holly-top-left {
-  top: 50px;
-  left: 10px;
+.snowflake-top-left {
+  top: 70px;
+  left: 15px;
 }
 
-.holly-top-right {
-  top: 50px;
-  right: 10px;
-  transform: scaleX(-1);
+.snowflake-top-right {
+  top: 70px;
+  right: 15px;
+  animation-direction: reverse;
 }
 
-@keyframes holly-sway {
-  0%,
+@keyframes snowflake-spin {
+  0% {
+    transform: rotate(0deg);
+  }
   100% {
-    transform: rotate(-5deg);
-  }
-  50% {
-    transform: rotate(5deg);
-  }
-}
-
-.holly-top-right {
-  animation: holly-sway-reverse 3s ease-in-out infinite;
-}
-
-@keyframes holly-sway-reverse {
-  0%,
-  100% {
-    transform: scaleX(-1) rotate(-5deg);
-  }
-  50% {
-    transform: scaleX(-1) rotate(5deg);
+    transform: rotate(360deg);
   }
 }
 
@@ -537,31 +684,15 @@ label {
   }
 }
 
-/* Special Christmas Star */
+/* Special Holiday Star - Between navbar and content */
 .christmas-star {
-  position: fixed;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%);
+  display: block;
+  text-align: center;
   font-size: 2rem;
   color: var(--xmas-gold-light);
-  z-index: 1001;
-  animation: star-glow 2s ease-in-out infinite;
   text-shadow: 0 0 20px var(--xmas-gold-light), 0 0 40px var(--xmas-gold);
-}
-
-@keyframes star-glow {
-  0%,
-  100% {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-    filter: brightness(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: translateX(-50%) scale(1.2);
-    filter: brightness(1.5);
-  }
+  padding: 0.5rem 0;
+  margin: 0;
 }
 
 /* Candy Cane Scrollbar */
@@ -778,11 +909,11 @@ th {
 }
 
 .empty-wishlist::before {
-  content: "🎄 ";
+  content: "❄️ ";
 }
 
 .empty-wishlist::after {
-  content: " 🎁";
+  content: " ✨";
 }
 
 /* Button Group Christmas Style */
@@ -878,7 +1009,7 @@ a:hover {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .holly-corner {
+  .snowflake-corner {
     display: none;
   }
 
@@ -901,7 +1032,7 @@ a:hover {
 @media print {
   .snowfall,
   .christmas-lights,
-  .holly-corner,
+  .snowflake-corner,
   .christmas-star,
   .gift-decoration {
     display: none !important;

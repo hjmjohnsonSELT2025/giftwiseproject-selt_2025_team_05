@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>🎄 GiftWise - Merry Christmas! 🎅</title>
+  <title>❄️ GiftWise - Happy Holidays! ✨</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
@@ -14,7 +14,7 @@
 
 <body>
 
-<!-- Christmas Lights at the top -->
+<!-- Holiday Lights at the top -->
 <div class="christmas-lights">
   <% 40.times do %>
     <div class="light-bulb"></div>
@@ -24,12 +24,9 @@
 <!-- Snowfall Effect -->
 <div class="snowfall" id="snowfall"></div>
 
-<!-- Holly Decorations -->
-<div class="holly-corner holly-top-left">🍃</div>
-<div class="holly-corner holly-top-right">🍃</div>
-
-<!-- Christmas Star -->
-<div class="christmas-star">⭐</div>
+<!-- Snowflake Decorations -->
+<div class="snowflake-corner snowflake-top-left">❄️</div>
+<div class="snowflake-corner snowflake-top-right">❄️</div>
 
 <!-- Gift Decoration -->
 <div class="gift-decoration">🎁</div>
@@ -37,8 +34,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
   <div class="container">
 
-    <!-- LEFT: GiftWise brand - Christmas Edition -->
-    <%= link_to "🎄 GiftWise 🎅", root_path, class: "navbar-brand" %>
+    <!-- LEFT: GiftWise brand - Holiday Edition -->
+    <%= link_to "🎁 GiftWise ✨", root_path, class: "navbar-brand" %>
 
     <!-- Toggle button for mobile view -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,6 +88,9 @@
   </div>
 </nav>
 
+<!-- Holiday Star - scrolls with page content -->
+<div class="christmas-star">⭐</div>
+
 <% flash.each do |type, message| %>
   <% if message.present? %>
     <% bootstrap_class =
@@ -113,7 +113,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
-<!-- 🎄 Christmas Snowfall Animation 🎄 -->
+<!-- ❄️ Holiday Snowfall Animation ❄️ -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const snowfall = document.getElementById('snowfall');
