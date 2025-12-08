@@ -201,4 +201,14 @@ th {
     color: white;
 }
 
+.wishlist-green-theme .btn-orange:hover {
+    background-color: #E07A00;
+    color: white;
+}
+
+/*ChatGPT generated strikethrough formatting*/
+.strikethrough {
+    text-decoration: line-through;
+}
+
 

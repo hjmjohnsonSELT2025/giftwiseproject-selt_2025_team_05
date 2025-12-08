@@ -67,7 +67,7 @@
       <%= link_to "Add custom gift suggestion", new_suggestion_path(user_id: @user.id, event_id: @event.id), class: "btn btn-orange" %>
     </div>
     <div class="d-flex gap-2 mt-3">
-      <%= link_to "Generate gift ideas with AI Gift Assistant",
+      <%= link_to "Generate new gift ideas with AI Gift Assistant",
                   event_event_user_gift_suggestions_path(@event, @event_user),
                   class: "btn btn-orange" %>
     </div>

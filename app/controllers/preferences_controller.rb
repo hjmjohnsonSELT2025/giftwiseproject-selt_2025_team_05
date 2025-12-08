@@ -7,9 +7,9 @@ class PreferencesController < ApplicationController
     @item.giver = User.find(params[:user_id])
     @item.event = Event.find(params[:event_id])
     if @item.save
-      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id,  event_id: @item.event), notice: "Gift claimed successfully!"
+      redirect_to user_gift_summary_path(user_id: @item.user_id,  event_id: @item.event), notice: "Gift claimed successfully!"
     else
-      redirect_to view_user_wishlist_preferences_path(user_id: @item.user_id,  event_id: @item.event), alert: "Could not claim gift."
+      redirect_to user_gift_summary_path(user_id: @item.user_id,  event_id: @item.event), alert: "Could not claim gift."
     end
   end
 

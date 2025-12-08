@@ -70,7 +70,7 @@
   </div>
 
 
-  <%= link_to "Back", view_user_wishlist_preferences_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-secondary mt-4" %>
+  <%= link_to "Back", user_gift_summary_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-secondary mt-4" %>
 </div>
 
 <%# Chatgpt came up with this logic of adding "Thinking" text to the button after a chat is submitted %>>

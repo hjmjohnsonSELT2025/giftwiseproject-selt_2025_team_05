@@ -1,7 +1,7 @@
 <div class="container py-4">
   <div class="text-center mb-4">
-    <h2 class="mb-1">My Gifts to  <%= @recipient.first_name %> for <%= @event.name %></h2>
-    <p class="text-muted mb-0">These are all the gifts you're planning to get for <%= @recipient.first_name %></p>
+    <h2 class="mb-1">My Gifts To  <%= @recipient.first_name %> For <%= @event.name %></h2>
+    <p class="text-muted mb-0">These are all the gifts you're planning to get for <%= @recipient.first_name %>.</p>
   </div>
 
   <% if @combined_items.any? %>
@@ -14,7 +14,7 @@
           <th>Details</th>
           <th>Purchased?</th>
           <th>On <%= @recipient.first_name %>'s Wishlist?</th>
-          <th>Manage</th>
+          <th></th>
         </tr>
         </thead>
         <tbody>
@@ -49,12 +49,12 @@
             <td>
               <% if item.class.name == "Suggestion" %>
                 <!-- Can edit or remove the suggestion -->
-                <%= link_to "Edit or Remove", edit_suggestion_path(id: item.id, redirect: "user_gift_summary"), class: "btn btn-primary" %>
+                <%= link_to "Edit/Remove Custom Gift", edit_suggestion_path(id: item.id, redirect: "user_gift_summary"), class: "btn btn-primary" %>
               <% else %>
                 <!-- Unclaim button -->
-                <%= button_to "Remove",
+                <%= button_to "Remove Wishlist Gift",
                               unclaim_preference_preferences_path(item_id: item.id, event_id: @event.id, user_id: current_user.id, redirect: "user_gift_summary"),
-                              form: { data: { turbo_confirm: "Are you sure you want to unclaim this wishlist gift?" } },
+                              form: { data: { turbo_confirm: "Are you sure you want to remove this gift?" } },
                               class: "btn btn-danger" %>
               <% end %>
             </td>
@@ -68,21 +68,19 @@
   <% else %>
     <p>No gifts yet.</p>
   <% end %>
-  <br>
-  <%= link_to "Add Gift", view_user_wishlist_preferences_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-primary"%>
-  <br>
-  <br>
-  <%= link_to "Back to Event", @event, class: "btn btn-secondary" %>
 </div>
-
+<br>
+<br>
 <div class="wishlist-green-theme">
   <div class="container py-4">
     <div class="text-center mb-4">
-      <h2 class="mb-1"><%= @recipient.first_name %>'s Wishlist</h2>
-      <p class="text-muted mb-0">Claim a gift from <%= @recipient.first_name %>'s wishlist to purchase. Or, add a custom gift below.</p>
+      <h2 class="mb-1">Add A New Gift For <%= @recipient.first_name %></h2>
+      <br>
+      <h3 class="mb-1"><%= @recipient.first_name %>'s Wishlist</h3>
+      <p class="text-muted mb-0">Add a gift from <%= @recipient.first_name %>'s wishlist to purchase. Or, add a custom gift below.</p>
     </div>
 
-    <% if @wishlist_items.any? %>
+    <% if @wishlist_items_table_view.any? %>
       <div class="table-responsive">
         <table class="table table-striped align-middle mb-0">
           <thead class="table-light">
@@ -90,17 +88,17 @@
             <th>Wishlist Item</th>
             <th>Cost</th>
             <th>Details</th>
-            <th>Claimed By</th>
+            <th></th>
           </tr>
           </thead>
           <tbody>
 
-          <% @wishlist_items.each do |item| %>
+          <% @wishlist_items_table_view.each do |item| %>
             <tr>
-
-              <td><%= "#{item.item_name}" %></td>
-              <td> <%= "#{number_to_currency(item.cost)}" %></td>
-              <td> <%= "#{item.notes}" %></td>
+              <!--ChatGPT generated the strikethrough conditional formatting logic-->
+              <td class="<%= 'strikethrough' if !(item.giver.nil?) %>"> <%= "#{item.item_name}" %></td>
+              <td class="<%= 'strikethrough' if !(item.giver.nil?) %>"> <%= "#{number_to_currency(item.cost)}" %></td>
+              <td class="<%= 'strikethrough' if !(item.giver.nil?) %>"> <%= "#{item.notes}" %></td>
               <td>
                 <% if !item.giver.nil? %>
 
@@ -108,17 +106,13 @@
                     <% if item.event != @event %>
                       <p> You already claimed this item in another event <%= item.event.name %></p>
                     <% else %>
-                      <%= "#{item.giver.first_name}" %>
-                      <%= button_to "Unclaim",
-                                    unclaim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id, redirect: "wishlist"),
-                                    method: :post,
-                                    class: "btn btn-sm btn-danger" %></td>
+                      <p><s>You're planning to give this gift.</s></p>
                     <% end %>
                   <% else %>
-                    <p>Someone else</p>
+                    <p>Someone else is giving this gift.</p>
                   <% end %>
                 <% else %>
-                  <%= button_to "Claim this gift",
+                  <%= button_to "Add",
                                 claim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id),
                                 method: :post,
                                 class: "btn btn-sm btn-success" %>
@@ -133,21 +127,21 @@
         </table>
       </div>
     <% else %>
-      <p>No items on wish list yet.</p>
+      <p>No available wishlist items.</p>
     <% end %>
 
     <div class="d-flex gap-2 mt-3">
       <p class="text-muted mb-0">Want to give <%= @recipient.first_name %> something not on their wishlist?</p>
     </div>
     <div class="d-flex gap-2 mt-3">
-      <%= link_to "Add custom gift suggestion", new_suggestion_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-orange" %>
+      <%= link_to "Add custom gift idea", new_suggestion_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-orange" %>
     </div>
     <div class="d-flex gap-2 mt-3">
-      <%= link_to "Generate gift ideas with AI Gift Assistant",
+      <%= link_to "Generate new gift ideas with AI Gift Assistant",
                   event_event_user_gift_suggestions_path(@event, @event_user),
                   class: "btn btn-orange" %>
     </div>
     <br>
-    <%= link_to "Back", user_gift_summary_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-secondary" %>
+    <%= link_to "Back", @event, class: "btn btn-secondary" %>
   </div>
 </div>
