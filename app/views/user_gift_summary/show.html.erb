@@ -1,7 +1,10 @@
 <div class="container py-4">
   <div class="text-center mb-4">
     <h2 class="mb-1">My Gifts to  <%= @recipient.first_name %> for <%= @event.name %></h2>
-    <p class="text-muted mb-0">These are all the gift's you're planning to get for <%= @recipient.first_name %>. Click "Add Gift" to add a gift from <%= @recipient.first_name %>'s wishlist or create your own gift suggestion. You can edit or delete gift suggestions that you create yourself. If the gift is from <%= @recipient.first_name %>'s wishlist,
+    <p class="text-muted mb-0">These are all the gift's you're planning to get for <%= @recipient.first_name %>. Click
+      "Add Gift" to add a gift from <%= @recipient.first_name %>'s wishlist or create your own gift suggestion. You can
+      edit or delete gift suggestions that you create yourself. If the gift is from <%= @recipient.first_name %>'s
+      wishlist,
       you can unclaim the gift to remove it from your list.</p>
   </div>
 
@@ -14,7 +17,7 @@
           <th>Cost</th>
           <th>Details</th>
           <th>Purchased?</th>
-          <th>Wishlist Info</th>
+          <th>On <%= @recipient.first_name %>'s Wishlist?</th>
           <th>Manage</th>
         </tr>
         </thead>
@@ -28,37 +31,38 @@
             <td> <%= "#{item.notes}" %></td>
 
             <td>
-              <% if item.class.name == "Suggestion"%>
+              <% if item.class.name == "Suggestion" %>
                 <!-- Checkbox based off of ChatGPT response -->
                 <%= form_with model: item, url: toggle_purchase_suggestion_suggestion_path(item, redirect: "user_gift_summary"), method: :post, local: true do |f| %>
 
-                  <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();', disabled: (item.user != current_user) %>
+                  <%= f.check_box :purchased, checked: item.purchased, onchange: 'this.form.submit();', disabled: (item.user != current_user) %>
 
                 <% end %>
-              <%else %>
+              <% else %>
                 <%= form_with model: item, url: toggle_purchase_preference_path(item, redirect: "user_gift_summary"), method: :post, local: true do |f| %>
 
-                  <%= f.check_box :purchased, checked: item.purchased,  onchange: 'this.form.submit();', disabled: (item.giver != current_user) %>
+                  <%= f.check_box :purchased, checked: item.purchased, onchange: 'this.form.submit();', disabled: (item.giver != current_user) %>
 
                 <% end %>
-              <%end %>
+              <% end %>
             </td>
             <td>
-              <% if item.class.name == "Preference"%>
-                <p>On <%= @recipient.first_name %>'s Wishlist</p>
-              <%end %>
+              <!-- ChatGPT provided checkbox logic -->
+              <input type="checkbox"
+                     class="readonly-checkbox"
+                     <%= 'checked' if item.is_a?(Preference) %>>
             </td>
             <td>
-              <% if item.class.name == "Suggestion"%>
+              <% if item.class.name == "Suggestion" %>
                 <!-- Can edit or remove the suggestion -->
                 <%= link_to "Edit or Delete Gift", edit_suggestion_path(id: item.id, redirect: "user_gift_summary"), class: "btn btn-primary" %>
-            <%else %>
+              <% else %>
                 <!-- Unclaim button -->
                 <%= button_to "Unclaim Wishlist Gift",
                               unclaim_preference_preferences_path(item_id: item.id, event_id: @event.id, user_id: current_user.id, redirect: "user_gift_summary"),
-                              form: {data: { turbo_confirm: "Are you sure you want to unclaim this wishlist gift?" }},
+                              form: { data: { turbo_confirm: "Are you sure you want to unclaim this wishlist gift?" } },
                               class: "btn btn-danger" %>
-              <%end %>
+              <% end %>
             </td>
           </tr>
 

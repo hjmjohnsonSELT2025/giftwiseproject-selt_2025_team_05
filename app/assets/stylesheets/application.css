@@ -166,6 +166,10 @@ th {
     align-items: start;
 }
 
+/*ChatGPT generated readonly-checkbox*/
+.readonly-checkbox {
+    pointer-events: none;
+}
 
 /* GREEN THEME (scoped to wishlist view only), ChatGPT generated*/
 .wishlist-green-theme table th {
