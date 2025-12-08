@@ -1,5 +1,5 @@
-<%= form_with model: @event_user,
-              url: event_event_user_update_budget_path(@event, event_user_id: @event_user.id),
+<%= form_with model: event_user,
+              url: event_event_user_update_budget_path(event, event_user_id: event_user.id),
               method: :patch,
               local: true do |f| %>
 
@@ -12,7 +12,7 @@
     <%= f.submit "Save", class: "btn btn-success btn-sm" %>
 
     <%= link_to "Cancel",
-                event_path(@event),
+                event_path(event),
                 class: "btn btn-secondary btn-sm" %>
   </div>
 
