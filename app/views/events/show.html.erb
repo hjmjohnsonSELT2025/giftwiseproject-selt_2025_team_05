@@ -178,111 +178,67 @@
     </div>
   <% end %>
 
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h2 class="card-title h5 mb-3">My Gifts To Others</h2>
-
-      <% gifts = Preference.where(giver: current_user, event: @event) %>
-
-      <% if gifts.any? %>
-        <div class="table-responsive" style="max-width: 700px;">
-          <table class="table table-striped align-middle mb-0">
-            <thead class="table-light">
-            <tr>
-              <th>Item Name</th>
-              <th>Cost</th>
-              <th>Recipient</th>
-              <th>Purchased?</th>
-              <% unless is_past %>
-                <th></th>
-              <% end %>
-            </tr>
-            </thead>
-            <tbody>
-            <% gifts.each do |gift| %>
-              <tr>
-                <td><%= "#{gift.item_name}" %></td>
-                <td><%= "#{gift.cost}" %></td>
-                <td><%= "#{User.find_by(id: gift.user_id).first_name}" %></td>
-                <td>
-                  <% if is_past %>
-                    <input type="checkbox" disabled <%= 'checked' if gift.purchased %>>
-                  <% else %>
-                    <%= form_with model: gift, url: toggle_purchase_show_preference_path(gift), method: :post, local: true do |f| %>
-                      <%= f.check_box :purchased, checked: gift.purchased, onchange: 'this.form.submit();' %>
-                    <% end %>
-                  <% end %>
-                </td>
-                <% unless is_past %>
-                  <td><%= button_to "Unclaim",
-                                    unclaim_show_preference_preferences_path(item_id: gift.id, user_id: current_user.id, event_id: @event.id),
-                                    method: :post,
-                                    class: "btn btn-sm btn-danger" %></td>
-                <% end %>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
-        </div>
-      <% else %>
-        <p class="text-muted mb-0">No gifts yet.</p>
-      <% end %>
-    </div>
-  </div>
   <div class="row mt-4">
-    <div class="col-md-8">
-      <h2>My Gifts To Others</h2>
-      <% gifts = Preference.where(giver: current_user, event: @event) %>
-      <% if gifts.any? %>
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th>Item Name</th>
-            <th>Cost</th>
-            <th>Recipient</th>
-            <th>Purchased?</th>
-            <% unless is_past %>
-              <th>Action</th>
-            <% end %>
-          </tr>
-          </thead>
-          <tbody>
-          <% gifts.each do |gift| %>
-            <tr>
-              <td><%= "#{gift.item_name}" %></td>
-              <td><%= "#{gift.cost}" %></td>
-              <td><%= "#{User.find_by(id: gift.user_id).first_name}" %></td>
-              <td>
-                <% if is_past %>
-                  <input type="checkbox" disabled <%= 'checked' if gift.purchased %>>
-                <% else %>
-                  <%= form_with model: gift, url: toggle_purchase_show_preference_path(gift), method: :post, local: true do |f| %>
-                    <%= f.check_box :purchased, checked: gift.purchased,  onchange: 'this.form.submit();' %>
+    <div class="col mt-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title h5 mb-3">My Gifts To Others</h2>
+
+          <% gifts = Preference.where(giver: current_user, event: @event) %>
+
+          <% if gifts.any? %>
+            <div class="table-responsive" style="max-width: 700px;">
+              <table class="table table-striped align-middle mb-0">
+                <thead class="table-light">
+                <tr>
+                  <th>Item Name</th>
+                  <th>Cost</th>
+                  <th>Recipient</th>
+                  <th>Purchased?</th>
+                  <% unless is_past %>
+                    <th></th>
                   <% end %>
+                </tr>
+                </thead>
+                <tbody>
+                <% gifts.each do |gift| %>
+                  <tr>
+                    <td><%= "#{gift.item_name}" %></td>
+                    <td><%= "#{gift.cost}" %></td>
+                    <td><%= "#{User.find_by(id: gift.user_id).first_name}" %></td>
+                    <td>
+                      <% if is_past %>
+                        <input type="checkbox" disabled <%= 'checked' if gift.purchased %>>
+                      <% else %>
+                        <%= form_with model: gift, url: toggle_purchase_show_preference_path(gift), method: :post, local: true do |f| %>
+                          <%= f.check_box :purchased, checked: gift.purchased, onchange: 'this.form.submit();' %>
+                        <% end %>
+                      <% end %>
+                    </td>
+                    <% unless is_past %>
+                      <td>
+                        <%= button_to "Unclaim",
+                                      unclaim_show_preference_preferences_path(item_id: gift.id, user_id: current_user.id, event_id: @event.id),
+                                      method: :post,
+                                      class: "btn btn-sm btn-danger" %>
+                      </td>
+                    <% end %>
+                  </tr>
                 <% end %>
-              </td>
-
-              <% unless is_past %>
-                <td>
-                  <%= button_to "Unclaim",
-                                unclaim_show_preference_preferences_path(item_id: gift.id, user_id: current_user.id, event_id: @event.id),
-                                method: :post,
-                                class: "btn btn-sm btn-danger" %>
-                </td>
-              <% end %>
-            </tr>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted mb-0">No gifts yet.</p>
           <% end %>
-          </tbody>
-        </table>
-      <% else %>
-        <p>No gifts yet.</p>
-      <% end %>
+        </div>
+      </div>
     </div>
-
 
     <div class="col-md-4">
       <div class="p-3 border rounded bg-light">
         <h4>My Budget</h4>
+
         <% current_event_user = @event.event_users.find_by(user: current_user) %>
         <% claimed_total = total_claimed_for(@event, current_user) %>
         <% purchased_total = total_purchased_for(@event, current_user) %>
@@ -303,13 +259,9 @@
         <p><strong>Remaining budget:</strong>
           <% if remaining.present? %>
             <% if remaining < 0 %>
-      <span class="text-danger fw-bold">
-        <%= number_to_currency(remaining) %>
-      </span>
+              <span class="text-danger fw-bold"><%= number_to_currency(remaining) %></span>
             <% else %>
-      <span class="text-success fw-bold">
-        <%= number_to_currency(remaining) %>
-      </span>
+              <span class="text-success fw-bold"><%= number_to_currency(remaining) %></span>
             <% end %>
           <% else %>
             <span class="text-muted">No budget set</span>
@@ -318,7 +270,6 @@
 
         <% show_form = params[:show_budget_form] == "true" %>
         <% if show_form %>
-          <% @event_user = current_event_user %>
           <%= render "event_users/budget_form", event: @event, event_user: current_event_user %>
         <% else %>
           <% if current_event_user&.budget.present? %>
@@ -334,8 +285,4 @@
       </div>
     </div>
   </div>
-
-  <br>
-  <%= link_to "Back", request.referer || root_path, class: "btn btn-secondary" %>
-
 </div>
