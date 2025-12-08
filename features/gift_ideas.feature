@@ -10,7 +10,6 @@ Feature: Get gift ideas for event participants
   Scenario: Gift ideas button opens the assistant view
     When I visit the event page
     And I click "Get Gifts"
-    And I click "Add Gift"
     And I click the gift ideas button for the other participant
     Then I should be on the gift suggestions page for that participant
 
