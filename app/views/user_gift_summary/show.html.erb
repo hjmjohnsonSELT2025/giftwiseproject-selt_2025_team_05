@@ -47,10 +47,8 @@
               <% end %>
             </td>
             <td>
-              <!-- ChatGPT provided checkbox logic -->
-              <input type="checkbox"
-                     class="readonly-checkbox"
-                     <%= 'checked' if item.is_a?(Preference) %>>
+              <!-- ChatGPT generated check logic -->
+              <%= item.is_a?(Preference) ? "✔️" : "" %>
             </td>
             <td>
               <% if item.class.name == "Suggestion" %>

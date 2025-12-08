@@ -169,6 +169,7 @@ th {
 /*ChatGPT generated readonly-checkbox*/
 .readonly-checkbox {
     pointer-events: none;
+    accent-color: green;
 }
 
 /* GREEN THEME (scoped to wishlist view only), ChatGPT generated*/
