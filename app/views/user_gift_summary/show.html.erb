@@ -69,7 +69,7 @@
     <p>No gifts yet.</p>
   <% end %>
   <br>
-  <%= link_to "Add New Gift", view_user_wishlist_preferences_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-primary"%>
+  <%= link_to "View Wishlist", view_user_wishlist_preferences_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-primary"%>
   <br>
   <br>
   <%= link_to "Back to Event", @event, class: "btn btn-secondary" %>
