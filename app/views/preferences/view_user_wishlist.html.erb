@@ -2,8 +2,8 @@
   <div class="container py-4">
     <div class="text-center mb-4">
       <h2 class="mb-1"><%= @user.first_name %>'s Wishlist</h2>
-      <p class="text-muted mb-0">Claim a gift from <%= @user.first_name %>'s wishlist to purchase. Or, add your own gift
-        suggestion with the "Add Gift" button below.</p>
+      <p class="text-muted mb-0">Add a gift from <%= @user.first_name %>'s wishlist to purchase. Or, add your own custom gift
+        suggestion.</p>
     </div>
 
     <% if @preferences.any? %>
@@ -14,7 +14,7 @@
             <th>Wishlist Item</th>
             <th>Cost</th>
             <th>Details</th>
-            <th>Claimed By</th>
+            <th></th>
           </tr>
           </thead>
           <tbody>
@@ -68,13 +68,13 @@
     <% end %>
 
     <div class="d-flex gap-2 mt-3">
-      <p class="text-muted mb-0">Want to give <%= @user.first_name %> something not on their wishlist?</p>
+      <p class="text-muted mb-0">Want to give <%= @user.first_name %> something else that's not on their wishlist?</p>
     </div>
     <div class="d-flex gap-2 mt-3">
-      <%= link_to "Add custom gift suggestion", new_suggestion_path(user_id: @user.id, event_id: @event.id), class: "btn btn-orange" %>
+      <%= link_to "Add custom gift", new_suggestion_path(user_id: @user.id, event_id: @event.id), class: "btn btn-orange" %>
     </div>
     <div class="d-flex gap-2 mt-3">
-      <%= link_to "Generate gift ideas with AI Gift Assistant",
+      <%= link_to "Generate new gift ideas with AI Gift Assistant",
                   event_event_user_gift_suggestions_path(@event, @event_user),
                   class: "btn btn-orange" %>
     </div>

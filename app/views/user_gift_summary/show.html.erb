@@ -1,11 +1,7 @@
 <div class="container py-4">
   <div class="text-center mb-4">
     <h2 class="mb-1">My Gifts to  <%= @recipient.first_name %> for <%= @event.name %></h2>
-    <p class="text-muted mb-0">These are all the gift's you're planning to get for <%= @recipient.first_name %>. Click
-      "Add Gift" to add a gift from <%= @recipient.first_name %>'s wishlist or create your own gift suggestion. You can
-      edit or delete gift suggestions that you create yourself. If the gift is from <%= @recipient.first_name %>'s
-      wishlist,
-      you can unclaim the gift to remove it from your list.</p>
+    <p class="text-muted mb-0">These are all the gifts you're planning to get for <%= @recipient.first_name %>.</p>
   </div>
 
   <% if @combined_items.any? %>
@@ -53,10 +49,10 @@
             <td>
               <% if item.class.name == "Suggestion" %>
                 <!-- Can edit or remove the suggestion -->
-                <%= link_to "Edit or Delete Gift", edit_suggestion_path(id: item.id, redirect: "user_gift_summary"), class: "btn btn-primary" %>
+                <%= link_to "Edit/Delete Custom Gift", edit_suggestion_path(id: item.id, redirect: "user_gift_summary"), class: "btn btn-primary" %>
               <% else %>
                 <!-- Unclaim button -->
-                <%= button_to "Unclaim Wishlist Gift",
+                <%= button_to "Remove Wishlist Gift",
                               unclaim_preference_preferences_path(item_id: item.id, event_id: @event.id, user_id: current_user.id, redirect: "user_gift_summary"),
                               form: { data: { turbo_confirm: "Are you sure you want to unclaim this wishlist gift?" } },
                               class: "btn btn-danger" %>
@@ -73,7 +69,7 @@
     <p>No gifts yet.</p>
   <% end %>
   <br>
-  <%= link_to "Add Gift", view_user_wishlist_preferences_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-primary"%>
+  <%= link_to "Add New Gift", view_user_wishlist_preferences_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-primary"%>
   <br>
   <br>
   <%= link_to "Back to Event", @event, class: "btn btn-secondary" %>
