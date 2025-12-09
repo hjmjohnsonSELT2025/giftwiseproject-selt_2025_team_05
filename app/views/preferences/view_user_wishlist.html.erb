@@ -17,13 +17,14 @@
           <th class="text-end">Action</th>
         </tr>
         </thead>
-        <tbody>
 
+        <tbody>
         <% @preferences.each do |item| %>
           <tr>
             <td><%= item.item_name %></td>
             <td><%= number_to_currency(item.cost) %></td>
             <td><%= item.notes.presence || "—" %></td>
+
             <td>
               <% if item.giver.present? %>
                 <% if item.giver == current_user %>
@@ -35,30 +36,44 @@
                 <span class="text-muted">Unclaimed</span>
               <% end %>
             </td>
+
             <td>
-              <%= form_with model: item, url: toggle_purchase_preference_path(item), method: :post, local: true do |f| %>
-                <%= f.check_box :purchased, checked: item.purchased, onchange: 'this.form.submit();', disabled: (item.giver != current_user) %>
+              <%= form_with model: item, url: toggle_purchase_preference_path(item),
+                            method: :post, local: true do |f| %>
+                <%= f.check_box :purchased, checked: item.purchased,
+                                onchange: 'this.form.submit();',
+                                disabled: (item.giver != current_user) %>
               <% end %>
             </td>
+
             <td class="text-end">
               <% if item.giver.nil? %>
-                <%= button_to "Claim this gift",
-                              claim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id),
-                              method: :post,
-                              class: "btn btn-sm btn-success" %>
+                <% if can_claim_gift?(@event, current_user, item.cost) %>
+                  <%= button_to "Claim this gift",
+                                claim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id),
+                                method: :post, class: "btn btn-sm btn-success",
+                                id: "claim-gift-#{item.id}" %>
+                <% else %>
+                  <span title="Claiming this gift exceeds your budget">
+                    <button class="btn btn-sm btn-secondary" disabled>
+                      Claim this gift
+                    </button>
+                  </span>
+                <% end %>
               <% elsif item.giver == current_user %>
                 <%= button_to "Unclaim",
                               unclaim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id),
-                              method: :post,
-                              class: "btn btn-sm btn-danger" %>
+                              method: :post, class: "btn btn-sm btn-danger" %>
               <% end %>
             </td>
+
           </tr>
         <% end %>
-
         </tbody>
+
       </table>
     </div>
+
   <% else %>
     <p class="text-muted">No items on wish list yet.</p>
   <% end %>
