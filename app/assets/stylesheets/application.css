@@ -1217,5 +1217,9 @@ a:hover {
     border-color: var(--xmas-blue-dark) !important;
 }
 
+/*ChatGPT generated strikethrough formatting*/
+.strikethrough {
+    text-decoration: line-through;
+}
 
 

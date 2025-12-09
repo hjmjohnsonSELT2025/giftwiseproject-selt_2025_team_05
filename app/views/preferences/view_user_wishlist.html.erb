@@ -32,7 +32,7 @@
                     <% if item.event != @event %>
                       You already claimed this item in another event <%= item.event.name %>
                     <% else %>
-                      <%= "#{item.giver.first_name}" %>
+                      You claimed this gift.
                       <%= button_to "Unclaim",
                                     unclaim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id, redirect: "wishlist"),
                                     method: :post,
@@ -72,12 +72,12 @@
       <p class="text-muted mb-0">Want to give <%= @user.first_name %> something else that's not on their wishlist?</p>
     </div>
     <div class="d-flex gap-2 mt-3">
-      <%= link_to "Add custom gift", new_suggestion_path(user_id: @user.id, event_id: @event.id), class: "btn btn-orange" %>
+      <%= link_to "Add custom gift", new_suggestion_path(user_id: @user.id, event_id: @event.id), class: "btn btn-primary" %>
     </div>
     <div class="d-flex gap-2 mt-3">
       <%= link_to "Generate new gift ideas with AI Gift Assistant",
                   event_event_user_gift_suggestions_path(@event, @event_user),
-                  class: "btn btn-orange" %>
+                  class: "btn btn-primary" %>
     </div>
     <br>
     <%= link_to "Back", user_gift_summary_path(user_id: @user.id, event_id: @event.id), class: "btn btn-secondary" %>
