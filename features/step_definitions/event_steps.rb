@@ -54,6 +54,17 @@ Given("{string} has an event named {string}") do |user_name, event_name|
   )
 end
 
+Given("{string} has an event named {string} at address {string}") do |user_name, event_name, address|
+  user = User.find_by!(first_name: user_name)
+  user.events.create!(
+    name: event_name,
+    date: Date.tomorrow,
+    address: address,
+    description: "Description",
+    event_type: "friend"
+  )
+end
+
 Given("{string} has created an event named {string}") do |user_name, event_name|
   step %{"#{user_name}" has an event named "#{event_name}"}
 end
@@ -131,16 +142,17 @@ Then("I should not see {string} in the participants list") do |name|
 end
 
 Given("the following events exist:") do |table|
-  # Table headers: name, date_offset (days), status
+  # Table headers: name, date_offset (days), status, event_type (optional)
   table.hashes.each do |row|
     date = row['date_offset'].to_i.days.from_now
+    event_type = row['event_type'] || "family"
 
     # We use save(validate: false) if date is in the past to bypass the creation validation
     event = Event.new(
       name: row['name'],
       date: date,
       address: "123 Cucumber St",
-      event_type: "family",
+      event_type: event_type,
       description: "Auto generated",
       user: @user
     )
@@ -233,4 +245,10 @@ When("I check {string}") do |label_text|
   within(".friend-list-container") do
     check(label_text, allow_label_click: true, match: :first)
   end
+end
+
+# Step to fill in date fields with dynamic dates
+When("I fill in {string} with a date {int} days from now") do |field, days|
+  date_value = days.days.from_now.to_date.to_s
+  fill_in field, with: date_value
 end
