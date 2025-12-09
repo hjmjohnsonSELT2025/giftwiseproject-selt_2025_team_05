@@ -45,6 +45,8 @@ Given('a gift {string} costing {int} exists for {string} in {string}') do |item_
     event: event,
     purchased: false
   )
+
+  EventUser.find_or_create_by(user: receiver, event: event, status: :joined)
 end
 
 When("I view the wishlist of {string} for event {string}") do |email, event_name|
@@ -93,5 +95,5 @@ Then('I should see Remaining budget of {string}') do |amount|
 end
 
 Then('I should see a budget warning') do
-  expect(page.html).to match(/Claiming this gift exceeds your budget/i)
+  expect(page.html).to match(/Adding this gift exceeds your budget/i)
 end
