@@ -54,6 +54,17 @@ Given("{string} has an event named {string}") do |user_name, event_name|
   )
 end
 
+Given("{string} has an event named {string} at address {string}") do |user_name, event_name, address|
+  user = User.find_by!(first_name: user_name)
+  user.events.create!(
+    name: event_name,
+    date: Date.tomorrow,
+    address: address,
+    description: "Description",
+    event_type: "friend"
+  )
+end
+
 Given("{string} has created an event named {string}") do |user_name, event_name|
   step %{"#{user_name}" has an event named "#{event_name}"}
 end
@@ -131,16 +142,17 @@ Then("I should not see {string} in the participants list") do |name|
 end
 
 Given("the following events exist:") do |table|
-  # Table headers: name, date_offset (days), status
+  # Table headers: name, date_offset (days), status, event_type (optional)
   table.hashes.each do |row|
     date = row['date_offset'].to_i.days.from_now
+    event_type = row['event_type'] || "family"
 
     # We use save(validate: false) if date is in the past to bypass the creation validation
     event = Event.new(
       name: row['name'],
       date: date,
       address: "123 Cucumber St",
-      event_type: "family",
+      event_type: event_type,
       description: "Auto generated",
       user: @user
     )
@@ -232,5 +244,62 @@ When("I check {string}") do |label_text|
   # Scope to the specific list and grab the first match to ignore any ambiguity
   within(".friend-list-container") do
     check(label_text, allow_label_click: true, match: :first)
+  end
+end
+
+# Step to fill in date fields with dynamic dates
+When("I fill in {string} with a date {int} days from now") do |field, days|
+  date_value = days.days.from_now.to_date.to_s
+  fill_in field, with: date_value
+end
+
+# Clone event steps
+Given("{string} has been invited to {string}") do |user_name, event_name|
+  first_name = user_name.split(" ").first
+  user = User.find_by!(first_name: first_name)
+  event = Event.find_by!(name: event_name)
+  EventUser.find_or_create_by!(user: user, event: event) do |eu|
+    eu.status = :invited
+  end
+end
+
+Given("I have a past event named {string}") do |event_name|
+  past_date = 1.month.ago
+  event = Event.new(
+    name: event_name,
+    date: past_date,
+    address: "123 Past St",
+    description: "A past event",
+    event_type: "friend",
+    user: @user
+  )
+  event.save(validate: false) # bypass date validation
+  EventUser.create!(user: @user, event: event, status: :joined)
+end
+
+Given("I have an existing family event named {string}") do |event_name|
+  @user.events.create!(
+    name: event_name,
+    date: 1.week.from_now,
+    address: "123 Family St",
+    description: "Family event description",
+    event_type: "family"
+  )
+end
+
+Then("the {string} field should contain {string}") do |field, value|
+  expect(page).to have_field(field, with: value)
+end
+
+Then("the {string} field should have {string} selected") do |field, value|
+  expect(page).to have_select(field, selected: value)
+end
+
+Then("{string} should be checked in the friends list") do |name|
+  within(".friend-list-container") do
+    # Find the friend-item div containing the name, then find the checkbox within it
+    friend_item = find(".friend-item", text: /#{name}/i, match: :first)
+    checkbox = friend_item.find("input[type='checkbox']", visible: :all)
+    expect(checkbox).to be_checked
   end
 end

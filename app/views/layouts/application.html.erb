@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>GiftwiseprojectSelt2025Team05</title>
+  <title>❄️ GiftWise - Happy Holidays! ✨</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
@@ -14,11 +14,28 @@
 
 <body>
 
+<!-- Holiday Lights at the top -->
+<div class="christmas-lights">
+  <% 40.times do %>
+    <div class="light-bulb"></div>
+  <% end %>
+</div>
+
+<!-- Snowfall Effect -->
+<div class="snowfall" id="snowfall"></div>
+
+<!-- Snowflake Decorations -->
+<div class="snowflake-corner snowflake-top-left">❄️</div>
+<div class="snowflake-corner snowflake-top-right">❄️</div>
+
+<!-- Gift Decoration -->
+<div class="gift-decoration">🎁</div>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
   <div class="container">
 
-    <!-- LEFT: GiftWise brand -->
-    <%= link_to "🎁 GiftWise", root_path, class: "navbar-brand fs-3 fw-bold text-primary" %>
+    <!-- LEFT: GiftWise brand - Holiday Edition -->
+    <%= link_to "🎁 GiftWise ✨", root_path, class: "navbar-brand" %>
 
     <!-- Toggle button for mobile view -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,6 +88,9 @@
   </div>
 </nav>
 
+<!-- Holiday Star - scrolls with page content -->
+<div class="christmas-star">⭐</div>
+
 <% flash.each do |type, message| %>
   <% if message.present? %>
     <% bootstrap_class =
@@ -92,5 +112,44 @@
 <%= yield %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+<!-- ❄️ Holiday Snowfall Animation ❄️ -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const snowfall = document.getElementById('snowfall');
+    const snowflakes = ['❄', '❅', '❆', '✻', '✼', '❋', '✺', '•'];
+    const maxSnowflakes = 50;
+    
+    function createSnowflake() {
+      if (snowfall.children.length >= maxSnowflakes) return;
+      
+      const flake = document.createElement('div');
+      flake.className = 'snowflake';
+      flake.innerHTML = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+      flake.style.left = Math.random() * 100 + 'vw';
+      flake.style.fontSize = (Math.random() * 1 + 0.5) + 'em';
+      flake.style.opacity = Math.random() * 0.6 + 0.4;
+      flake.style.animationDuration = (Math.random() * 5 + 5) + 's';
+      flake.style.animationDelay = Math.random() * 2 + 's';
+      
+      snowfall.appendChild(flake);
+      
+      // Remove snowflake after animation completes
+      setTimeout(() => {
+        if (flake.parentNode) {
+          flake.remove();
+        }
+      }, 12000);
+    }
+    
+    // Create initial snowflakes
+    for (let i = 0; i < 20; i++) {
+      setTimeout(createSnowflake, i * 200);
+    }
+    
+    // Continuously create new snowflakes
+    setInterval(createSnowflake, 300);
+  });
+</script>
 </body>
 </html>

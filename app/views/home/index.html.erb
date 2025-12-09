@@ -9,52 +9,118 @@
     <%= link_to "Create Event", new_event_path, class: "btn btn-primary" %>
   </div>
 
+  <%
+    # Preserve filter parameters when switching between tabs
+    filter_params = {
+      query: params[:query],
+      event_type: params[:event_type],
+      status: params[:status],
+      date_from: params[:date_from],
+      date_to: params[:date_to]
+    }.compact_blank
+  %>
   <div class="mb-3">
     <div class="btn-group" role="group">
-      <%= link_to "Upcoming Events", root_path(view: 'upcoming'), class: "btn btn-outline-primary #{'active' if @view_mode == 'upcoming'}" %>
-      <%= link_to "Past Events", root_path(view: 'past'), class: "btn btn-outline-primary #{'active' if @view_mode == 'past'}" %>
+      <%= link_to "Upcoming Events", root_path(filter_params.merge(view: 'upcoming')), class: "btn btn-outline-primary #{'active' if @view_mode == 'upcoming'}" %>
+      <%= link_to "Past Events", root_path(filter_params.merge(view: 'past')), class: "btn btn-outline-primary #{'active' if @view_mode == 'past'}" %>
     </div>
   </div>
 
-  <% if @event_users.any? %>
-    <table class="table table-striped table-hover align-middle">
-      <thead>
-      <tr>
-        <th>Name</th>
-        <th>Date</th>
-        <th>Address</th>
-        <th>Type</th>
-        <th>Organizer</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @event_users.each do |event_user| %>
-        <% event = event_user.event %>
-        <% row_class = @view_mode == 'past' ? 'table-secondary text-muted' : '' %>
-        <tr class="<%= row_class %>">
-          <td><%= event.name %></td>
-          <td><%= event.date&.strftime("%B %d, %Y") %></td>
-          <td><%= event.address %></td>
-          <td><%= event.event_type&.titleize %></td>
-          <td><%= [event.user&.first_name, event.user&.last_name].compact.join(" ").presence || "—" %></td>
-          <td>
-            <% status_class, status_label =
-                 if @view_mode == 'past'
-                   ['bg-secondary text-dark', event_user.status.humanize]
-                 elsif event_user.status == 'joined'
-                   ['bg-success', 'Joined']
-                 elsif event_user.status == 'invited'
-                   ['bg-warning text-dark', 'Pending Invite']
-                 else
-                   ['bg-secondary', event_user.status.humanize]
-                 end %>
-            <span class="badge <%= status_class %>"><%= status_label %></span>
-          </td>
-          <td>
-            <div class="d-flex gap-2">
-              <%= link_to "View", event_path(event), class: "btn btn-sm btn-outline-primary" %>
+<%= form_with url: root_path, method: :get, local: true, class: "mb-3" do |form| %>
+  <%= hidden_field_tag :view, @view_mode %>
+
+  <div class="row g-2 align-items-end">
+    <!-- Search Box -->
+    <div class="col-md-4">
+      <label class="form-label small text-muted">Search</label>
+      <%= form.text_field :query,
+                          value: params[:query],
+                          placeholder: "Name, address, organizer...",
+                          class: "form-control" %>
+    </div>
+
+    <!-- Event Type Filter -->
+    <div class="col-md-2">
+      <label class="form-label small text-muted">Type</label>
+      <%= form.select :event_type,
+                      options_for_select([["All Types", ""]] + Event.event_types.keys.map { |t| [t.titleize, t] }, params[:event_type]),
+                      {},
+                      class: "form-select" %>
+    </div>
+
+    <!-- Status Filter -->
+    <div class="col-md-2">
+      <label class="form-label small text-muted">Status</label>
+      <%= form.select :status,
+                      options_for_select([["All", ""], ["Joined", "joined"], ["Invited", "invited"]], params[:status]),
+                      {},
+                      class: "form-select" %>
+    </div>
+
+    <!-- Date From Filter -->
+    <div class="col-md-2">
+      <label class="form-label small text-muted">From</label>
+      <%= form.date_field :date_from,
+                          value: params[:date_from],
+                          class: "form-control" %>
+    </div>
+
+    <!-- Date To Filter -->
+    <div class="col-md-2">
+      <label class="form-label small text-muted">To</label>
+      <%= form.date_field :date_to,
+                          value: params[:date_to],
+                          class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="mt-2 d-flex gap-2">
+    <%= form.submit "Apply Filters", class: "btn btn-primary" %>
+    <% if params[:query].present? || params[:event_type].present? || params[:status].present? || params[:date_from].present? || params[:date_to].present? %>
+      <%= link_to "Clear All", root_path(view: @view_mode), class: "btn btn-outline-secondary" %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @event_users.any? %>
+  <table class="table table-hover table-striped align-middle">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Date</th>
+      <th>Address</th>
+      <th>Type</th>
+      <th>Organizer</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @event_users.each_with_index do |event_user, index| %>
+      <% event = event_user.event %>
+      <% is_past = event.date < Date.today %>
+      <% past_row_class = index.even? ? 'table-secondary' : 'table-light' %>
+
+      <tr class="<%= is_past ? "#{past_row_class} text-muted" : '' %>">
+        <td>
+          <strong><%= event.name %></strong>
+        </td>
+        <td><%= event.date&.strftime("%B %d, %Y") %></td>
+        <td><%= event.address %></td>
+        <td><%= event.event_type.titleize %></td>
+        <td><%= "#{event.user.first_name} #{event.user.last_name}" %></td>
+        <td>
+          <% if event_user.status == 'joined' %>
+            <span class="badge <%= is_past ? 'bg-secondary' : 'bg-success' %>">Joined</span>
+          <% elsif event_user.status == 'invited' %>
+            <span class="badge <%= is_past ? 'bg-secondary' : 'bg-warning text-dark' %>">Pending Invite</span>
+          <% else %>
+            <span class="badge bg-secondary"><%= event_user.status.humanize %></span>
+          <% end %>
+        </td>
+        <td>
+          <div class="d-flex gap-2">
+            <%= link_to "View", event_path(event), class: "btn btn-sm btn-outline-primary" %>
 
               <% if event_user.status == 'invited' && @view_mode != 'past' %>
                 <%= button_to "Accept",
@@ -62,19 +128,30 @@
                               method: :patch,
                               class: "btn btn-sm btn-success" %>
 
-                <%= button_to "Decline",
-                              event_event_user_path(event, event_user, status: 'declined'),
-                              method: :patch,
-                              data: { turbo_confirm: "Are you sure you want to decline this invitation?" },
-                              class: "btn btn-sm btn-outline-danger" %>
-              <% end %>
-            </div>
-          </td>
-        </tr>
+              <%= button_to "Decline",
+                            event_event_user_path(event, event_user, status: 'declined'),
+                            method: :patch,
+                            data: { turbo_confirm: "Are you sure you want to decline this invitation?" },
+                            class: "btn btn-sm btn-outline-danger" %>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-light text-center mt-3">
+    <p class="mb-0">
+      <% has_filters = params[:query].present? || params[:event_type].present? || params[:status].present? || params[:date_from].present? || params[:date_to].present? %>
+      <% if has_filters %>
+        No events found matching your filters.
+      <% elsif @view_mode == 'past' %>
+        You have no past events.
+      <% else %>
+        You haven't joined any upcoming events yet.
       <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p class="mt-3">You haven't joined any events yet.</p>
-  <% end %>
+    </p>
+  </div>
+<% end %>
 </div>

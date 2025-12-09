@@ -5,9 +5,13 @@ Rails.application.routes.draw do
   }
 
   resources :events do
+    member do
+      get :clone
+    end
     resources :event_users, only: [:create, :update, :show] do
       get :gift_suggestions, to: "gift_suggestions#show"
       post :gift_suggestions, to: "gift_suggestions#create"
+      patch :update_budget
     end
   end
 
