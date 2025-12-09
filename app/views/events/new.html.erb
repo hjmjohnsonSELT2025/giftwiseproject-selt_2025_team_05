@@ -48,8 +48,6 @@
         <h5 class="mb-0">Invite Friends</h5>
       </div>
       <div class="card-body">
-        <input type="text" id="friend-search" class="form-control mb-3" placeholder="Search friends by name...">
-
         <div class="friend-list-container" style="max-height: 400px; overflow-y: auto;">
           <% if @friends&.any? %>
             <% @friends.each do |friend| %>
@@ -77,20 +75,3 @@
   <% end %>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const searchInput = document.getElementById("friend-search");
-    const friendItems = document.querySelectorAll(".friend-item");
-
-    if (searchInput) {
-      searchInput.addEventListener("keyup", function(e) {
-        const searchText = e.target.value.toLowerCase();
-
-        friendItems.forEach(function(item) {
-          const label = item.querySelector("label").innerText.toLowerCase();
-          item.style.display = label.includes(searchText) ? "block" : "none";
-        });
-      });
-    }
-  });
-</script>

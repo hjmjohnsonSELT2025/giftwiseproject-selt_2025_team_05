@@ -37,3 +37,4 @@ Feature: Clone an existing event
     And I click "Clone"
     Then the "Event Type" field should have "Family" selected
 
+
