@@ -40,7 +40,6 @@ class FriendshipsController < ApplicationController
     @friends  = current_user.all_friends
   end
 
-
   def new
     if params[:q].present?
       query = params[:q].downcase
@@ -52,7 +51,9 @@ class FriendshipsController < ApplicationController
     else
       @results = []
     end
+
+    @outgoing_requests = current_user.sent_friendships.index_by(&:friend_id)
+    @incoming_requests = current_user.received_friendships.index_by(&:user_id)
+    @accepted_friends = current_user.all_friends.index_by(&:id)
   end
-
-
 end
