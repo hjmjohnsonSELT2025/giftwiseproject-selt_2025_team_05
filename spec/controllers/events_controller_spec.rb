@@ -188,4 +188,105 @@ RSpec.describe EventsController, type: :controller do
       expect(response).to redirect_to(events_path)
     end
   end
+
+  describe "GET #clone" do
+    let!(:source_event) do
+      user.events.create!(
+        name: "Original Event",
+        date: 1.week.from_now,
+        address: "123 Main St",
+        description: "Original description",
+        event_type: "family"
+      )
+    end
+
+    before do
+      # Add participants to the source event
+      EventUser.create!(event: source_event, user: user, status: :joined)
+      EventUser.create!(event: source_event, user: friend, status: :joined)
+    end
+
+    it "renders the new event template" do
+      get :clone, params: { id: source_event.id }
+      expect(response).to render_template(:new)
+    end
+
+    it "assigns a new event with cloned name" do
+      get :clone, params: { id: source_event.id }
+      expect(assigns(:event).name).to eq("Original Event (Clone)")
+    end
+
+    it "copies the address from source event" do
+      get :clone, params: { id: source_event.id }
+      expect(assigns(:event).address).to eq("123 Main St")
+    end
+
+    it "copies the event_type from source event" do
+      get :clone, params: { id: source_event.id }
+      expect(assigns(:event).event_type).to eq("family")
+    end
+
+    it "copies the description from source event" do
+      get :clone, params: { id: source_event.id }
+      expect(assigns(:event).description).to eq("Original description")
+    end
+
+    it "assigns @friends for the checkbox list" do
+      get :clone, params: { id: source_event.id }
+      expect(assigns(:friends)).to include(friend)
+    end
+
+    it "pre-selects participants from source event (excluding owner)" do
+      get :clone, params: { id: source_event.id }
+      expect(assigns(:selected_participant_ids)).to include(friend.id)
+      expect(assigns(:selected_participant_ids)).not_to include(user.id)
+    end
+
+    context "date calculation" do
+      it "keeps the same date/time for upcoming events" do
+        future_date = 2.weeks.from_now
+        source_event.update!(date: future_date)
+
+        get :clone, params: { id: source_event.id }
+        expect(assigns(:event).date).to be_within(1.second).of(future_date)
+      end
+
+      it "updates the year for events from past years" do
+        past_date = 1.year.ago.change(month: 6, day: 15, hour: 14, min: 30)
+        source_event.update_column(:date, past_date)
+
+        get :clone, params: { id: source_event.id }
+
+        cloned_date = assigns(:event).date
+        expect(cloned_date.year).to eq(Time.current.year)
+        expect(cloned_date.month).to eq(6)
+        expect(cloned_date.day).to eq(15)
+        expect(cloned_date.hour).to eq(14)
+        expect(cloned_date.min).to eq(30)
+      end
+
+      it "advances to next month for past events in current year" do
+        # Create a date that's definitely in the past this year
+        past_date = 2.months.ago.change(day: 15, hour: 10, min: 0)
+        source_event.update_column(:date, past_date)
+
+        get :clone, params: { id: source_event.id }
+
+        cloned_date = assigns(:event).date
+        expect(cloned_date).to be >= Time.current
+        expect(cloned_date.day).to eq(15)
+        expect(cloned_date.hour).to eq(10)
+      end
+    end
+
+    context "when user is not the owner" do
+      before { sign_in other_user }
+
+      it "still allows cloning (creates their own copy)" do
+        get :clone, params: { id: source_event.id }
+        expect(response).to render_template(:new)
+        expect(assigns(:event).name).to eq("Original Event (Clone)")
+      end
+    end
+  end
 end
