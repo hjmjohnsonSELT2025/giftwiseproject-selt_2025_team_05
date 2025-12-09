@@ -43,18 +43,15 @@
       <%= form.text_area :description, class: "form-control", rows: 3 %>
     </div>
 
+    <h5 class="section-title mb-2">Invite Friends</h5>
     <div class="card shadow-sm mb-4">
-      <div class="card-header bg-light">
-        <h5 class="mb-0">Invite Friends</h5>
-      </div>
       <div class="card-body">
-        <input type="text" id="friend-search" class="form-control mb-3" placeholder="Search friends by name...">
-
         <div class="friend-list-container" style="max-height: 400px; overflow-y: auto;">
           <% if @friends&.any? %>
             <% @friends.each do |friend| %>
               <div class="form-check friend-item">
-                <%= check_box_tag "participant_ids[]", friend.id, false, class: "form-check-input", id: "user_#{friend.id}" %>
+                <% is_selected = @selected_participant_ids&.include?(friend.id) %>
+                <%= check_box_tag "participant_ids[]", friend.id, is_selected, class: "form-check-input", id: "user_#{friend.id}" %>
                 <label class="form-check-label w-100" for="user_<%= friend.id %>">
                   <strong><%= friend.first_name %> <%= friend.last_name %></strong><br>
                   <small class="text-muted"><%= friend.email %></small>
@@ -76,20 +73,3 @@
   <% end %>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const searchInput = document.getElementById("friend-search");
-    const friendItems = document.querySelectorAll(".friend-item");
-
-    if (searchInput) {
-      searchInput.addEventListener("keyup", function(e) {
-        const searchText = e.target.value.toLowerCase();
-
-        friendItems.forEach(function(item) {
-          const label = item.querySelector("label").innerText.toLowerCase();
-          item.style.display = label.includes(searchText) ? "block" : "none";
-        });
-      });
-    }
-  });
-</script>
