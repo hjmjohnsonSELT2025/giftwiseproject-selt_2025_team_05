@@ -22,9 +22,10 @@
           <% @preferences.each do |item| %>
             <tr>
 
-              <td><%= "#{item.item_name}" %></td>
-              <td> <%= "#{number_to_currency(item.cost)}" %></td>
-              <td> <%= "#{item.notes}" %></td>
+              <!--ChatGPT generated the strikethrough conditional formatting logic-->
+              <td class="<%= 'strikethrough' if !(item.giver.nil?) %>"> <%= "#{item.item_name}" %></td>
+              <td class="<%= 'strikethrough' if !(item.giver.nil?) %>"> <%= "#{number_to_currency(item.cost)}" %></td>
+              <td class="<%= 'strikethrough' if !(item.giver.nil?) %>"> <%= "#{item.notes}" %></td>
               <td>
                 <% if !item.giver.nil? %>
                   <% if item.giver == current_user %>
