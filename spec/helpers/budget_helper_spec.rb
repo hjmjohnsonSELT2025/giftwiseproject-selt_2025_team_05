@@ -34,9 +34,9 @@ RSpec.describe BudgetHelper, type: :helper do
   end
 
   describe "#remaining_budget_for" do
-    it "returns nil if event_user has no budget" do
+    it "returns 0 if event_user has no budget" do
       e_u = EventUser.create!(event: event, user: user, budget: nil)
-      expect(helper.remaining_budget_for(e_u)).to be_nil
+      expect(helper.remaining_budget_for(e_u)).to eq(0)
     end
 
     it "returns full budget when no gifts are purchased" do

@@ -9,11 +9,14 @@ module BudgetHelper
   end
 
   def remaining_budget_for(event_user)
-    return nil unless event_user&.budget.present?
+    return 0 unless event_user
 
-    purchased_total = total_purchased_for(event_user.event, event_user.user)
-    event_user.budget - purchased_total
+    budget = event_user.budget || 0
+    purchased = total_purchased_for(event_user.event, event_user.user) || 0
+
+    budget - purchased
   end
+
 
   def can_claim_gift?(event, user, gift_cost)
     event_user = event.event_users.find_by(user: user)
