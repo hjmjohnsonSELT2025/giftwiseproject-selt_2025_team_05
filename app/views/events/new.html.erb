@@ -43,10 +43,8 @@
       <%= form.text_area :description, class: "form-control", rows: 3 %>
     </div>
 
+    <h5 class="section-title mb-2">Invite Friends</h5>
     <div class="card shadow-sm mb-4">
-      <div class="card-header bg-light">
-        <h5 class="mb-0">Invite Friends</h5>
-      </div>
       <div class="card-body">
         <div class="friend-list-container" style="max-height: 400px; overflow-y: auto;">
           <% if @friends&.any? %>

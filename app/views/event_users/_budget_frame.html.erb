@@ -1,0 +1,36 @@
+<turbo-frame id="budget_frame">
+  <div class="p-3 border rounded bg-light">
+    <h4>My Budget</h4>
+
+    <% if event_user.present? %>
+      <% claimed_total    = total_claimed_for(event, event_user.user) || 0 %>
+      <% purchased_total  = total_purchased_for(event, event_user.user) || 0 %>
+      <% remaining        = (event_user.budget || 0) - purchased_total %>
+
+      <p><strong>Budget:</strong> <%= number_to_currency(event_user.budget || 0) %></p>
+      <p><strong>Total Claimed:</strong> <%= number_to_currency(claimed_total) %></p>
+      <p><strong>Total Purchased:</strong> <%= number_to_currency(purchased_total) %></p>
+
+      <p><strong>Remaining budget:</strong>
+        <% if remaining < 0 %>
+          <span class="text-danger fw-bold"><%= number_to_currency(remaining) %></span>
+        <% else %>
+          <span class="text-success fw-bold"><%= number_to_currency(remaining) %></span>
+        <% end %>
+      </p>
+
+      <% if params[:show_budget_form] == "true" %>
+        <%= render "event_users/budget_form",
+                   event: event,
+                   event_user: event_user %>
+      <% else %>
+        <%= link_to "Edit Budget",
+                    event_path(event, show_budget_form: true),
+                    class: "btn btn-secondary btn-sm",
+                    data: { turbo_frame: "budget_frame" } %>
+      <% end %>
+    <% else %>
+      <p class="text-muted mb-0">Budget not available.</p>
+    <% end %>
+  </div>
+</turbo-frame>
