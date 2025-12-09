@@ -106,17 +106,17 @@
                     <% if item.event != @event %>
                       <p> You already claimed this item in another event <%= item.event.name %></p>
                     <% else %>
-                      <p><s>You're planning to give this gift.</s></p>
+                      <p class="mb-1"><s>You're planning to give this gift.</s></p>
                     <% end %>
                   <% else %>
-                    <p>Someone else is giving this gift.</p>
+                    Someone else is giving this gift.
                   <% end %>
                 <% else %>
                   <% if can_claim_gift?(@event, current_user, item.cost) %>
                     <%= button_to "Add",
                                   claim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id),
                                   method: :post,
-                                  class: "btn btn-sm btn-success",
+                                  class: "btn btn-success",
                                   id: "claim-gift-#{item.id}" %>
                   <%else %>
                     <span title="Adding this gift exceeds your budget">
@@ -143,12 +143,12 @@
       <p class="text-muted mb-0">Want to give <%= @recipient.first_name %> something not on their wishlist?</p>
     </div>
     <div class="d-flex gap-2 mt-3">
-      <%= link_to "Add custom gift idea", new_suggestion_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-orange" %>
+      <%= link_to "Add custom gift idea", new_suggestion_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-success" %>
     </div>
     <div class="d-flex gap-2 mt-3">
       <%= link_to "Generate new gift ideas with AI Gift Assistant",
                   event_event_user_gift_suggestions_path(@event, @event_user),
-                  class: "btn btn-orange" %>
+                  class: "btn btn-success" %>
     </div>
     <br>
     <%= link_to "Back", @event, class: "btn btn-secondary" %>
