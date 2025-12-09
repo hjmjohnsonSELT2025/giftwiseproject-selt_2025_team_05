@@ -291,11 +291,11 @@ body::before {
 
 .card .text-muted,
 .card p.text-muted,
-.card p.text-muted.mb-0 {
+.card p.text-muted.mb-0,
+.card p.text-muted.mb-3 {
   color: #1a1a1a !important;
   opacity: 1 !important;
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 500;
   text-shadow: none !important;
 }
 
@@ -383,11 +383,16 @@ div.border.rounded.bg-light {
 }
 
 /* Page headings - centered */
+.text-center h1,
 .text-center h2,
-h2.text-center {
+h1.text-center,
+h2.text-center,
+.text-center .h4,
+.text-center h1.h4 {
   color: var(--xmas-gold-light) !important;
   font-family: "Mountains of Christmas", cursive;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 2rem;
 }
 
 .text-center p,
@@ -635,6 +640,55 @@ table .btn-success {
 label.small.text-muted {
   color: var(--xmas-gold-light) !important;
   font-weight: 500;
+}
+
+/* Small helper text under form fields */
+small.text-muted {
+  color: var(--xmas-gold-light) !important;
+  opacity: 0.9;
+}
+
+/* Card header styling - clean and simple */
+.card-header,
+.card-header.bg-light {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid var(--xmas-green) !important;
+  padding: 1rem 1.25rem;
+}
+
+.card-header h5,
+.card-header .mb-0 {
+  color: var(--xmas-red-dark) !important;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Section titles (like table titles) */
+.section-title,
+h5.section-title {
+  color: var(--xmas-gold-light) !important;
+  font-weight: 600;
+  font-size: 1.15rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Small text inside cards */
+.card small.text-muted,
+.card .small.text-muted,
+.card p.text-muted.small {
+  color: #333 !important;
+}
+
+/* Form check labels inside cards */
+.card .form-check-label,
+.card .form-check-label strong {
+  color: var(--xmas-pine) !important;
+}
+
+.card .form-check-label small.text-muted {
+  color: #555 !important;
 }
 
 /* Text Colors for Dark Background */

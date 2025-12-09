@@ -6,6 +6,33 @@ class EventsController < ApplicationController
   def new
     @event = current_user.events.build
     @friends = current_user.all_friends
+    @selected_participant_ids = []
+  end
+
+  def clone
+    source_event = Event.find(params[:id])
+
+    # Smart date suggestion based on original event date
+    suggested_date = calculate_cloned_date(source_event.date)
+
+    # Build a new event with copied attributes
+    @event = current_user.events.build(
+      name: "#{source_event.name} (Clone)",
+      address: source_event.address,
+      event_type: source_event.event_type,
+      description: source_event.description,
+      date: suggested_date
+    )
+
+    @friends = current_user.all_friends
+
+    # Get participant IDs from source event (joined or invited, excluding the organizer)
+    @selected_participant_ids = source_event.event_users
+                                            .where(status: [:joined, :invited])
+                                            .where.not(user_id: current_user.id)
+                                            .pluck(:user_id)
+
+    render :new
   end
 
   def create
@@ -84,5 +111,32 @@ class EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(:name, :date, :address, :event_type, :description)
+  end
+
+  def calculate_cloned_date(original_date)
+    return nil if original_date.blank?
+
+    now = Time.current
+
+    if original_date >= now
+      # Event is upcoming - keep the same date/time
+      original_date
+    elsif original_date.year < now.year
+      # Event was in a past year - keep day, month, time, change year to current year
+      original_date.change(year: now.year)
+    else
+      # Event was in this year but in the past - keep day and time, move to next occurrence of that day
+      # Find the soonest future month where this day exists
+      candidate = original_date.change(year: now.year)
+
+      # If it's still in the past, move month by month until it's in the future
+      while candidate < now
+        candidate = candidate.advance(months: 1)
+        # Handle edge case: if original day doesn't exist in new month (e.g., Jan 31 -> Feb)
+        # Rails' advance handles this by capping to the last day of the month
+      end
+
+      candidate
+    end
   end
 end
