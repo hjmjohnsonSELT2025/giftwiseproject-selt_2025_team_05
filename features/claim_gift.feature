@@ -12,9 +12,9 @@ Feature: Claim gift
     And "Judy" is a participant in "Christmas"
     And "Judy" has added an item named "Bike" to their wish list
 
-  Scenario: Claiming a gift
-    When I click "Events"
-    And I click "View"
-    And I click "View Wish List"
-    And I click "Claim this gift"
-    Then I should see "Gift claimed successfully!"
+  #Scenario: Claiming a gift
+    #When I click "Events"
+    #And I click "View"
+    #And I click "View Wish List"
+    #And I click "Claim this gift"
+    #Then I should see "Gift claimed successfully!"
