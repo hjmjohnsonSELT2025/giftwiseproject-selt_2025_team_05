@@ -17,8 +17,10 @@ Feature: Event Budget and Gift Claiming
 
   Scenario: Claiming a gift within budget
     Given a gift "Book" costing 30 exists for "bob@test.com" in "Alice's Party"
-    When I view the wishlist of "bob@test.com" for event "Alice's Party"
-    And I press "Claim this gift"
+    When I go to the event page for "Alice's Party"
+    And I press "Get Gifts"
+    And I click "Add Gift"
+    And I click "Claim this gift"
     And I go to the event page for "Alice's Party"
     Then I should see Total Claimed of "$30.00"
     And I should see Remaining budget of "$100.00"
@@ -27,14 +29,18 @@ Feature: Event Budget and Gift Claiming
     Given a gift "Game" costing 90 exists for "bob@test.com" in "Alice's Party"
     And a gift "Laptop" costing 20 exists for "bob@test.com" in "Alice's Party"
     And I have claimed "Game" in "Alice's Party"
-    When I view the wishlist of "bob@test.com" for event "Alice's Party"
+    When I go to the event page for "Alice's Party"
+    And I press "Get Gifts"
+    And I click "Add Gift"
     Then I should see a budget warning
     And the "Claim this gift" button should be disabled
 
   Scenario: Budget updates only after marking a gift as purchased
     Given a gift "Puzzle" costing 40 exists for "bob@test.com" in "Alice's Party"
-    When I view the wishlist of "bob@test.com" for event "Alice's Party"
-    And I press "Claim this gift"
+    When I go to the event page for "Alice's Party"
+    And I press "Get Gifts"
+    And I click "Add Gift"
+    And I click "Claim this gift"
     And I go to the event page for "Alice's Party"
     Then I should see Total Claimed of "$40.00"
     And I should see Remaining budget of "$100.00"

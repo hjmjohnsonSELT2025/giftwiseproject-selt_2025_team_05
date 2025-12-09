@@ -27,10 +27,9 @@
               <td> <%= "#{item.notes}" %></td>
               <td>
                 <% if !item.giver.nil? %>
-
                   <% if item.giver == current_user %>
                     <% if item.event != @event %>
-                      <p> You already claimed this item in another event <%= item.event.name %></p>
+                      You already claimed this item in another event <%= item.event.name %>
                     <% else %>
                       <%= "#{item.giver.first_name}" %>
                       <%= button_to "Unclaim",
@@ -39,13 +38,21 @@
                                     class: "btn btn-sm btn-danger" %></td>
                     <% end %>
                   <% else %>
-                    <p>Someone else</p>
+                    Someone else already claimed this gift.
                   <% end %>
                 <% else %>
-                  <%= button_to "Claim this gift",
-                                claim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id),
-                                method: :post,
-                                class: "btn btn-sm btn-success" %>
+                  <% if can_claim_gift?(@event, current_user, item.cost) %>
+                    <%= button_to "Claim this gift",
+                                  claim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id),
+                                  method: :post,
+                                  class: "btn btn-sm btn-success" %>
+                  <% else %>
+                  <span title="Claiming this gift exceeds your budget">
+                    <button class="btn btn-sm btn-secondary" disabled>
+                      Claim this gift
+                    </button>
+                  </span>
+                  <% end %>
                 <% end %>
                 </td>
 

@@ -12,6 +12,18 @@ Given("I am logged in as a user") do
   click_button "Sign in"
 end
 
+Given("I am logged in as a user named {string} with email {string}") do |first_name, email|
+  @user = User.find_or_create_by!(email: email) do |u|
+    u.first_name = first_name
+    u.password = "password"
+  end
+
+  visit new_user_session_path
+  fill_in "Email", with: @user.email
+  fill_in "Password", with: "password"
+  click_button "Sign in"
+end
+
 When("I visit the home page") do
   visit root_path
 end
