@@ -38,7 +38,7 @@ When("I visit the event page") do
 end
 
 When("I click the gift ideas button for the other participant") do
-  click_link "Generate gift ideas with AI Gift Assistant", href: event_event_user_gift_suggestions_path(@event, @friend_event_user)
+  click_link "Generate new gift ideas with AI Gift Assistant", href: event_event_user_gift_suggestions_path(@event, @friend_event_user)
 end
 
 When("I open the gift ideas page for the other participant") do

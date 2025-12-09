@@ -17,7 +17,7 @@ Feature: Claim gift
     When I click "Events"
     And I click "View"
     And I click "Get Gifts"
-    And I click "Add Gift"
+    And I click "Add New Gift"
     Then show me the page
     And I click "Claim this gift"
     Then I should see "Gift claimed successfully!"
