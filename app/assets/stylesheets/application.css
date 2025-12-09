@@ -16,6 +16,7 @@
 
 /* ==========================================
    ❄️ WINTER HOLIDAY THEME ❄️
+   ChatGPT generated
    ========================================== */
 
 @import url("https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Crimson+Pro:wght@400;500;600;700&display=swap");
@@ -33,6 +34,8 @@
   --xmas-pine: #0b3d2e;
   --xmas-berry: #bb2528;
   --xmas-frost: #e8f4f8;
+  --xmas-blue: #4a90e2;
+  --xmas-blue-dark: #2b6cb0;
 }
 
 /* Base Styles */
@@ -1150,32 +1153,69 @@ a:hover {
     accent-color: green;
 }
 
-/* GREEN THEME (scoped to wishlist view only), ChatGPT generated*/
-.wishlist-green-theme table th {
-    background-color: #FDAA48;
-    color: white;
+/* ChatGPT Generated: Blue/Icy Theme for Wishlist Table */
+.wishlist-blue-theme table {
+    font-family: "Crimson Pro", Georgia, serif;
+    background: var(--xmas-frost); /* frosty white-blue background */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.18);
 }
 
-.wishlist-green-theme table td,
-.wishlist-green-theme table th {
-    border: 1px solid white;
+/* Header */
+.wishlist-blue-theme thead th {
+    background: linear-gradient(
+            135deg,
+            var(--xmas-blue) 0%,
+            var(--xmas-blue-dark) 100%
+    ) !important;
+    color: white !important;
+    font-family: "Mountains of Christmas", cursive;
+    font-size: 1.1rem;
+    border: none !important;
+    padding: 15px 12px !important;
 }
 
-.wishlist-green-theme table tr:nth-child(even) {
-    background-color: #f1f8f1;
+/* Rows */
+.wishlist-blue-theme tbody tr {
+    transition: all 0.3s ease;
 }
 
-.wishlist-green-theme table tr:hover {
-    background-color: #dff0df;
+/* Alternating rows */
+.wishlist-blue-theme tbody tr:nth-child(even) {
+    background-color: rgba(74, 144, 226, 0.05) !important; /* soft blue tint */
 }
 
-.wishlist-green-theme h2 {
-    color: #FDAA48;
+/* Hover effect */
+.wishlist-blue-theme tbody tr:hover {
+    background-color: rgba(74, 144, 226, 0.15) !important;
+    transform: scale(1.01);
 }
 
-.wishlist-green-theme .btn-orange {
-    background-color: #FDAA48;
-    color: white;
+/* Cells */
+.wishlist-blue-theme td {
+    border-color: rgba(74, 144, 226, 0.25) !important;
+    color: #2d2d2d;
 }
+
+/* Buttons inside table */
+.wishlist-blue-theme table .btn-outline-danger {
+    color: var(--xmas-red) !important;
+    border-color: var(--xmas-red) !important;
+    background: transparent !important;
+}
+
+.wishlist-blue-theme table .btn-outline-danger:hover {
+    color: white !important;
+    background: var(--xmas-red) !important;
+}
+
+/* Success button = still green (optional: change to blue) */
+.wishlist-blue-theme table .btn-success {
+    color: white !important;
+    background: var(--xmas-blue-dark) !important;
+    border-color: var(--xmas-blue-dark) !important;
+}
+
 
 
