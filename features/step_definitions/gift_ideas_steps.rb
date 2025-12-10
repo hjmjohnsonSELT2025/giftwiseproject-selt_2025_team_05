@@ -46,7 +46,8 @@ When("I open the gift ideas page for the other participant") do
 end
 
 Then("I should see a gift ideas button for the other participant") do
-  expect(page).to have_link("Get gift ideas", href: event_event_user_gift_suggestions_path(@event, @friend_event_user))
+  expect(page).to have_button("Get Gifts")
+  expect(page).to have_selector("form[action='#{user_gift_summary_path(user_id: @friend.id, event_id: @event.id)}']")
 end
 
 Then("I should not see a gift ideas button for myself") do
