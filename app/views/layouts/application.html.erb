@@ -115,8 +115,24 @@
 
 <!-- ❄️ Holiday Snowfall Animation ❄️ -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  // Use turbo:load for Turbo Drive navigation, works on every page change
+  document.addEventListener('turbo:load', initSnowfall);
+  // Also listen for DOMContentLoaded as fallback
+  document.addEventListener('DOMContentLoaded', initSnowfall);
+  
+  let snowfallInitialized = false;
+  let snowfallInterval = null;
+  
+  function initSnowfall() {
     const snowfall = document.getElementById('snowfall');
+    if (!snowfall) return;
+    
+    // Clear any existing snowflakes and interval
+    snowfall.innerHTML = '';
+    if (snowfallInterval) {
+      clearInterval(snowfallInterval);
+    }
+    
     const snowflakes = ['❄', '❅', '❆', '✻', '✼', '❋', '✺', '•'];
     const maxSnowflakes = 50;
     
@@ -148,8 +164,8 @@
     }
     
     // Continuously create new snowflakes
-    setInterval(createSnowflake, 300);
-  });
+    snowfallInterval = setInterval(createSnowflake, 300);
+  }
 </script>
 </body>
 </html>
