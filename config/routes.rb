@@ -23,20 +23,26 @@ Rails.application.routes.draw do
   get "/up", to: proc { [200, {}, ["OK"]] }
 
   resources :preferences do
-    post :create_on_wishlist, on: :collection
     get 'view_user_wishlist/:user_id/:event_id', to: 'preferences#view_user_wishlist', on: :collection, as: :view_user_wishlist #chatgpt helped generate the syntax for this custom route
     post 'claim_preference', to: 'preferences#claim_preference', on: :collection, as: :claim_preference
+    post 'unclaim_preference_summary', to: 'preferences#unclaim_preference_summary', on: :collection, as: :unclaim_preference_summary
     post 'unclaim_preference', to: 'preferences#unclaim_preference', on: :collection, as: :unclaim_preference
+    post 'unclaim_preference_wishlist', to: 'preferences#unclaim_preference_wishlist', on: :collection, as: :unclaim_preference_wishlist
     post 'unclaim_show_preference', to: 'preferences#unclaim_show_preference', on: :collection, as: :unclaim_show_preference
     post :toggle_purchase, on: :member
     post :toggle_purchase_show, on: :member
-    post 'create_for_someone_else', to: 'preferences#create_for_someone_else', on: :collection, as: :create_for_someone_else
-    get 'new_for_someone_else', to: 'preferences#new_for_someone_else', on: :collection, as: :new_for_someone_else
 
   end
 
   resources :friendships, only: [:index, :new, :create, :update, :destroy]
 
+  resources :suggestions do
+    post :toggle_purchase_suggestion, on: :member
+    post :toggle_purchase_suggestion_show, on: :member
+  end
+
+  get '/user_gift_summary/:user_id/:event_id', to: 'user_gift_summary#show', as: :user_gift_summary
+  get '/add_gift/:user_id/:event_id', to: 'user_gift_summary#add_gift', as: :add_gift
 
   root to: "home#index"
 end

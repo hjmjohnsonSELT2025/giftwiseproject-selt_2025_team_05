@@ -4,17 +4,19 @@ Feature: Claim gift
   So I can get them what they want
 
   Background:
-    Given I am logged in as a user named "Bob"
+    Given I am logged in as a user named "Jane" with email "jane@test.com"
     And there is another user named "Alice" with email "alice@example.com"
     And there is another user named "Judy" with email "judy@example.com"
     And "Alice" has an event named "Christmas"
-    And "Bob" is a participant in "Christmas"
+    And "Jane" is a participant in "Christmas"
     And "Judy" is a participant in "Christmas"
     And "Judy" has added an item named "Bike" to their wish list
+    And "jane@test.com" has a budget of 20 for event "Christmas"
 
-  #Scenario: Claiming a gift
-    #When I click "Events"
-    #And I click "View"
-    #And I click "View Wish List"
-    #And I click "Claim this gift"
-    #Then I should see "Gift claimed successfully!"
+  Scenario: Claiming a gift
+    When I click "Events"
+    And I click "View"
+    And I click "Get Gifts"
+    Then show me the page
+    And I click "Add"
+    Then I should see "Gift claimed successfully!"

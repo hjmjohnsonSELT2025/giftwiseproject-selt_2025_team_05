@@ -23,3 +23,7 @@ When("I click {string} and accept confirmation") do |link_text|
     click_on link_text
   end
 end
+
+Then("show me the page") do
+  save_and_open_page
+end

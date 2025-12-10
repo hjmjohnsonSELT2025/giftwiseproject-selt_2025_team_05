@@ -3,8 +3,7 @@ Given("{string} has added an item named {string} to their wish list") do |user_n
   user.preferences.create!(
     item_name: item_name,
     cost: 10,
-    notes: "Item details",
-    on_user_wishlist: true
+    notes: "Item details"
   )
 end
 
