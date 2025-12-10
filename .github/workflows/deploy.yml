@@ -1,13 +1,18 @@
 name: Deploy to Heroku
 
 on:
-  push:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
     branches:
       - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Only deploy if CI workflow succeeded
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout repo
