@@ -1,4 +1,79 @@
 <div class="container py-4">
+  <div class="wishlist-green-theme">
+    <div class="container py-4">
+      <div class="text-center mb-4">
+        <h2 class="mb-1"><%= @recipient.first_name %>'s Wishlist</h2>
+        <br>
+        <p class="text-muted mb-0">Add a gift from <%= @recipient.first_name %>'s wishlist to purchase. Or, add a custom gift below.</p>
+      </div>
+
+      <% if @wishlist_items_table_view.any? %>
+        <div class="table-responsive">
+          <table class="table table-striped align-middle mb-0">
+            <thead class="table-light">
+            <tr>
+              <th>Wishlist Item</th>
+              <th>Cost</th>
+              <th>Details</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <% @wishlist_items_table_view.each do |item| %>
+              <tr>
+                <!--ChatGPT generated the strikethrough conditional formatting logic-->
+                <td class="<%= 'strikethrough' if !(item.giver.nil?) %>"> <%= "#{item.item_name}" %></td>
+                <td class="<%= 'strikethrough' if !(item.giver.nil?) %>"> <%= "#{number_to_currency(item.cost)}" %></td>
+                <td class="<%= 'strikethrough' if !(item.giver.nil?) %>"> <%= "#{item.notes}" %></td>
+                <td>
+                  <% if !item.giver.nil? %>
+
+                    <% if item.giver == current_user %>
+                      <% if item.event != @event %>
+                        <p> You already claimed this item in another event <%= item.event.name %></p>
+                      <% else %>
+                        <p class="mb-1"><s>You're planning to give this gift.</s></p>
+                      <% end %>
+                    <% else %>
+                      Someone else is giving this gift.
+                    <% end %>
+                  <% else %>
+                    <% if can_claim_gift?(@event, current_user, item.cost) %>
+                      <%= button_to "Add",
+                                    claim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id),
+                                    method: :post,
+                                    class: "btn btn-success",
+                                    id: "claim-gift-#{item.id}" %>
+                    <%else %>
+                    <span title="Adding this gift exceeds your budget">
+                      <button class="btn btn-sm btn-secondary" disabled>
+                      Add
+                    </button>
+                  </span>
+                    <%end %>
+                  <% end %>
+                </td>
+
+              </tr>
+
+            <% end %>
+
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <p>No available wishlist items.</p>
+      <% end %>
+
+
+      <br>
+      <br>
+      <br>
+
+    </div>
+  </div>
+
   <div class="text-center mb-4">
     <h2 class="mb-1">My Gifts To  <%= @recipient.first_name %> For <%= @event.name %></h2>
     <p class="text-muted mb-0">These are all the gifts you're planning to get for <%= @recipient.first_name %>.</p>
@@ -65,80 +140,6 @@
         </tbody>
       </table>
     </div>
-  <% else %>
-    <p>No gifts yet.</p>
-  <% end %>
-</div>
-<br>
-<br>
-<div class="wishlist-green-theme">
-  <div class="container py-4">
-    <div class="text-center mb-4">
-      <h2 class="mb-1">Add A New Gift For <%= @recipient.first_name %></h2>
-      <br>
-      <h3 class="mb-1"><%= @recipient.first_name %>'s Wishlist</h3>
-      <p class="text-muted mb-0">Add a gift from <%= @recipient.first_name %>'s wishlist to purchase. Or, add a custom gift below.</p>
-    </div>
-
-    <% if @wishlist_items_table_view.any? %>
-      <div class="table-responsive">
-        <table class="table table-striped align-middle mb-0">
-          <thead class="table-light">
-          <tr>
-            <th>Wishlist Item</th>
-            <th>Cost</th>
-            <th>Details</th>
-            <th></th>
-          </tr>
-          </thead>
-          <tbody>
-
-          <% @wishlist_items_table_view.each do |item| %>
-            <tr>
-              <!--ChatGPT generated the strikethrough conditional formatting logic-->
-              <td class="<%= 'strikethrough' if !(item.giver.nil?) %>"> <%= "#{item.item_name}" %></td>
-              <td class="<%= 'strikethrough' if !(item.giver.nil?) %>"> <%= "#{number_to_currency(item.cost)}" %></td>
-              <td class="<%= 'strikethrough' if !(item.giver.nil?) %>"> <%= "#{item.notes}" %></td>
-              <td>
-                <% if !item.giver.nil? %>
-
-                  <% if item.giver == current_user %>
-                    <% if item.event != @event %>
-                      <p> You already claimed this item in another event <%= item.event.name %></p>
-                    <% else %>
-                      <p class="mb-1"><s>You're planning to give this gift.</s></p>
-                    <% end %>
-                  <% else %>
-                    Someone else is giving this gift.
-                  <% end %>
-                <% else %>
-                  <% if can_claim_gift?(@event, current_user, item.cost) %>
-                    <%= button_to "Add",
-                                  claim_preference_preferences_path(item_id: item.id, user_id: current_user.id, event_id: @event.id),
-                                  method: :post,
-                                  class: "btn btn-success",
-                                  id: "claim-gift-#{item.id}" %>
-                  <%else %>
-                    <span title="Adding this gift exceeds your budget">
-                      <button class="btn btn-sm btn-secondary" disabled>
-                      Add
-                    </button>
-                  </span>
-                  <%end %>
-                <% end %>
-                </td>
-
-                </tr>
-
-          <% end %>
-
-          </tbody>
-        </table>
-      </div>
-    <% else %>
-      <p>No available wishlist items.</p>
-    <% end %>
-
     <div class="d-flex gap-2 mt-3">
       <p class="text-muted mb-0">Want to give <%= @recipient.first_name %> something not on their wishlist?</p>
     </div>
@@ -150,7 +151,11 @@
                   event_event_user_gift_suggestions_path(@event, @event_user),
                   class: "btn btn-success" %>
     </div>
-    <br>
-    <%= link_to "Back", @event, class: "btn btn-secondary" %>
-  </div>
+  <% else %>
+    <p>No gifts yet.</p>
+  <% end %>
+  <br>
+  <%= link_to "Back", @event, class: "btn btn-secondary" %>
 </div>
+
+
