@@ -55,5 +55,3 @@ coverage/
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
-Gemfile.lock
-Gemfile.lock

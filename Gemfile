@@ -84,6 +84,8 @@ end
 # from textbook section 4.8
 group :production do
   gem "pg", "1.6.0.rc1" # for Heroku deployment
+  gem "sentry-ruby"
+  gem "sentry-rails"
 end
 
 group :development, :test do
@@ -101,3 +103,4 @@ gem "rubocop-rails-omakase", "~> 1.1", group: :development
 
 gem 'google-api-client', '~> 0.53'
 gem 'dotenv-rails'
+gem 'whenever', require: false

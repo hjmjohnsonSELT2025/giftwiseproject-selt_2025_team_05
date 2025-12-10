@@ -14,5 +14,14 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   # ============ CUSTOMIZED EMAIL FUNCTIONALITIES============
+  def event_reminder(event, user)
+    @event = event
+    @user = user
+    @days_until = (event.date.to_date - Date.today).to_i
 
+    mail(
+      to: @user.email,
+      subject: "Reminder: #{event.name} in #{@days_until} days"
+    )
+  end
 end
