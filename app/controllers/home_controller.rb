@@ -36,11 +36,11 @@ class HomeController < ApplicationController
     # Apply search filter if query is present
     # Search across: name, address, and organizer name (event_type and date have dedicated filters)
     if params[:query].present?
-      search_term = "%#{params[:query]}%"
+      search_term = "%#{params[:query].downcase}%"
       base_query = base_query.where(
-        "events.name LIKE :q OR events.address LIKE :q OR " \
-        "users.first_name LIKE :q OR users.last_name LIKE :q OR " \
-        "(users.first_name || ' ' || users.last_name) LIKE :q",
+        "LOWER(events.name) LIKE :q OR LOWER(events.address) LIKE :q OR " \
+        "LOWER(users.first_name) LIKE :q OR LOWER(users.last_name) LIKE :q OR " \
+        "LOWER(users.first_name || ' ' || users.last_name) LIKE :q",
         q: search_term
       )
     end

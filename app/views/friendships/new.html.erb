@@ -38,17 +38,30 @@
             <td><%= user.email %></td>
             <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
             <td><%= truncate(user.bio.to_s, length: 50) %></td>
+
             <td class="text-end">
-              <%= button_to "Add Friend",
-                            friendships_path(friend_id: user.id),
-                            method: :post,
-                            class: "btn btn-sm btn-success" %>
+              <% if @accepted_friends[user.id] %>
+                <span class="badge bg-success">Friend</span>
+
+              <% elsif @outgoing_requests[user.id] %>
+                <span class="badge bg-info text-dark">Pending (Sent)</span>
+
+              <% elsif @incoming_requests[user.id] %>
+                <span class="badge bg-warning text-dark">Pending (Incoming)</span>
+
+              <% else %>
+                <%= button_to "Add Friend",
+                              friendships_path(friend_id: user.id),
+                              method: :post,
+                              class: "btn btn-sm btn-success" %>
+              <% end %>
             </td>
           </tr>
         <% end %>
         </tbody>
       </table>
     </div>
+
   <% elsif params[:q].present? %>
     <div class="alert alert-warning mt-3">
       No users found.
