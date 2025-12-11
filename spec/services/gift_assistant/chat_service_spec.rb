@@ -53,6 +53,32 @@ RSpec.describe GiftAssistant::ChatService do
       expect(reply).to eq("How about a premium wireless microphone kit from The Audio Company? (super duper good brand)")
     end
 
+    it "instructs the model to avoid already planned gifts" do
+      conversation = []
+      planned = ["Gaming Keyboard", "Headphones"]
+
+      expect(client).to receive(:chat).with(
+        parameters: {
+          model: "fake-model",
+          messages: array_including(
+            include(content: include("Already planned gifts for this recipient: Gaming Keyboard; Headphones"))
+          )
+        }
+      ).and_return(
+        { "choices" => [ { "message" => { "content" => "How about a desk mat?" } } ] }
+      )
+
+      reply = service.respond(
+        recipient: recipient,
+        event: event,
+        conversation: conversation,
+        prompt: "Need a gift for stage performance",
+        planned_gifts: planned
+      )
+
+      expect(reply).to eq("How about a desk mat?")
+    end
+
     it "falls back to an apology when the API call fails" do
       allow(client).to receive(:chat).and_raise(StandardError.new("boom"))
 
