@@ -1,0 +1,53 @@
+<h1>Gifts for <%= @friend.first_name %></h1>
+
+<h2>Gifts for Upcoming Events</h2>
+<% if @upcoming_gifts.any? %>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Gift Name</th>
+      <th>Price</th>
+      <th>Event</th>
+      <th>Event Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @upcoming_gifts.each do |gift| %>
+      <tr>
+        <td><%= gift.item_name %></td>
+        <td><%= number_to_currency(gift.cost) %></td>
+        <td><%= gift.event.name %></td>
+        <td><%= gift.event.date.strftime("%B %d, %Y") %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No gifts for upcoming events.</p>
+<% end %>
+
+<h2>Gifts for Past Events</h2>
+<% if @past_gifts.any? %>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Gift Name</th>
+      <th>Price</th>
+      <th>Event</th>
+      <th>Event Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @past_gifts.each do |gift| %>
+      <tr>
+        <td><%= gift.item_name %></td>
+        <td><%= number_to_currency(gift.cost) %></td>
+        <td><%= gift.event.name %></td>
+        <td><%= gift.event.date.strftime("%B %d, %Y") %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No past gifts found.</p>
+<% end %>
