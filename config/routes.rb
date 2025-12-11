@@ -44,5 +44,7 @@ Rails.application.routes.draw do
   get '/user_gift_summary/:user_id/:event_id', to: 'user_gift_summary#show', as: :user_gift_summary
   get '/add_gift/:user_id/:event_id', to: 'user_gift_summary#add_gift', as: :add_gift
 
+  get "/friends/:id/gifts", to: "friend_gifts#index", as: :friend_gifts
+
   root to: "home#index"
 end
