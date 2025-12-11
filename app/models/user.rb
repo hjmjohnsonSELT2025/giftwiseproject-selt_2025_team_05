@@ -24,7 +24,6 @@ class User < ApplicationRecord
     end
   end
 
-
   scope :search_by_name_or_email, ->(query) {
     return all if query.blank?
 
@@ -35,4 +34,12 @@ class User < ApplicationRecord
       term, term, term
     )
   }
+
+  def gift_history_with(friend)
+    GiftHistoryService.new(self, friend).fetch
+  end
+
+  def has_gift_history_with?(friend)
+    GiftHistoryService.new(self, friend).has_history?
+  end
 end
