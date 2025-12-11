@@ -10,16 +10,26 @@ class SuggestionsController < ApplicationController
   def create
     @suggestion = Suggestion.new
     @suggestion.user = User.find(params[:user_id])
-    @suggestion.item_name = params[:suggestion][:item_name]
-    @suggestion.cost = params[:suggestion][:cost]
-    @suggestion.notes = params[:suggestion][:notes]
+    suggestion_attrs = params[:suggestion] || {}
+    @suggestion.item_name = suggestion_attrs[:item_name].presence || params[:item_name]
+    @suggestion.cost = suggestion_attrs[:cost].presence || params[:cost]
+    @suggestion.notes = suggestion_attrs[:notes].presence || params[:notes]
     @suggestion.recipient = User.find(params[:recipient_id])
     @suggestion.event = Event.find(params[:event_id])
+    redirect_path = params[:redirect_to].presence
 
     if @suggestion.save
-      redirect_to user_gift_summary_path(user_id: @suggestion.recipient, event_id: @suggestion.event), notice: "Gift suggestion added!"
+      if redirect_path
+        redirect_to redirect_path, notice: "Gift suggestion added!"
+      else
+        redirect_to user_gift_summary_path(user_id: @suggestion.recipient, event_id: @suggestion.event), notice: "Gift suggestion added!"
+      end
     else
-      redirect_to new_suggestion_path(user_id: @user.id, event_id: @event.id), notice: "Unable to save gift suggestion."
+      if redirect_path
+        redirect_to redirect_path, alert: "Unable to save gift suggestion."
+      else
+        redirect_to new_suggestion_path(user_id: @suggestion.user.id, event_id: @suggestion.event.id), alert: "Unable to save gift suggestion."
+      end
     end
   end
 

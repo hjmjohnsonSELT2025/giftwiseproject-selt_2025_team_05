@@ -38,6 +38,7 @@ class GiftSuggestionsController < ApplicationController
     @recipient  = @event_user.user
     @bio = @recipient.bio
     @wishlist = @recipient.preferences.order(created_at: :desc)
+    @saved_gifts = current_user.suggestions.where(event: @event, recipient: @recipient).order(created_at: :desc)
     @conversation = parsed_conversation
     @serialized_conversation = @conversation.to_json
   end
