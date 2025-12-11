@@ -16,6 +16,7 @@ https://github.com/eltonlazzarin/friends-list-rails
         <th>Email</th>
         <th>Birthday</th>
         <th>Bio</th>
+        <th>Gifts</th>
         <th>Status</th>
         <th class="text-end">Action</th>
       </tr>
@@ -30,6 +31,11 @@ https://github.com/eltonlazzarin/friends-list-rails
           <td><%= user.email %></td>
           <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
           <td><%= truncate(user.bio.to_s, length: 40) %></td>
+          <td>
+            <% if current_user.has_gift_history_with?(user) %>
+              <%= link_to "View Gifts", friend_gifts_path(user), class: "btn btn-info btn-sm" %>
+            <% end %>
+          </td>
           <td><span class="badge bg-warning text-dark">Incoming Request</span></td>
           <td class="text-end">
             <div class="btn-group" role="group">
@@ -55,6 +61,11 @@ https://github.com/eltonlazzarin/friends-list-rails
           <td><%= user.email %></td>
           <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
           <td><%= truncate(user.bio.to_s, length: 40) %></td>
+          <td>
+            <% if current_user.has_gift_history_with?(user) %>
+              <%= link_to "View Gifts", friend_gifts_path(user), class: "btn btn-info btn-sm" %>
+            <% end %>
+          </td>
           <td><span class="badge bg-info text-dark">Pending (Sent)</span></td>
           <td class="text-end">
             <div class="btn-group" role="group">
@@ -70,7 +81,7 @@ https://github.com/eltonlazzarin/friends-list-rails
 
       <!-- Accepted Friends -->
       <% @friends.each do |user| %>
-        <% friends = Friendship.where(status: "accepted")
+        <% friend = Friendship.where(status: "accepted")
                             .where("(user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)",
                                    current_user.id, user.id, user.id, current_user.id)
                             .first %>
@@ -80,11 +91,16 @@ https://github.com/eltonlazzarin/friends-list-rails
           <td><%= user.email %></td>
           <td><%= user.birthdate&.strftime("%b %d, %Y") || "—" %></td>
           <td><%= truncate(user.bio.to_s, length: 40) %></td>
+          <td>
+            <% if current_user.has_gift_history_with?(user) %>
+              <%= link_to "View Gifts", friend_gifts_path(user), class: "btn btn-info btn-sm" %>
+            <% end %>
+          </td>
           <td><span class="badge bg-success">Friend</span></td>
           <td class="text-end">
             <div class="btn-group" role="group">
               <%= button_to "Remove",
-                            friendship_path(friends),
+                            friendship_path(friend),
                             method: :delete,
                             data: { turbo_confirm: "Remove this friend?" },
                             class: "btn btn-sm btn-outline-danger" %>
