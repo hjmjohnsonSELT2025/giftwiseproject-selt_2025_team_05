@@ -36,3 +36,9 @@ Feature: Get gift ideas for event participants
     When I open the gift ideas page for the other participant
     And I click "Ask the assistant"
     Then I should see "Please enter a question before asking the assistant"
+
+  Scenario: Saving a custom idea from the assistant page
+    When I open the gift ideas page for the other participant
+    And I save a gift idea from the assistant card
+    Then I should see the saved idea on the assistant page
+    And I should see the saved idea in my gifts table on the gift summary page
