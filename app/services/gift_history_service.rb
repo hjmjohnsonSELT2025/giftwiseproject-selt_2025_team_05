@@ -53,6 +53,6 @@ class GiftHistoryService
   end
 
   def upcoming_event?(event)
-    event.date >= Date.today
+    event.date.in_time_zone.to_date >= Time.zone.today
   end
 end
