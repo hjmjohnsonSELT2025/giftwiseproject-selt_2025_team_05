@@ -23,7 +23,8 @@ class GiftSuggestionsController < ApplicationController
       recipient: @recipient,
       event: @event,
       conversation: @conversation,
-      prompt: @user_prompt
+      prompt: @user_prompt,
+      planned_gifts: @planned_gift_names
     )
 
     @conversation << { role: "assistant", content: assistant_reply }
@@ -39,6 +40,7 @@ class GiftSuggestionsController < ApplicationController
     @bio = @recipient.bio
     @wishlist = @recipient.preferences.order(created_at: :desc)
     @saved_gifts = current_user.suggestions.where(event: @event, recipient: @recipient).order(created_at: :desc)
+    @planned_gift_names = planned_gifts_for_current_user
     @conversation = parsed_conversation
     @serialized_conversation = @conversation.to_json
   end
@@ -66,5 +68,11 @@ class GiftSuggestionsController < ApplicationController
     unless @event.event_users.exists?(user: current_user, status: :joined)
       redirect_to @event, alert: "You can only view gift ideas for events you have joined."
     end
+  end
+
+  def planned_gifts_for_current_user
+    claimed = Preference.where(giver: current_user, event: @event, user: @recipient).pluck(:item_name)
+    suggestions = Suggestion.where(user: current_user, event: @event, recipient: @recipient).pluck(:item_name)
+    (claimed + suggestions).map(&:to_s).reject(&:blank?).uniq
   end
 end

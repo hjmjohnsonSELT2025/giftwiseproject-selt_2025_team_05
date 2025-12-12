@@ -149,5 +149,17 @@
             button.value = "Thinking…";
             button.classList.add("disabled");
         });
+
+        // User can press enter to submit form
+        // Allows for shift + enter to start a new line instead of submitting
+        const promptField = form.querySelector("textarea[name='prompt']");
+        if (promptField) {
+            promptField.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    form.requestSubmit();
+                }
+            });
+        }
     });
 </script>
