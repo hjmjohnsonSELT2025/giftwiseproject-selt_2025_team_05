@@ -69,3 +69,24 @@ Then("I should see the assistant prompt form") do
   expect(page).to have_button("Ask the assistant")
 end
 
+When("I save a gift idea from the assistant card") do
+  fill_in "Gift idea", with: "Xbox controller"
+  fill_in "Cost", with: "45.00"
+  fill_in "Notes", with: "Xbox One X controller, can get at bestbuy"
+  click_button "Save Gift Idea"
+end
+
+Then("I should see the saved idea on the assistant page") do
+  expect(page).to have_content("Gift suggestion added!")
+  expect(page).to have_content("Your current gift ideas")
+  expect(page).to have_content(@friend.first_name)
+  expect(page).to have_content("Xbox controller")
+  expect(page).to have_content("$45.00")
+end
+
+Then("I should see the saved idea in my gifts table on the gift summary page") do
+  visit user_gift_summary_path(user_id: @friend.id, event_id: @event.id)
+  expect(page).to have_content("My Gifts To")
+  expect(page).to have_content("Xbox controller")
+  expect(page).to have_content("$45.00")
+end
