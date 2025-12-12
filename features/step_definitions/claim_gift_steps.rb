@@ -9,3 +9,7 @@ Given('I am logged in as a user named {string} with email {string}') do |first_n
   fill_in "Password", with: "password"
   click_button "Sign in"
 end
+
+Then('the form should have an invalid input message') do
+  expect(page).to have_selector('input:invalid')
+end

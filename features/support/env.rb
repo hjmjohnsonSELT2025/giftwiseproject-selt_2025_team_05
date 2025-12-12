@@ -1,5 +1,6 @@
 # features/support/env.rb
 require 'cucumber/rails'
+require 'selenium-webdriver'
 
 # Ensure the test environment is loaded
 ENV['RAILS_ENV'] ||= 'test'

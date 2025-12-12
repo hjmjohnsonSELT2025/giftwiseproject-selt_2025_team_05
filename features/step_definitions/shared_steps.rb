@@ -24,6 +24,7 @@ When("I click {string} and accept confirmation") do |link_text|
   end
 end
 
+#ChatGPT generated the debugging step below
 Then("show me the page") do
   save_and_open_page
 end
