@@ -57,29 +57,6 @@ class EventUsersController < ApplicationController
     end
   end
 
-  def update_budget
-    @event = Event.find(params[:event_id])
-    @event_user = EventUser.find(params[:event_user_id])
-
-    if @event_user.update(params.require(:event_user).permit(:budget))
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.replace(
-            "budget_frame",
-            partial: "event_users/budget_frame",
-            locals: { event: @event, event_user: @event_user }
-          )
-        end
-
-        format.html do
-          redirect_to event_path(@event), notice: "Budget updated"
-        end
-      end
-    else
-      head :unprocessable_entity # handle failure
-    end
-  end
-
   private
 
   def set_event
