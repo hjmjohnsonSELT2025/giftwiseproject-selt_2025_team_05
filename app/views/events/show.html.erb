@@ -59,6 +59,7 @@
               <th>Status</th>
               <% unless is_past %>
                 <th>Actions</th>
+                <th>Gifts</th>
                 <% if @event.user_id == current_user.id %>
                   <th>Manage</th>
                 <% end %>
@@ -67,8 +68,9 @@
             </thead>
             <tbody>
             <% participants.each do |event_user| %>
+              <% participant = event_user.user %>
               <tr>
-                <td><%= "#{event_user.user.first_name} #{event_user.user.last_name}" %></td>
+                <td><%= "#{participant.first_name} #{participant.last_name}" %></td>
                 <td>
                   <% status_class = event_user.status == 'joined' ? 'bg-success' : 'bg-warning text-dark' %>
                   <span class="badge <%= status_class %>">
@@ -78,16 +80,25 @@
 
                 <% unless is_past %>
                   <td>
-                    <% if event_user.joined? && event_user.user_id != current_user.id %>
+                    <% if event_user.joined? && participant.id != current_user.id %>
                       <%= button_to "Get Gifts",
-                                    user_gift_summary_path(user_id: event_user.user.id, event_id: @event.id),
+                                    user_gift_summary_path(user_id: participant.id, event_id: @event.id),
                                     method: :get,
                                     class: "btn btn-sm btn-success" %>
                     <% end %>
                   </td>
+                  <td>
+                    <% if participant.id != current_user.id && current_user.has_gift_history_with?(participant) %>
+                      <%= link_to "View Gifts", friend_gifts_path(participant), class: "btn btn-sm btn-info" %>
+                    <% else %>
+                      <span class="text-muted fst-italic small">
+                        <small>You haven’t gotten <%= participant.first_name %> any gifts yet</small>
+                      </span>
+                    <% end %>
+                  </td>
                   <% if @event.user_id == current_user.id %>
                     <td>
-                      <% if event_user.user_id != current_user.id %>
+                      <% if participant.id != current_user.id %>
                         <%= button_to "Remove",
                                       event_event_user_path(@event, event_user, status: 'left'),
                                       method: :patch,
@@ -96,7 +107,8 @@
                       <% end %>
                     </td>
                   <% end %>
-                <% end %> </tr>
+                <% end %>
+              </tr>
             <% end %>
             </tbody>
           </table>
