@@ -34,6 +34,10 @@ https://github.com/eltonlazzarin/friends-list-rails
           <td>
             <% if current_user.has_gift_history_with?(user) %>
               <%= link_to "View Gifts", friend_gifts_path(user), class: "btn btn-info btn-sm" %>
+            <% else %>
+              <span class="text-muted fst-italic small">
+                <small>You haven’t gotten <%= user.first_name %> any gifts yet</small>
+              </span>
             <% end %>
           </td>
           <td><span class="badge bg-warning text-dark">Incoming Request</span></td>
@@ -64,6 +68,10 @@ https://github.com/eltonlazzarin/friends-list-rails
           <td>
             <% if current_user.has_gift_history_with?(user) %>
               <%= link_to "View Gifts", friend_gifts_path(user), class: "btn btn-info btn-sm" %>
+            <% else %>
+              <span class="text-muted fst-italic small">
+                <small>You haven’t gotten <%= user.first_name %> any gifts yet</small>
+              </span>
             <% end %>
           </td>
           <td><span class="badge bg-info text-dark">Pending (Sent)</span></td>
@@ -94,6 +102,10 @@ https://github.com/eltonlazzarin/friends-list-rails
           <td>
             <% if current_user.has_gift_history_with?(user) %>
               <%= link_to "View Gifts", friend_gifts_path(user), class: "btn btn-info btn-sm" %>
+            <% else %>
+              <span class="text-muted fst-italic small">
+                <small>You haven’t gotten <%= user.first_name %> any gifts yet</small>
+              </span>
             <% end %>
           </td>
           <td><span class="badge bg-success">Friend</span></td>
