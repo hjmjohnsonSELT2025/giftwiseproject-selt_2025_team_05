@@ -62,7 +62,13 @@
       </table>
     </div>
   <% else %>
-    <p class="text-muted">No past gifts found.</p>
+    <p class="text-muted  ">No past gifts found.</p>
   <% end %>
+
+  <div class="mb-4">
+    <%= link_to "Back",
+                request.referer || friends_path,
+                class: "btn btn-outline-primary" %>
+  </div>
 
 </div>
