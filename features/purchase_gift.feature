@@ -9,6 +9,7 @@ Feature: Purchase gift
     And "Alice" has an event named "Christmas"
     And "Judy" is a participant in "Christmas"
 
+  #As far as I can tell, the @javascript identifier does not persist the user session between scenarios, so we have to log in for every one
   @javascript
   Scenario: Mark wishlist gift as purchased from event page
     Given I am logged in as a user using Warden named "Jane" with email "jane@test.com"
