@@ -5,32 +5,42 @@ class GiftHistoryService
   end
 
   def fetch
-    shared_events = shared_events_between_users
-
     upcoming = []
-    past = []
+    past     = []
 
-    shared_events.each do |event|
+    shared_events_between_users.find_each do |event|
       prefs = relevant_preferences_for_event(event)
+      suggs = relevant_suggestions_for_event(event)
 
       if upcoming_event?(event)
-        # include claimed OR purchased
-        upcoming += prefs
+        # upcoming: include claimed OR purchased
+        upcoming.concat(prefs)
+        upcoming.concat(suggs)
       else
-        # for past events, only show purchased items
-        past += prefs.select(&:purchased)
+        # past: only include purchased
+        past.concat(prefs.select(&:purchased))
+        past.concat(suggs.select(&:purchased))
       end
     end
 
-    upcoming.sort_by! { |p| p.event.date }
-    past.sort_by!    { |p| p.event.date }.reverse!
+    upcoming.sort_by! { |g| g.event.date }
+    past.sort_by!     { |g| g.event.date }.reverse!
 
     [upcoming, past]
   end
 
   def has_history?
-    upcoming, past = fetch
-    upcoming.any? || past.any?
+    shared_events_between_users.any? do |event|
+      prefs = relevant_preferences_for_event(event)
+      suggs = relevant_suggestions_for_event(event)
+
+      if upcoming_event?(event)
+        prefs.exists? || suggs.exists?
+      else
+        prefs.where(purchased: true).exists? ||
+          suggs.where(purchased: true).exists?
+      end
+    end
   end
 
   private
@@ -49,6 +59,15 @@ class GiftHistoryService
                 event_id: event.id,
                 user_id:  @friend.id,
                 giver_id: @user.id
+              )
+  end
+
+  def relevant_suggestions_for_event(event)
+    Suggestion.includes(:event)
+              .where(
+                event_id:    event.id,
+                recipient_id: @friend.id,
+                user_id:     @user.id
               )
   end
 
