@@ -1,14 +1,19 @@
-Given('I check the preference purchase checkbox') do
-  check('preference[purchased]')
+Given('I am logged in as a user using Warden named {string} with email {string}') do |first_name, email|
+  @user = User.find_or_create_by!(email: email) do |u|
+    u.password = "password"
+    u.first_name = first_name
+  end
+
+  login_as(@user, scope: :user) #ChatGPT generated this line to use with Warden for session management with JS
 end
 
-Given('the purchase checkbox should be checked') do
-  #ChatGPT generated the line below:
-  expect(page).to have_checked_field('preference[purchased]')
+Given('I check the preference purchase checkbox') do
+  page.execute_script("document.getElementById('preference_purchased').click()")
 end
 
 Given('I uncheck the preference purchase checkbox') do
-  uncheck('preference[purchased]')
+  #ChatGPT generated the line below
+  page.execute_script("document.getElementById('preference_purchased').checked = false; document.getElementById('preference_purchased').form.submit();")
 end
 
 Given('{string} has claimed a wishlist gift called {string} for {string} in event {string}') do |user1_first_name, item_name, user2_first_name, event|
@@ -50,18 +55,37 @@ Given('the purchase checkbox should be unchecked') do
 end
 
 Given('I check the suggestion purchase checkbox') do
-  check('suggestion[purchased]')
-end
-
-Given('the suggestion checkbox should be checked') do
-  #ChatGPT generated the line below:
-  expect(page).to have_checked_field('suggestion[purchased]')
+  page.execute_script("document.getElementById('suggestion_purchased').click()")
 end
 
 Given('I uncheck the suggestion purchase checkbox') do
-  uncheck('suggestion[purchased]')
+  #ChatGPT generated the line below
+  page.execute_script("document.getElementById('suggestion_purchased').checked = false; document.getElementById('suggestion_purchased').form.submit();")
+
 end
 
 Given('the suggestion checkbox should be unchecked') do
   expect(page).to have_unchecked_field('suggestion[purchased]')
 end
+
+Given('the purchase status of {string} should be {string}') do |item_name, status|
+  expect(page).to have_content('Purchased')
+  item = Preference.find_by(item_name: item_name)
+  if item.nil?
+    item = Suggestion.find_by(item_name: item_name)
+  end
+
+  puts item.inspect
+  puts status.inspect
+
+  if status == "true"
+    expect(item.purchased).to be_truthy
+  elsif status == "false"
+    expect(item.purchased).to be_falsy
+  else
+    false
+  end
+end
+
+
+
