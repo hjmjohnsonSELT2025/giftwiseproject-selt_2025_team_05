@@ -17,6 +17,24 @@ Feature: Claim gift
     When I click "Events"
     And I click "View"
     And I click "Get Gifts"
-    Then show me the page
     And I click "Add"
     Then I should see "Gift claimed successfully!"
+
+  Scenario: Unclaiming a gift
+    When I click "Events"
+    And I click "View"
+    And I click "Get Gifts"
+    And I click "Add"
+    And I click "Remove Wishlist Gift"
+    Then I should see "Gift unclaimed successfully!"
+
+  Scenario: Add custom gift
+    When I click "Events"
+    And I click "View"
+    And I click "Get Gifts"
+    And I click "Add custom gift idea"
+    And I fill in "Item Name" with "Chocolate"
+    And I fill in "Cost" with "6"
+    And I click "Add Custom Gift"
+    Then I should see "Gift suggestion added!"
+    Then I should see "Chocolate"

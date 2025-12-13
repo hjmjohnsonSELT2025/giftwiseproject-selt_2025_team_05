@@ -72,7 +72,7 @@ end
 Given("{string} is a participant in {string}") do |user_name, event_name|
   user = User.find_by!(first_name: user_name)
   event = Event.find_by!(name: event_name)
-  EventUser.create!(user: user, event: event, status: :joined)
+  EventUser.find_or_create_by!(user: user, event: event, status: :joined)
 end
 
 Given("I have been invited to {string}") do |event_name|
