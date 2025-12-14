@@ -125,4 +125,47 @@ RSpec.describe EventUsersController, type: :controller do
       end
     end
   end
+
+  describe "PATCH #update_budget" do
+    let!(:event_user_owner) do
+      EventUser.create!(event: event, user: owner, status: :joined, budget: 50)
+    end
+    before { sign_in owner }
+
+    context "with Turbo Stream request" do
+      it "updates the budget and renders turbo stream" do
+        patch :update_budget, params: { event_id: event.id, event_user_id: event_user_owner.id, event_user: { budget: 100 } }, format: :turbo_stream
+        expect(response).to have_http_status(:ok)
+        expect(event_user_owner.reload.budget).to eq(100)
+        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      end
+    end
+
+    context "with HTML request" do
+      it "updates the budget and redirects with notice" do
+        patch :update_budget, params: { event_id: event.id, event_user_id: event_user_owner.id, event_user: { budget: 75 } }, format: :html
+        expect(response).to redirect_to(event_path(event))
+        expect(flash[:notice]).to eq("Budget updated")
+        expect(event_user_owner.reload.budget).to eq(75)
+      end
+    end
+
+    context "when budget is blank" do
+      it "sets budget to nil" do
+        patch :update_budget, params: { event_id: event.id, event_user_id: event_user_owner.id, event_user: { budget: "" } }, format: :html
+        expect(response).to redirect_to(event_path(event))
+        expect(event_user_owner.reload.budget).to be_nil
+      end
+    end
+
+    context "when update fails" do
+      before do
+        allow_any_instance_of(EventUser).to receive(:update).and_return(false)
+      end
+      it "returns unprocessable_entity" do
+        patch :update_budget, params: { event_id: event.id, event_user_id: event_user_owner.id, event_user: { budget: 200 } }, format: :turbo_stream
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
 end
