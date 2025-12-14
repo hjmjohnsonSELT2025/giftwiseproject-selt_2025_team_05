@@ -120,8 +120,9 @@
         </td>
         <td>
           <div class="d-flex gap-2">
+            <% if event_user.status == 'joined'%>
             <%= link_to "View", event_path(event), class: "btn btn-sm btn-outline-primary" %>
-
+            <% end %>
               <% if event_user.status == 'invited' && @view_mode != 'past' %>
                 <%= button_to "Accept",
                               event_event_user_path(event, event_user, status: 'joined'),
