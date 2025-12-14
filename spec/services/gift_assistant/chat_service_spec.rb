@@ -17,7 +17,7 @@ RSpec.describe GiftAssistant::ChatService do
 
   let(:event) do
     user = User.create!(email: "host@example.com", password: "password")
-    user.events.create!(name: "Christmas Party")
+    user.events.create!(name: "Christmas Party", date: 1.week.from_now)
   end
 
   before do

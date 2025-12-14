@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe SuggestionsController, type: :controller do
   let(:user) { User.create!(email: "user@example.com", password: "password") }
   let(:recipient) { User.create!(email: "recipient@example.com", password: "password") }
-  let(:event) {Event.create!(name: "Christmas", user: user)}
+  let(:event) {Event.create!(name: "Christmas", date: 1.week.from_now, user: user)}
   let(:suggestion) { Suggestion.create!(user: user, item_name: 'Test Item', cost: 100.00, purchased: 0, user: user, recipient: recipient, event: event) }
   let(:valid_attributes) { { item_name: 'car', cost: 999.99, notes: 'for Christmas'} }
 

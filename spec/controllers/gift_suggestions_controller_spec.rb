@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe GiftSuggestionsController, type: :controller do
   let(:host)    { User.create!(email: "host@example.com", password: "password") }
   let(:friend)  { User.create!(email: "friend@example.com", password: "password") }
-  let(:event)   { host.events.create!(name: "Friendsgiving") }
+  let(:event)   { host.events.create!(name: "Friendsgiving", date: 1.week.from_now) }
   let!(:host_event_user)   { event.event_users.create!(user: host,   status: :joined) }
   let!(:friend_event_user) { event.event_users.create!(user: friend, status: :joined) }
 

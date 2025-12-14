@@ -5,7 +5,7 @@ RSpec.describe PreferencesController, type: :controller do
   let(:recipient) { User.create!(email: "recipient@example.com", password: "password") }
   let(:preference) { Preference.create!(user: user, item_name: 'Test Item', cost: 100.00) }
   let(:valid_attributes) { { item_name: 'car', cost: 999.99, notes: 'for Christmas' } }
-  let(:event) {Event.create!(name: "Christmas", user: user)}
+  let(:event) {Event.create!(name: "Christmas", date: 1.week.from_now, user: user)}
   let(:unclaimed_item) {Preference.create!(user: recipient, item_name: 'Test Item', cost: 999.99, event: event)}
   let(:claimed_item) {Preference.create!(user: recipient, item_name: 'Test Item', cost: 999.99, event: event, giver: user)}
   let!(:claimed_item_not_wishlist) {Preference.create!(user: recipient, item_name: 'Test Item', cost: 999.99, event: event, giver: user)}
