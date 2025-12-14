@@ -59,7 +59,6 @@
               <th>Status</th>
               <% unless is_past %>
                 <th>Actions</th>
-                <th>Gifts</th>
                 <% if @event.user_id == current_user.id %>
                   <th>Manage</th>
                 <% end %>
@@ -85,15 +84,6 @@
                                     user_gift_summary_path(user_id: participant.id, event_id: @event.id),
                                     method: :get,
                                     class: "btn btn-sm btn-success" %>
-                    <% end %>
-                  </td>
-                  <td>
-                    <% if participant.id != current_user.id && current_user.has_gift_history_with?(participant) %>
-                      <%= link_to "View Gifts", friend_gifts_path(participant), class: "btn btn-sm btn-info" %>
-                    <% else %>
-                      <span class="text-muted fst-italic small">
-                        <small>You haven’t gotten <%= participant.first_name %> any gifts yet</small>
-                      </span>
                     <% end %>
                   </td>
                   <% if @event.user_id == current_user.id %>
@@ -270,5 +260,7 @@
                  event_user: current_event_user %>
     </div>
   </div>
+
+  <br>
   <div class="mb-4"><%= link_to "Back", request.referer || root_path, class: "btn btn-outline-primary" %></div>
 </div>
