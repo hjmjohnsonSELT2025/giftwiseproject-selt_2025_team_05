@@ -91,13 +91,4 @@ class EventUsersController < ApplicationController
       redirect_to @event, alert: "You are not authorized to invite people to this event."
     end
   end
-
-  def budget_params
-    permitted = params.require(:event_user).permit(:budget)
-
-    permitted[:budget] = nil if permitted[:budget].blank?
-
-    permitted
-  end
-
 end
