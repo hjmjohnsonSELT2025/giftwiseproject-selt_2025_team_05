@@ -6,6 +6,7 @@ RSpec.describe SuggestionsController, type: :controller do
   let(:event) {Event.create!(name: "Christmas", date: 1.week.from_now, user: user)}
   let(:suggestion) { Suggestion.create!(user: user, item_name: 'Test Item', cost: 100.00, purchased: 0, user: user, recipient: recipient, event: event) }
   let(:valid_attributes) { { item_name: 'car', cost: 999.99, notes: 'for Christmas'} }
+  let(:invalid_attributes) { { cost: 999.99, notes: 'for Christmas'} }
 
 
   before do
@@ -14,6 +15,15 @@ RSpec.describe SuggestionsController, type: :controller do
 
   describe 'GET #new' do
     context 'with valid parameters' do
+      it 'creates a new Suggestion' do
+          get :new, params: {
+            user_id: user.id,
+            event_id: event.id
+          }
+          expect(assigns(:suggestion)).to be_a_new(Suggestion)
+          expect(assigns(:user)).to eq(user)
+          expect(assigns(:event)).to eq(event)
+      end
       it 'renders new suggestion view' do
         get :new, params: {
           user_id: user.id,
@@ -70,10 +80,20 @@ RSpec.describe SuggestionsController, type: :controller do
         updated_preference = Suggestion.order(updated_at: :desc).first
         expect(updated_preference.purchased).to eq(true)
       end
+      it 'changes a suggestion from purchased to unpurchased' do
+        post :toggle_purchase_suggestion, params: {id: suggestion.id, suggestion: {purchased: 0}, redirect: "user_gift_summary"}
+        updated_preference = Suggestion.order(updated_at: :desc).first
+        expect(updated_preference.purchased).to eq(false)
+      end
       it 'redirects to the user gift summary page of the user who will receive the gift with redirect: user_gift_summary' do
         post :toggle_purchase_suggestion, params: {id: suggestion.id, suggestion: {purchased: 1}, redirect: "user_gift_summary"}
         updated_preference = Suggestion.order(updated_at: :desc).first
         expect(response).to redirect_to(user_gift_summary_path(event_id: updated_preference.event.id, user_id: updated_preference.recipient.id))
+      end
+      it 'redirects to the event page of the user who will receive the gift with redirect: event' do
+        post :toggle_purchase_suggestion, params: {id: suggestion.id, suggestion: {purchased: 1}, redirect: "event"}
+        updated_preference = Suggestion.order(updated_at: :desc).first
+        expect(response).to redirect_to(event)
       end
     end
   end
@@ -98,7 +118,7 @@ RSpec.describe SuggestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     it 'destroys the requested suggestion' do
-      suggestion # Create the suggestion
+      suggestion
       expect {
         delete :destroy, params: { id: suggestion.id }
       }.to change(Suggestion, :count).by(-1)
