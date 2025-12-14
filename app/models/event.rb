@@ -14,6 +14,7 @@ class Event < ApplicationRecord
   validates :name, presence: true,
             uniqueness: { scope: :user_id, case_sensitive: false,
                           message: "has already been used for one of your events" }
+  validates :date, presence: true
   validate :date_cannot_be_in_the_past, on: :create
 
   private
