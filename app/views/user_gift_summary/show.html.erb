@@ -1,4 +1,4 @@
-<div class="container py-4">
+<div class="container my-4">
   <div class="wishlist-green-theme">
     <div class="container py-4">
       <div class="text-center mb-4">
@@ -140,13 +140,23 @@
         </tbody>
       </table>
     </div>
-    <div class="d-flex gap-2 mt-3">
-      <p class="text-muted mb-0">Want to give <%= @recipient.first_name %> something not on their wishlist?</p>
-    </div>
 
   <% else %>
     <p>No gifts yet.</p>
   <% end %>
+
+  <% if current_user.has_gift_history_with?(@recipient) %>
+    <div class="d-flex justify-content-end mt-3">
+      <%= link_to "View Gift History with #{@recipient.first_name}",
+                  friend_gifts_path(@recipient),
+                  class: "btn btn-info" %>
+    </div>
+  <% end %>
+
+  <div class="d-flex gap-2 mt-3">
+    <p class="text-muted mb-0">Want to give <%= @recipient.first_name %> something not on their wishlist?</p>
+  </div>
+
   <div class="d-flex gap-2 mt-3">
     <%= link_to "Add custom gift idea", new_suggestion_path(user_id: @recipient.id, event_id: @event.id), class: "btn btn-success" %>
   </div>
@@ -156,7 +166,7 @@
                 class: "btn btn-success" %>
   </div>
   <br>
-  <%= link_to "Back", @event, class: "btn btn-secondary" %>
+  <div class="mb-4"><%= link_to "Back", request.referer || root_path, class: "btn btn-outline-primary" %></div>
 </div>
 
 
